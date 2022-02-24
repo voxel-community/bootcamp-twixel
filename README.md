@@ -2,6 +2,8 @@
 
 ## Obiettivo del bootcamp
 
+Voxel Bootcamp per costruire un’app completa come Twitter - Twixel.
+
 --
 
 ### Struttura del bootcamp
@@ -19,7 +21,7 @@ Il bootcamp è strutturato in * capitoli.
 
 Questo tutorial è basato su [https://remix.run/docs/en/v1/tutorials/jokes](https://remix.run/docs/en/v1/tutorials/jokes)
 
-- [REMIX](https://remix.run/docs/en/v1)
+- [REMIX 💿](https://remix.run/docs/en/v1)
 
 #### 👩🏻‍💻 Tutorial gratuiti:
 
