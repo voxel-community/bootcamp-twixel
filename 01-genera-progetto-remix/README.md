@@ -16,8 +16,7 @@ R E M I X - v#.#.#
 💿 Welcome to Remix! Let's get you set up with a new project.
 
 ? Where would you like to create your app? twixel
-? Where do you want to deploy? Choose Remix if you're unsure, it's easy to chang
-e deployment targets. Vercel
+? Where do you want to deploy? Choose Remix if you're unsure, it's easy to change deployment targets. Vercel
 ? TypeScript or JavaScript? TypeScript
 ? Do you want me to run `npm install`? Yes
 ```
