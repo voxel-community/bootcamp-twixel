@@ -1,14 +1,15 @@
 ## Database (TODO use MongoDB)
 
-Most real-world applications require some form of data persistence. In our case, we want to save our jokes to a database so people can laugh at our hilarity and even submit their own (coming soon in the authentication section!).
+### Setup MongoDB
+For this blog, we will be using Prisma with experimental features for connecting to a MongoDB database to store our twixes
 
-You can use any persistence solution you like with Remix; [Firebase](https://firebase.google.com/), [Supabase](https://supabase.com/), [Airtable](https://www.airtable.com/), [Hasura](https://hasura.io/), [Google Spreadsheets](https://www.google.com/sheets/about/), [Cloudflare Workers KV](https://www.cloudflare.com/products/workers-kv/), [Fauna](https://fauna.com/features), a custom [PostgreSQL](https://www.postgresql.org/), or even your backend team's REST/GraphQL APIs. Seriously. Whatever you want.
+Most real-world applications require some form of data persistence. In our case, we want to save our twixes to a database so people can read at our twixes and even submit their own (coming soon in the authentication section!).
 
 ### Set up Prisma
 
-<docs-info>The prisma team has built [a VSCode extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) you might find quite helpful when working on the prisma schema.</docs-info>
+The prisma team has built [a VSCode extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) you might find quite helpful when working on the prisma schema.
 
-In this tutorial we're going to use our own [SQLite](https://sqlite.org/index.html) database. Essentially, it's a database that lives in a file on your computer, is surprisingly capable, and best of all it's supported by [Prisma](https://www.prisma.io), our favorite database ORM! It's a great place to start if you're not sure what database to use.
+In this tutorial we're going to use [MongoDB](https://www.mongodb.com/) database. Essentially, it's a database and best of all it's supported by [Prisma](https://www.prisma.io), our favorite database ORM! It's a great place to start if you're not sure what database to use.
 
 There are two packages that we need to get started:
 
@@ -22,10 +23,16 @@ npm install --save-dev prisma
 npm install @prisma/client
 ```
 
-💿 Now we can initialize prisma with sqlite:
+💿 Let's invoke the Prisma command line interface (CLI)
+```sh
+npx prisma
+```
+
+
+💿 Now we can initialize prisma which will create our Prisma folder
 
 ```sh
-npx prisma init --datasource-provider sqlite
+npx prisma init
 ```
 
 That gives us this output:
@@ -38,12 +45,31 @@ warn You already have a .gitignore. Don't forget to exclude .env to not commit a
 
 Next steps:
 1. Set the DATABASE_URL in the .env file to point to your existing database. If your database has no tables yet, read https://pris.ly/d/getting-started
-2. Run prisma db pull to turn your database schema into a Prisma schema.
-3. Run prisma generate to generate the Prisma Client. You can then start querying your database.
+2. Set the provider of the datasource block in schema.prisma to match your database: postgresql, mysql, sqlite, sqlserver or mongodb (Preview).
+3. Run prisma db pull to turn your database schema into a Prisma schema.
+4. Run prisma generate to generate the Prisma Client. You can then start querying your database.
 
 More information in our documentation:
 https://pris.ly/d/getting-started
 ```
+
+## MongoDB:
+We are going to use the Free Shared DB, it's free, no credit card required to start, and you get leverage the power of cloud database. This section assumes you have never used MongoDB before, if you are already familiar with Mongo or have a Cluster setup, you can skip ahead to the next section 😎
+
+1. Go to https://account.mongodb.com/account/register?tck=docs_atlas and create an account (puoi usare il Sign di Google o creare un account)
+2. Choose the Free Shared account
+3. Choose any cluster, I'm choosing GCP / Belgium (europe-west1) for my deployment, and create the cluster.
+4. In the Security QuickStart, create a Username and Password authentication. Save this information as we will need it soon. I'm going to create remix_user with a secure password. Be sure to click Create User.
+For IP Access List, we are going to put in 0.0.0.0 as the IP to ensure that our database get's up and running quickly for testing. You will want to restrict this for production apps.
+6. You should now be redirected to your Database Deployments showing Cluster0.
+7. Click Connect button vicino Cluster 0
+8. Click Connect your application
+9. Copy the connection string provided.
+10. In your Remix app, look for the `.env` file in the root folder. This is a local environment file that we will store your mongo URL secret in since it contains username and password to your database. Open this up and you will see that Prisma already put some information in there.
+11. Let's update the `DATABASE_URL` to be our new MongoDB server address. ``` DATABASE_URL="mongodb+srv://remix_user:supersecretpassword@cluster0.cvvbu.mongodb.net/MyFirstDatabase"```
+
+
+## SETUP Prisma
 
 Now that we've got prisma initialized, we can start modeling our app data. Because this isn't a prisma tutorial, I'll just hand you that and you can read more about the prisma scheme from [their docs](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference):
 
@@ -53,17 +79,29 @@ Now that we've got prisma initialized, we can start modeling our app data. Becau
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime @db.Date @default(now())
+  updatedAt    DateTime @db.Date @default(now())
+  username     String   @unique
+  passwordHash String
+  jokes        Joke[]
+}
+
 model Joke {
-  id         String   @id @default(uuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  jokesterId String @db.ObjectId
+  jokester   User     @relation(fields: [jokesterId], references: [id])
+  createdAt  DateTime @db.Date @default(now())
+  updatedAt  DateTime @db.Date @default(now())
   name       String
   content    String
 }
@@ -80,126 +118,16 @@ This command will give you this output:
 ```
 Environment variables loaded from .env
 Prisma schema loaded from prisma/schema.prisma
-Datasource "db": SQLite database "dev.db" at "file:./dev.db"
+Datasource "db"
 
 🚀  Your database is now in sync with your schema. Done in 194ms
 
-✔ Generated Prisma Client (3.5.0) to ./node_modules/
-@prisma/client in 26ms
+✔ Generated Prisma Client (3.10.0 | library) to ./node_modules/@prisma/client in 167ms
 ```
 
-This command did a few things. For one, it created our database file in `prisma/dev.db`. Then it pushed all the necessary changes to our database to match the schema we provided. Finally it generated Prisma's TypeScript types so we'll get stellar autocomplete and type checking as we use it's API for interacting with our database.
-
-💿 Let's add that `prisma/dev.db` to our `.gitignore` so we don't accidentally commit it to our repository. We'll also want to add the `.env` file to the `.gitignore` as mentioned in the prisma output so we don't commit our secrets!
-
-```sh filename=.gitignore lines=[7-8]
-node_modules
-
-/.cache
-/build
-/public/build
-
-/prisma/dev.db
-.env
-```
-
-<docs-warning>If your database gets messed up, you can always delete the `prisma/dev.db` file and run `npx prisma db push` again.</docs-warning>
-
-Next, we're going to write a little file that will "seed" our database with test data. Again, this isn't really remix-specific stuff, so I'll just give this to you (don't worry, we'll get back to remix soon):
-
-💿 Copy this into a new file called `prisma/seed.ts`
-
-```ts filename=prisma/seed.ts
-import { PrismaClient } from "@prisma/client";
-const db = new PrismaClient();
-
-async function seed() {
-  await Promise.all(
-    getJokes().map((joke) => {
-      return db.joke.create({ data: joke });
-    })
-  );
-}
-
-seed();
-
-function getJokes() {
-  // shout-out to https://icanhazdadjoke.com/
-
-  return [
-    {
-      name: "Road worker",
-      content: `I never wanted to believe that my Dad was stealing from his job as a road worker. But when I got home, all the signs were there.`,
-    },
-    {
-      name: "Frisbee",
-      content: `I was wondering why the frisbee was getting bigger, then it hit me.`,
-    },
-    {
-      name: "Trees",
-      content: `Why do trees seem suspicious on sunny days? Dunno, they're just a bit shady.`,
-    },
-    {
-      name: "Skeletons",
-      content: `Why don't skeletons ride roller coasters? They don't have the stomach for it.`,
-    },
-    {
-      name: "Hippos",
-      content: `Why don't you find hippopotamuses hiding in trees? They're really good at it.`,
-    },
-    {
-      name: "Dinner",
-      content: `What did one plate say to the other plate? Dinner is on me!`,
-    },
-    {
-      name: "Elevator",
-      content: `My first time using an elevator was an uplifting experience. The second time let me down.`,
-    },
-  ];
-}
-```
-
-Feel free to add your own jokes if you like.
-
-Now we just need to run this file. We wrote it in TypeScript to get type safety (this is much more useful as our app and data models grow in complexity). So we'll need a way to run it.
-
-💿 Install `esbuild-register` as a dev dependency:
-
-```sh
-npm install --save-dev esbuild-register
-```
-
-💿 And now we can run our `seed.ts` file with that:
-
-```sh
-node --require esbuild-register prisma/seed.ts
-```
-
-Now our database has those jokes in it. No joke!
-
-But I don't want to have to remember to run that script any time I reset the database. Luckily, we don't have to!
-
-💿 Add this to your `package.json`:
-
-```json nocopy
-// ...
-  "prisma": {
-    "seed": "node --require esbuild-register prisma/seed.ts"
-  },
-  "scripts": {
-// ...
-```
-
-Now, whenever we reset the database, prisma will call our seeding file as well.
+This command did a few things. It pushed all the necessary changes to our database to match the schema we provided. Finally it generated Prisma's TypeScript types so we'll get stellar autocomplete and type checking as we use it's API for interacting with our database.
 
 ### Connect to the database
-
-Ok, one last thing we need to do is connect to the database in our app. We do this at the top of our `prisma/seed.ts` file:
-
-```ts nocopy
-import { PrismaClient } from "@prisma/client";
-const db = new PrismaClient();
-```
 
 This works just fine, but the problem is, during development, we don't want to close down and completely restart our server every time we make a server-side change. So `@remix-run/serve` actually rebuilds our code and requires it brand new. The problem here is that every time we make a code change, we'll make a new connection to the database and eventually run out of connections! This is such a common problem with database-accessing apps that Prisma has a warning for it:
 
