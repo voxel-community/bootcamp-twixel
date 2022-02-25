@@ -2,19 +2,21 @@
 
 ## Prerequisites
 
-You can follow along with this tutorial on [CodeSandbox](https://codesandbox.com/) (a fantastic in-browser editor) or locally on your own computer. If you use the CodeSandbox approach then all you need is a good internet connection and a modern browser. If you run things locally then you're going to need some things installed:
+Puoi decidere di seguire questo tutorial su [CodeSandbox](https://codesandbox.com/) (un editor online) or oppure sul tuo computer (*scelta consigliata*). Se vuoi seguire il tutorial usando CodeSandbox quello che ti serve è una buona connessione internet e un browser moderno. Se invece vuoi sviluppare l'app in locale sul tuo computer ti serviranno un paio di programmi installati:
 
-- [Node.js](https://nodejs.org) 14 or greater
-- [npm](https://www.npmjs.com) 7 or greater
-- A code editor ([VSCode](https://code.visualstudio.com/) is a nice one)
+- [Node.js](https://nodejs.org) versione 14 o maggiore
+- [npm](https://www.npmjs.com) 7 or maggiore
+- Un code editor ([VSCode](https://code.visualstudio.com/))
 
-We'll also be executing commands in your system command line/terminal interface. So you'll want to be familiar with that.
+Eseguiremo anche comandi sul terminale. Puoi usare quello che **Visual Studio CodeWe** mette a disposizione.
 
-Some experience with React and TypeScript/JavaScript is assumed. If you'd like to review your knowledge, check out these resources:
+> Se hai Windows, ricordati di non usare Powershell ma un altro tipo di terminale. La tipologia di terminale la puoi selezionare dalla tendina
+
+Una pre conoscenza di React e Typescript non è necessaria, ma è sicuramente di aiuto nel seguire il tutorial, se vuoi saperne di più ti lasciamo qui qualche link per approfondire:
 
 - [JavaScript to know for React](https://kentcdodds.com/blog/javascript-to-know-for-react)
 - [The Beginner's Guide to React](https://kcd.im/beginner-react)
 
-And having a good understanding of [the HTTP API](https://developer.mozilla.org/en-US/docs/Web/HTTP) is also helpful, but not totally required.
+Può essere utile, non richiesta, anche una conoscenza di [the HTTP API](https://developer.mozilla.org/en-US/docs/Web/HTTP).
 
-With that, I think we're ready to get started!
+Ora possiamo iniziare creando il progetto
