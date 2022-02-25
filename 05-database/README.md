@@ -1,4 +1,4 @@
-## Database (TODO use MongoDB)
+## Database (MongoDB)
 
 ### Setup MongoDB
 For this blog, we will be using Prisma with experimental features for connecting to a MongoDB database to store our twixes
@@ -87,22 +87,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Twix {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt    DateTime @db.Date @default(now())
-  updatedAt    DateTime @db.Date @default(now())
-  username     String   @unique
-  passwordHash String
-  jokes        Joke[]
-}
-
-model Joke {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  jokesterId String @db.ObjectId
-  jokester   User     @relation(fields: [jokesterId], references: [id])
   createdAt  DateTime @db.Date @default(now())
   updatedAt  DateTime @db.Date @default(now())
-  name       String
+  title       String
   content    String
 }
 ```
@@ -126,6 +115,93 @@ Datasource "db"
 ```
 
 This command did a few things. It pushed all the necessary changes to our database to match the schema we provided. Finally it generated Prisma's TypeScript types so we'll get stellar autocomplete and type checking as we use it's API for interacting with our database.
+
+💿 Copy this into a new file called prisma/seed.ts
+
+```ts filename=prisma/seed.ts
+import { PrismaClient } from "@prisma/client";
+const db = new PrismaClient();
+
+async function seed() {
+  await Promise.all(
+    getTwixes().map((twix) => {
+      return db.twix.create({ data: twix });
+    })
+  );
+}
+
+seed();
+
+function getTwixes() {
+  // shout-out to https://icanhazdadjoke.com/
+
+  return [
+    {
+      title: "Road worker",
+      content: `I never wanted to believe that my Dad was stealing from his job as a road worker. But when I got home, all the signs were there.`,
+      
+    },
+    {
+      title: "Frisbee",
+      content: `I was wondering why the frisbee was getting bigger, then it hit me.`,
+    },
+    {
+      title: "Trees",
+      content: `Why do trees seem suspicious on sunny days? Dunno, they're just a bit shady.`,
+    },
+    {
+      title: "Skeletons",
+      content: `Why don't skeletons ride roller coasters? They don't have the stomach for it.`,
+    },
+    {
+      title: "Hippos",
+      content: `Why don't you find hippopotamuses hiding in trees? They're really good at it.`,
+    },
+    {
+      title: "Dinner",
+      content: `What did one plate say to the other plate? Dinner is on me!`,
+    },
+    {
+      title: "Elevator",
+      content: `My first time using an elevator was an uplifting experience. The second time let me down.`,
+    },
+  ];
+}
+
+```
+
+Feel free to add your own jokes if you like.
+
+Now we just need to run this file. We wrote it in TypeScript to get type safety (this is much more useful as our app and data models grow in complexity). So we'll need a way to run it.
+
+💿 Install `esbuild-register` as a dev dependency:
+
+```sh
+npm install --save-dev esbuild-register
+```
+
+💿 And now we can run our `seed.ts` file with that:
+
+```sh
+node --require esbuild-register prisma/seed.ts
+```
+
+Now our database has those jokes in it. No joke!
+
+But I don't want to have to remember to run that script any time I reset the database. Luckily, we don't have to!
+
+💿 Add this to your `package.json`:
+
+```json nocopy
+// ...
+  "prisma": {
+    "seed": "node --require esbuild-register prisma/seed.ts"
+  },
+  "scripts": {
+// ...
+```
+
+Now, whenever we reset the database, prisma will call our seeding file as well.
 
 ### Connect to the database
 
@@ -173,7 +249,7 @@ The one thing that I will call out is the file name convention. The `.server` pa
 
 Ok, ready to get back to writing Remix code? Me too!
 
-Our goal is to put a list of jokes on the `/jokes` route so we can have a list of links to jokes people can choose from. In Remix, each route module is responsible for getting its own data. So if we want data on the `/jokes` route, then we'll be updating the `app/routes/jokes.tsx` file.
+Our goal is to put a list of twixes on the `/twixes` route so we can have a list of links to twixes people can choose from. In Remix, each route module is responsible for getting its own data. So if we want data on the `/twixes` route, then we'll be updating the `app/routes/twixes.tsx` file.
 
 To _load_ data in a Remix route module, you use a [`loader`](../api/conventions#loader). This is simply an `async` function you export that returns a response, and is accessed on the component through the [`useLoaderData`](../api/remix#useloaderdata) hook. Here's a quick example:
 
@@ -206,68 +282,64 @@ export default function Users() {
 
 Does that give you a good idea of what to do here? If not, you can take a look at my solution in the `<details>` below 😄
 
-<docs-info>
-
 Remix and the `tsconfig.json` you get from the starter template are configured to allow imports from the `app/` directory via `~` as demonstrated above so you don't have `../../` all over the place.
 
-</docs-info>
-
-💿 Update the `app/routes/jokes.tsx` route module to load jokes from our database and render a list of links to the jokes.
+💿 Update the `app/routes/twixes.tsx` route module to load twixes from our database and render a list of links to the twixes.
 
 <details>
 
-<summary>app/routes/jokes.tsx</summary>
+<summary>app/routes/twixes.tsx</summary>
 
-```tsx filename=app/routes/jokes.tsx lines=[1-2,4,11-13,15-20,23,47-51]
+```tsx filename=app/routes/twixes.tsx lines=[1-2,4,11-13,15-20,23,47-51]
 import type { LinksFunction, LoaderFunction } from "remix";
 import { Link, Outlet, useLoaderData } from "remix";
 
 import { db } from "~/utils/db.server";
-import stylesUrl from "~/styles/jokes.css";
+import stylesUrl from "~/styles/twixes.css";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: stylesUrl }];
 };
 
 type LoaderData = {
-  jokeListItems: Array<{ id: string; name: string }>;
+  twixListItems: Array<{ id: string; title: string }>;
 };
 
 export const loader: LoaderFunction = async () => {
   const data: LoaderData = {
-    jokeListItems: await db.joke.findMany(),
+    twixListItems: await db.twix.findMany(),
   };
   return data;
 };
 
-export default function JokesRoute() {
+export default function TwixesRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
-    <div className="jokes-layout">
-      <header className="jokes-header">
+    <div className="twixes-layout">
+      <header className="twixes-header">
         <div className="container">
           <h1 className="home-link">
             <Link
               to="/"
-              title="Remix Jokes"
-              aria-label="Remix Jokes"
+              title="Remix twixes"
+              aria-label="Remix twixes"
             >
-              <span className="logo">🤪</span>
-              <span className="logo-medium">J🤪KES</span>
+              <span className="logo">💬</span>
+              <span className="logo-medium">Twixes</span>
             </Link>
           </h1>
         </div>
       </header>
-      <main className="jokes-main">
+      <main className="twixes-main">
         <div className="container">
-          <div className="jokes-list">
-            <Link to=".">Get a random joke</Link>
-            <p>Here are a few more jokes to check out:</p>
+          <div className="twixes-list">
+            <Link to=".">Get a random twix</Link>
+            <p>Here are a few more twixes to check out:</p>
             <ul>
-              {data.jokeListItems.map((joke) => (
-                <li key={joke.id}>
-                  <Link to={joke.id}>{joke.name}</Link>
+              {data.twixListItems.map((twix) => (
+                <li key={twix.id}>
+                  <Link to={twix.id}>{twix.title}</Link>
                 </li>
               ))}
             </ul>
@@ -275,7 +347,7 @@ export default function JokesRoute() {
               Add your own
             </Link>
           </div>
-          <div className="jokes-outlet">
+          <div className="twixes-outlet">
             <Outlet />
           </div>
         </div>
@@ -289,7 +361,7 @@ export default function JokesRoute() {
 
 And here's what we have with that now:
 
-![List of links to jokes](/jokes-tutorial/img/jokes-loaded.png)
+![TODO List of links to twixes](/assets/)
 
 ### Data overfetching
 
@@ -297,14 +369,14 @@ I want to call out something specific in my solution. Here's my loader:
 
 ```tsx lines=[8-10]
 type LoaderData = {
-  jokeListItems: Array<{ id: string; name: string }>;
+  twixListItems: Array<{ id: string; title: string }>;
 };
 
 export const loader: LoaderFunction = async () => {
   const data: LoaderData = {
-    jokeListItems: await db.joke.findMany({
+    twixListItems: await db.twix.findMany({
       take: 5,
-      select: { id: true, name: true },
+      select: { id: true, title: true },
       orderBy: { createdAt: "desc" },
     }),
   };
@@ -312,7 +384,7 @@ export const loader: LoaderFunction = async () => {
 };
 ```
 
-Notice that all I need for this page is the joke `id` and `name`. I don't need to bother getting the `content`. I'm also limiting to a total of 5 items and ordering by creation date so we get the latest jokes. So with `prisma`, I can change my query to be exactly what I need and avoid sending too much data to the client! That makes my app faster and more responsive for my users.
+Notice that all I need for this page is the twix `id` and `title`. I don't need to bother getting the `content`. I'm also limiting to a total of 5 items and ordering by creation date so we get the latest twixes. So with `prisma`, I can change my query to be exactly what I need and avoid sending too much data to the client! That makes my app faster and more responsive for my users.
 
 And to make it even cooler, you don't necessarily need prisma or direct database access to do this. You've got a graphql backend you're hitting? Sweet, use your regular graphql stuff in your loader. It's even better than doing it on the client because you don't need to worry about shipping a [huge graphql client](https://bundlephobia.com/package/graphql@16.0.1) to the client. Keep that on your server and filter down to what you want.
 
@@ -326,60 +398,60 @@ So the only way to really be 100% positive that your data is correct, you should
 
 ### Wrap up database queries
 
-Before we get to the `/jokes/:jokeId` route, here's a quick example of how you can access params (like `:jokeId`) in your loader.
+Before we get to the `/twixes/:twixId` route, here's a quick example of how you can access params (like `:twixId`) in your loader.
 
 ```tsx nocopy
 export const loader: LoaderFunction = async ({
   params,
 }) => {
-  console.log(params); // <-- {jokeId: "123"}
+  console.log(params); // <-- {twixId: "123"}
 };
 ```
 
-And here's how you get the joke from prisma:
+And here's how you get the twix from prisma:
 
 ```tsx nocopy
-const joke = await db.joke.findUnique({
-  where: { id: jokeId },
+const twix = await db.twix.findUnique({
+  where: { id: twixId },
 });
 ```
 
-<docs-warning>Remember, when we're referencing the URL route, it's `/jokes/:jokeId`, and when we talk about the file system it's `/app/routes/jokes/$jokeId.tsx`.</docs-warning>
+<docs-warning>Remember, when we're referencing the URL route, it's `/twixes/:twixId`, and when we talk about the file system it's `/app/routes/twixes/$twixId.tsx`.</docs-warning>
 
-💿 Great! Now you know everything you need to continue and connect the `/jokes/:jokeId` route in `app/routes/jokes/$jokeId.tsx`.
+💿 Great! Now you know everything you need to continue and connect the `/twixes/:twixId` route in `app/routes/twixes/$twixId.tsx`.
 
 <details>
 
-<summary>app/routes/jokes/$jokeId.tsx</summary>
+<summary>app/routes/twixes/$twixId.tsx</summary>
 
-```tsx filename=app/routes/jokes/$jokeId.tsx lines=[3,5,7,9-18,21]
+```tsx filename=app/routes/twixes/$twixId.tsx lines=[3,5,7,9-18,21]
 import type { LoaderFunction } from "remix";
 import { Link, useLoaderData } from "remix";
-import type { Joke } from "@prisma/client";
+import type { Twix } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 
-type LoaderData = { joke: Joke };
+type LoaderData = { twix: Twix };
 
 export const loader: LoaderFunction = async ({
   params,
 }) => {
-  const joke = await db.joke.findUnique({
-    where: { id: params.jokeId },
+  const twix = await db.twix.findUnique({
+    where: { id: params.twixId },
   });
-  if (!joke) throw new Error("Joke not found");
-  const data: LoaderData = { joke };
+  if (!twix) throw new Error("Twix not found");
+  const data: LoaderData = { twix };
   return data;
 };
 
-export default function JokeRoute() {
+export default function TwixRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
     <div>
-      <p>Here's your hilarious joke:</p>
-      <p>{data.joke.content}</p>
-      <Link to=".">{data.joke.name} Permalink</Link>
+      <p>Here's your hilarious twix:</p>
+      <p>{data.twix.content}</p>
+      <Link to=".">{data.twix.title} Permalink</Link>
     </div>
   );
 }
@@ -387,20 +459,20 @@ export default function JokeRoute() {
 
 </details>
 
-With that you should be able to go to [`/jokes`](http://localhost:3000/jokes) and click on a link to get the joke:
+With that you should be able to go to [`/twixes`](http://localhost:3000/twixes) and click on a link to get the twix:
 
-![Jokes page showing a unique joke](/jokes-tutorial/img/joke-page.png)
+![twixes page showing a unique twix](/twixes-tutorial/img/twix-page.png)
 
-We'll handle the case where someone tries to access a joke that doesn't exist in the database in the next section.
+We'll handle the case where someone tries to access a twix that doesn't exist in the database in the next section.
 
-Next, let's handle the `/jokes` index route in `app/routes/jokes/index.tsx` that shows a random joke.
+Next, let's handle the `/twixes` index route in `app/routes/twixes/index.tsx` that shows a random twix.
 
-Here's how you get a random joke from prisma:
+Here's how you get a random twix from prisma:
 
 ```tsx
-const count = await db.joke.count();
+const count = await db.twix.count();
 const randomRowNumber = Math.floor(Math.random() * count);
-const [randomJoke] = await db.joke.findMany({
+const [randomTwix] = await db.twix.findMany({
   take: 1,
   skip: randomRowNumber,
 });
@@ -410,37 +482,37 @@ const [randomJoke] = await db.joke.findMany({
 
 <details>
 
-<summary>app/routes/jokes/index.tsx</summary>
+<summary>app/routes/twixes/index.tsx</summary>
 
-```tsx filename=app/routes/jokes/index.tsx lines=[3,5,7,9-18,21]
+```tsx filename=app/routes/twixes/index.tsx lines=[3,5,7,9-18,21]
 import type { LoaderFunction } from "remix";
 import { useLoaderData, Link } from "remix";
-import type { Joke } from "@prisma/client";
+import type { Twix } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 
-type LoaderData = { randomJoke: Joke };
+type LoaderData = { randomTwix: Twix };
 
 export const loader: LoaderFunction = async () => {
-  const count = await db.joke.count();
+  const count = await db.twix.count();
   const randomRowNumber = Math.floor(Math.random() * count);
-  const [randomJoke] = await db.joke.findMany({
+  const [randomTwix] = await db.twix.findMany({
     take: 1,
     skip: randomRowNumber,
   });
-  const data: LoaderData = { randomJoke };
+  const data: LoaderData = { randomTwix };
   return data;
 };
 
-export default function JokesIndexRoute() {
+export default function TwixesIndexRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
     <div>
-      <p>Here's a random joke:</p>
-      <p>{data.randomJoke.content}</p>
-      <Link to={data.randomJoke.id}>
-        "{data.randomJoke.name}" Permalink
+      <p>Here's a random twix:</p>
+      <p>{data.randomTwix.content}</p>
+      <Link to={data.randomTwix.id}>
+        "{data.randomTwix.title}" Permalink
       </Link>
     </div>
   );
@@ -449,6 +521,6 @@ export default function JokesIndexRoute() {
 
 </details>
 
-With that your [`/jokes`](http://localhost:3000/jokes) route should display a list of links to jokes as well as a random joke:
+With that your [`/twixes`](http://localhost:3000/twixes) route should display a list of links to twixes as well as a random twix:
 
-![Jokes page showing a random joke](/jokes-tutorial/img/random-joke-loaded.png)
+![twixes page showing a random twix](/assets/04-02.png)
