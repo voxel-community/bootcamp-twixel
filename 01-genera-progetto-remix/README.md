@@ -1,14 +1,14 @@
 ## Generating a new Remix project
 
-💿 Open your terminal and run this command:
+💿 Apri il terminale ed esegui questo comando:
 
 ```sh
 npx create-remix@latest
 ```
 
-This may ask you whether you want to install `create-remix` to run the command. Enter `y`. It will only be installed temporarily to run the setup script.
+> Potrebbe venirti chiesto se vuoi installare `create-remix`. Premi `y` e invio. Si tratta di un'installazione temporanea necessaria per fare il setup del progetto.
 
-When the fun Remix animation is finished, it'll ask you a few questions. We'll call our app "twixel", choose the "Vercel" deploy target, use TypeScript, and have it run the installation for us:
+Quando le animazioni di Remix sono finite, ti verranno chieste un paio di domande per creare e fare il setup del progetto. Chiameremo l'app **"twixel"**, useremo "Vercel" come deploy target, use TypeScript. Al termine nel terminale dovresti avere il seguente setup:
 
 ```
 R E M I X - v#.#.#
@@ -21,18 +21,14 @@ R E M I X - v#.#.#
 ? Do you want me to run `npm install`? Yes
 ```
 
-Once the `npm install` has completed, we'll change into the `twixel` directory:
+Una volta che l'installazione è completata has completed, è ora di aprire la cartella di `twixel`:
 
-💿 Run this command
-
-```sh
-cd twixel
-```
-
-Now you're in the `twixel` directory. All other commands you run from here on out will be in that directory.
-
-💿 Ora puoi aprire il progetto in **Visual Studio Code**, questo è il comando per farlo da terminale
+💿 Se vuoi aprire il progetto da terminale puoi eseguire questi comandi: 
 
 ```sh
-code .
+cd twixel # per entrare nella cartella
+code . # per aprire il progetto su VSCode
+
 ```
+
+> In alternativa puoi trascinare la cartella sull'icona di **VSCode** oppure aprire **Visual Studio Code** e tramite il menù aprire la cartella `twixel`
