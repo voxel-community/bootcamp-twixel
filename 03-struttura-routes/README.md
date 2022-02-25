@@ -4,9 +4,9 @@ The first thing we want to do is get our routing structure set up. Here are all 
 
 ```
 /
-/jokes
-/jokes/:jokeId
-/jokes/new
+/twixes
+/twixes/:twixId
+/twixes/new
 /login
 ```
 
@@ -63,23 +63,23 @@ That will watch your filesystem for changes, rebuild the site, and thanks to the
 
 💿 Go ahead and open up the site again and you should be presented with the greeting from the index route.
 
-![A greeting from the index route](/jokes-tutorial/img/index-route-greeting.png)
+![Index](/assets/03-01.png)
 
-Great! Next let's handle the `/jokes` route.
+Great! Next let's handle the `/twixes` route.
 
-💿 Create a new route at `app/routes/jokes.tsx` (keep in mind that this will be a parent route, so you'll want to use `<Outlet />` again).
+💿 Create a new route at `app/routes/twixes.tsx` (keep in mind that this will be a parent route, so you'll want to use `<Outlet />` again).
 
 <details>
 
-<summary>app/routes/jokes.tsx</summary>
+<summary>app/routes/twixes.tsx</summary>
 
-```tsx filename=app/routes/jokes.tsx
+```tsx filename=app/routes/twixes.tsx
 import { Outlet } from "remix";
 
-export default function JokesRoute() {
+export default function TwixesRoute() {
   return (
     <div>
-      <h1>J🤪KES</h1>
+      <h1>Twixes 💬</h1>
       <main>
         <Outlet />
       </main>
@@ -90,19 +90,19 @@ export default function JokesRoute() {
 
 </details>
 
-You should be presented with that component when you go to [`/jokes`](http://localhost:3000/jokes). Now, in that `<Outlet />` we want to render out some random jokes in the "index route".
+You should be presented with that component when you go to [`/twixes`](http://localhost:3000/twixes). Now, in that `<Outlet />` we want to render out some random twixes in the "index route".
 
-💿 Create a route at `app/routes/jokes/index.tsx`
+💿 Create a route at `app/routes/twixes/index.tsx`
 
 <details>
 
-<summary>app/routes/jokes/index.tsx</summary>
+<summary>app/routes/twixes/index.tsx</summary>
 
-```tsx filename=app/routes/jokes/index.tsx
-export default function JokesIndexRoute() {
+```tsx filename=app/routes/twixes/index.tsx
+export default function TwixesIndexRoute() {
   return (
     <div>
-      <p>Here's a random joke:</p>
+      <p>Here's a random twix:</p>
       <p>
         I was wondering why the frisbee was getting bigger,
         then it hit me.
@@ -114,27 +114,27 @@ export default function JokesIndexRoute() {
 
 </details>
 
-Now if you refresh [`/jokes`](http://localhost:3000/jokes), you'll get the content in the `app/routes/jokes.tsx` as well as the `app/routes/jokes/index.tsx`. Here's what mine looks like:
+Now if you refresh [`/twixes`](http://localhost:3000/twixes), you'll get the content in the `app/routes/twixes.tsx` as well as the `app/routes/twixes/index.tsx`. Here's what mine looks like:
 
-![A random joke on the jokes page: "I was wondering why the frisbee was getting bigger, then it hit me"](/jokes-tutorial/img/random-joke.png)
+![Twix index](/assets/03-02.png)
 
 And notice that each of those route modules is only concerned with their part of the URL. Neat right!? Nested routing is pretty nice, and we're only just getting started. Let's keep going.
 
-💿 Next, let's handle the `/jokes/new` route. I'll bet you can figure out how to do that 😄. Remember we're going to allow people to create jokes on this page, so you'll want to render a `form` with `name` and `content` fields.
+💿 Next, let's handle the `/twixes/new` route. I'll bet you can figure out how to do that 😄. Remember we're going to allow people to create twixes on this page, so you'll want to render a `form` with `name` and `content` fields.
 
 <details>
 
-<summary>app/routes/jokes/new.tsx</summary>
+<summary>app/routes/twixes/new.tsx</summary>
 
-```tsx filename=app/routes/jokes/new.tsx
-export default function NewJokeRoute() {
+```tsx filename=app/routes/twixes/new.tsx
+export default function NewTwixRoute() {
   return (
     <div>
-      <p>Add your own hilarious joke</p>
+      <p>Add your own hilarious twix</p>
       <form method="post">
         <div>
           <label>
-            Name: <input type="text" name="name" />
+            Title: <input type="text" name="title" />
           </label>
         </div>
         <div>
@@ -155,29 +155,29 @@ export default function NewJokeRoute() {
 
 </details>
 
-Great, so now going to [`/jokes/new`](http://localhost:3000/jokes/new) should display your form:
+Great, so now going to [`/twixes/new`](http://localhost:3000/twixes/new) should display your form:
 
-![A new joke form](/jokes-tutorial/img/new-joke.png)
+![A new twix form](/assets/03-03.png)
 
 ### Parameterized Routes
 
-Soon we'll add a database that stores our jokes by an ID, so let's add one more route that's a little more unique, a parameterized route:
+Soon we'll add a database that stores our twixes by an ID, so let's add one more route that's a little more unique, a parameterized route:
 
-`/jokes/:jokeId`
+`/twixes/:twixId`
 
-Here the parameter `$jokeId` can be anything, and we can lookup that part of the URL up in the database to display the right joke. To make a parameterized route, we use the `$` character in the filename. ([Read more about the convention here](../api/conventions#route-filenames)).
+Here the parameter `$twixId` can be anything, and we can lookup that part of the URL up in the database to display the right twix. To make a parameterized route, we use the `$` character in the filename. ([Read more about the convention here](../api/conventions#route-filenames)).
 
-💿 Create a new route at `app/routes/jokes/$jokeId.tsx`. Don't worry too much about what it displays for now (we don't have a database set up yet!):
+💿 Create a new route at `app/routes/twixes/$twixId.tsx`. Don't worry too much about what it displays for now (we don't have a database set up yet!):
 
 <details>
 
-<summary>app/routes/jokes/$jokeId.tsx</summary>
+<summary>app/routes/twixes/$twixId.tsx</summary>
 
-```tsx filename=app/routes/jokes/$jokeId.tsx
-export default function JokeRoute() {
+```tsx filename=app/routes/twixes/$twixId.tsx
+export default function TwixRoute() {
   return (
     <div>
-      <p>Here's your hilarious joke:</p>
+      <p>Here's your hilarious twix:</p>
       <p>
         Why don't you find hippopotamuses hiding in trees?
         They're really good at it.
@@ -189,8 +189,8 @@ export default function JokeRoute() {
 
 </details>
 
-Great, so now going to [`/jokes/anything-you-want`](http://localhost:3000/jokes/hippos) should display what you just created (in addition to the parent routes):
+Great, so now going to [`/twixes/anything-you-want`](http://localhost:3000/twixes/test) should display what you just created (in addition to the parent routes):
 
-![A new joke form](/jokes-tutorial/img/param-route.png)
+![A new twix form](/twixes-tutorial/img/param-route.png)
 
 Great! We've got our primary routes all set up!
