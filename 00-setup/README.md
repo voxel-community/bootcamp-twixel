@@ -1,6 +1,6 @@
 ## Setup
 
-## Prerequisites
+## Prerequisiti
 
 Puoi decidere di seguire questo tutorial su [CodeSandbox](https://codesandbox.com/) (un editor online) or oppure sul tuo computer (*scelta consigliata*). Se vuoi seguire il tutorial usando CodeSandbox quello che ti serve è una buona connessione internet e un browser moderno. Se invece vuoi sviluppare l'app in locale sul tuo computer ti serviranno un paio di programmi installati:
 
