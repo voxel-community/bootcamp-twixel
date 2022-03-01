@@ -18,29 +18,30 @@ Let's start by showing you our updated `prisma/schema.prisma` file. 💿 Go ahea
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id           String   @id @default(uuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime @db.Date @default(now())
+  updatedAt    DateTime @db.Date @default(now())
   username     String   @unique
   passwordHash String
-  jokes        Joke[]
+  twixes        Twix[]
 }
 
-model Joke {
-  id         String   @id @default(uuid())
-  jokesterId String
-  jokester   User     @relation(fields: [jokesterId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  name       String
+model Twix {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  twixesterId String @db.ObjectId
+  twixester   User     @relation(fields: [twixesterId], references: [id])
+  createdAt  DateTime @db.Date @default(now())
+  updatedAt  DateTime @db.Date @default(now())
+  title       String
   content    String
 }
 ```
