@@ -1,4 +1,4 @@
-## Generating a new Remix project
+## Genera un nuovo progetto di Remix
 
 💿 Apri il terminale ed esegui questo comando:
 
@@ -8,7 +8,7 @@ npx create-remix@latest
 
 > Potrebbe venirti chiesto se vuoi installare `create-remix`. Premi `y` e invio. Si tratta di un'installazione temporanea necessaria per fare il setup del progetto.
 
-Quando le animazioni di Remix sono finite, ti verranno chieste un paio di domande per creare e fare il setup del progetto. Chiameremo l'app **"twixel"**, useremo "Vercel" come deploy target, use TypeScript. Al termine nel terminale dovresti avere il seguente setup:
+Quando le animazioni di Remix sono finite, ti verranno chieste un paio di domande per creare e fare il setup del progetto. Chiameremo l'app **"twixel"**, useremo "Vercel" come deploy target, e TypeScript. Al termine nel terminale dovresti avere il seguente setup:
 
 ```
 R E M I X - v#.#.#
