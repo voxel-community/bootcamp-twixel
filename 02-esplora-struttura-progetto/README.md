@@ -73,7 +73,21 @@ Stiamo cercando di ridurre il codice generato al minimo inizialmente per poi and
 💿 Rimpiazza i contenuti di `app/root.tsx` con questo:
 
 ```tsx filename=app/root.tsx
-Schermata 2022-02-26 alle 14.10.12
+import { LiveReload } from "remix";
+
+export default function App() {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <title>Remix: So great, it's funny!</title>
+      </head>
+      <body>
+        Ciao mondo
+        <LiveReload />
+      </body>
+    </html>
+  );
 }
 ```
 
