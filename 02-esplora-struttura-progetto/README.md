@@ -1,9 +1,9 @@
-## Explore the project structure
+## Esplora la struttura del progetto
 
-Here's the tree structure. Hopefully what you've got looks a bit like this:
+Una volta aperto il progetto, la struttura delle cartelle e dei file dovrebbe essere simile a questa:
 
 ```
-remix-jokes
+twixel
 ├── README.md
 ├── app
 │   ├── entry.client.tsx
@@ -20,80 +20,67 @@ remix-jokes
 └── tsconfig.json
 ```
 
-Let's talk briefly about a few of these files:
+Parliamo dei file più importanti:
 
-- `app/` - This is where all your Remix app code goes
-- `app/entry.client.tsx` - This is the first bit of your JavaScript that will run when the app loads in the browser. We use this file to [hydrate](https://reactjs.org/docs/react-dom.html#hydrate) our React components.
-- `app/entry.server.tsx` - This is the first bit of your JavaScript that will run when a request hits your server. Remix handles loading all the necessary data and you're responsible for sending back the response. We'll use this file to render our React app to a string/stream and send that as our response to the client.
-- `app/root.tsx` - This is where we put the root component for our application. You render the `<html>` element here.
-- `app/routes/` - This is where all your "route modules" will go. Remix uses the files in this directory to create the URL routes for your app based on the name of the files.
-- `public/` - This is where your static assets go (images/fonts/etc)
-- `remix.config.js` - Remix has a handful of configuration options you can set in this file.
+- `app/` - Questa cartella contiene tutto il codice di Remix, il framework che stiamo utilizzando per realizzare Twixel
+- `app/entry.client.tsx` - Questo è il primo codice che verrà eseguito una volta aperto il sito sul browser. In questo file, Remix chiama una funzione di React chiamata "[hydrate](https://reactjs.org/docs/react-dom.html#hydrate)", che serve a "renderizzare" e sincronizzare i dati tra il browser (client) e il server (sito) che ospita il nostro sito.
+- `app/entry.server.tsx` - Questo invece è il primo codice che viene eseguito quando un richiesta arriva dal browser al nostro server, Remix carica tutti i dati necessari e invia una risposta al browser.
+- `app/root.tsx` - Qui metteremo la "root", ovvero il file principale, la radice, del nostro sito. Questo conterrà l'elemento [<html>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/html).
+- `app/routes/` - Qui andranno le nostre "routes". Remix userà i files in questa cartella per creare varie URL (pagine) per il nostro sito basandosi sul nome dei file.
+- `public/` - Qui andranno cose "statiche" (ovvero che non cambiano al cambiare dell'input) come immagini, font, etc
+- `remix.config.js` - Qui andranno delle configurazioni per il funzionamento di Remix.
+<!-- TODO: forse dovremmo aggiungere una spiegazione di cos'è un server e cos'è un client -->
 
-💿 Let's go ahead and run the build:
+💿 Proviamo a eseguire una build nel nostro terminale, ovvero a trasformare il nostro codice in codice che il server sarà in grado di eseguire. Dalla cartella di twixel, esegui:
 
 ```sh
 npm run build
 ```
 
-That should output something like this:
+Questo dovrebbe visualizzare sul terminale qualcosa di simile:
 
 ```
 Building Remix app in production mode...
 Built in 132ms
 ```
 
-Now you should also have a `.cache/` directory (something used internally by Remix), a `build/` directory, and a `public/build` directory. The `build/` directory is our server-side code. The `public/build/` holds all our client-side code. These three directories are listed in your `.gitignore` file so you don't commit the generated files to source control.
+Oltre alle cartelle che abbiamo visto sopra, questo comando ha creato delle nuove cartelle:
+- `.cache/` è una cartella usata internamente da Remix
+-  `build/` contiene il codice che verrà eseguito sul server
+- `public/build` contiene il codice che verrà eseguito nel browser 
 
-💿 Let's run the built app now:
+💿 Ora proviamo a eseguire l'app che abbiamo appena creato:
 
 ```sh
 npm start
 ```
 
-This will start the server and output this:
+Questo avvierà il server e visualizzerà qualcosa di simile:
 
 ```
 Remix App Server started at http://localhost:3000
 ```
 
-Open up that URL and you should be presented with a minimal page pointing to some docs.
+Apri quel link e dovresti vedere una pagina molto scarna con un link a della documentazione. Piano piano nel corso di questo tutorial andremo a sostituire questa pagina e crearne di nuove.
 
-💿 Now stop the server and delete all this stuff:
+💿 Iniziamo fermando il server (premi CTRL+C nel terminale) e andiamo a cestinare queste cartelle:
 
 - `app/routes`
 - `app/styles`
 
-We're going to trim this down the bare bones and introduce things incrementally.
+Stiamo cercando di ridurre il codice generato al minimo inizialmente per poi andare a scriverlo noi passo passo.
 
-💿 Replace the contents of `app/root.tsx` with this:
+💿 Rimpiazza i contenuti di `app/root.tsx` con questo:
 
 ```tsx filename=app/root.tsx
-import { LiveReload } from "remix";
-
-export default function App() {
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <title>Remix: So great, it's funny!</title>
-      </head>
-      <body>
-        Hello world
-        <LiveReload />
-      </body>
-    </html>
-  );
+Schermata 2022-02-26 alle 14.10.12
 }
 ```
 
-<docs-info>
+> Il componente `<LiveReload />` è utile durante lo sviluppo per auto-aggiornare il browser ogni volta che facciamo un cambiamento. Questo a volte avviene talmente velocemente che nemmeno te ne accorgerai ⚡
 
-The `<LiveReload />` component is useful during development to auto-refresh our browser whenever we make a change. Because our build server is so fast, the reload will often happen before you even notice ⚡
 
-</docs-info>
-
-Your `app/` directory should now look like this:
+La cartella `app/` ora dovrebbe contenere solo questi file:
 
 ```
 app
@@ -102,14 +89,14 @@ app
 └── root.tsx
 ```
 
-💿 With that set up, go ahead and start the dev server up with this command:
+💿 Con questo setup, avviamo il server di sviluppo con questo comando:
 
 ```sh
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and the app should greet the world:
+Apri [http://localhost:3000](http://localhost:3000) dovresti vedere "ciao mondo":
 
-![Bare bones hello world app](/jokes-tutorial/img/bare-bones.png)
+![Ciao mondo](02-01.png)
 
-Great, now we're ready to start adding stuff back.
+Ottimo! Ora siamo pronte per iniziare ad aggiungere contenuti.

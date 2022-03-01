@@ -13,7 +13,8 @@ Il bootcamp è strutturato in * capitoli.
 #### Indice dei capitoli
 
 00. [Setup iniziale](00-setup)
-01.  [Genera progetto Remix](01-genera-progetto-remix)
+01. [Genera progetto Remix](01-genera-progetto-remix)
+02. [Esplora la struttura del progetto](02-esplora-struttura-progetto)
 
 #### Approfondimenti
 
