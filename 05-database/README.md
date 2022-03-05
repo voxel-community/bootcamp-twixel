@@ -1,42 +1,45 @@
 ## Database (MongoDB)
 
 ### Setup MongoDB
+
 Utilizzeremo Prisma con funzionalità sperimentali per la connessione a un database MongoDB per salvare i nostri twix.
 
 
-La maggior parte delle applicazioni del mondo reale richiede una qualche forma di persistenza dei dati. Nel nostro caso, vogliamo salvare i nostri twix su un database in modo che le persone possano leggere i nostri twix e persino inviare i propri (prossimamente nella sezione di autenticazione!).
+La maggior parte delle applicazioni reali richiede una qualche forma di persistenza dei dati. Nel nostro caso, vogliamo salvare i nostri twix su un database in modo che le persone possano leggere i nostri twix e persino inviare i propri (prossimamente nella sezione di autenticazione!).
 
 ### Set up Prisma
 
-The prisma team has built [a VSCode extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) you might find quite helpful when working on the prisma schema.
+Il team di prisma ha creato [un'estensione VSCode](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) che potresti trovare molto utile quando lavori sullo schema prisma.
 
-In this tutorial we're going to use [MongoDB](https://www.mongodb.com/) database. Essentially, it's a database and best of all it's supported by [Prisma](https://www.prisma.io), our favorite database ORM! It's a great place to start if you're not sure what database to use.
+Andrai ad usare il database [MongoDB](https://www.mongodb.com/) 
+attraverso [Prisma](https://www.prisma.io) una libreria che ti permette di interagine con i database con comandi più semplici ed intuitivi. È un ottimo punto di partenza se non sei sicura di quale database utilizzare.
 
-There are two packages that we need to get started:
 
-- `prisma` for interact with our database and schema during development
-- `@prisma/client` for making queries to our database during runtime.
+Ci sono due pacchetti di cui abbiamo bisogno per iniziare:
 
-💿 Install the prisma packages:
+- `prisma` per interagire con il nostro database e schema durante lo sviluppo
+- `@prisma/client` per effettuare query al nostro database durante il runtime.
+
+💿 Installa i pacchetti prisma:
 
 ```sh
 npm install --save-dev prisma
 npm install @prisma/client
 ```
 
-💿 Let's invoke the Prisma command line interface (CLI)
+💿 Invochiamo Prisma per verificare che si sia installato correttamente tramite il comando
 ```sh
 npx prisma
 ```
 
 
-💿 Now we can initialize prisma which will create our Prisma folder
+💿 Ora possiamo inizializzare prisma che creerà la nostra cartella Prisma
 
 ```sh
 npx prisma init
 ```
 
-That gives us this output:
+Ti darà questo output:
 
 ```
 ✔ Your Prisma schema was created at prisma/schema.prisma
@@ -55,24 +58,28 @@ https://pris.ly/d/getting-started
 ```
 
 ## MongoDB:
-We are going to use the Free Shared DB, it's free, no credit card required to start, and you get leverage the power of cloud database. This section assumes you have never used MongoDB before, if you are already familiar with Mongo or have a Cluster setup, you can skip ahead to the next section 😎
 
-1. Go to https://account.mongodb.com/account/register?tck=docs_atlas and create an account (puoi usare il Sign di Google o creare un account)
-2. Choose the Free Shared account
-3. Choose any cluster, I'm choosing GCP / Belgium (europe-west1) for my deployment, and create the cluster.
-4. In the Security QuickStart, create a Username and Password authentication. Save this information as we will need it soon. I'm going to create remix_user with a secure password. Be sure to click Create User.
-For IP Access List, we are going to put in 0.0.0.0 as the IP to ensure that our database get's up and running quickly for testing. You will want to restrict this for production apps.
-6. You should now be redirected to your Database Deployments showing Cluster0.
-7. Click Connect button vicino Cluster 0
-8. Click Connect your application
-9. Copy the connection string provided.
-10. In your Remix app, look for the `.env` file in the root folder. This is a local environment file that we will store your mongo URL secret in since it contains username and password to your database. Open this up and you will see that Prisma already put some information in there.
-11. Let's update the `DATABASE_URL` to be our new MongoDB server address. ``` DATABASE_URL="mongodb+srv://remix_user:supersecretpassword@cluster0.cvvbu.mongodb.net/MyFirstDatabase"```
+Utilizzeremo il Free Shared DB, è gratuito, non è richiesta la carta di credito per iniziare e puoi sfruttare la potenza del database cloud.
 
+1. Vai su https://account.mongodb.com/account/register?tck=docs_atlas e crea un account (puoi usare il Sign di Google o creare un account)
+2. Scegli il `Free Shared` account
+3. Scegli il cluster geograficamente più vicino a te e crea il cluster.
+4. In Security QuickStart, crea un autenticazione `Username and Password`. Salva queste informazioni perché ne avremo presto bisogno. Crea un utente ad esempio remix_user con una password sicura. 
+
+Per l'elenco di accesso IP, inseriremo 0.0.0.0 come IP per garantire che il nostro database sia attivo e funzionante rapidamente per lo sviluppo. Ti consigliamo di limitare gli IP per le app di produzione.
+
+6. Sarai ridirezionata a `Database Deployments` che mostrerà `Cluster0`.
+7. Clicca il pulsante `Connect` vicino `Cluster 0`
+8. Clicca `Connect your application`
+9. Copia la stringa di connessione fornita.
+10. Nella tua app Remix, cerca il file `.env` nella cartella root, quella principale. Questo è un file di ambiente locale in cui memorizzeremo il segreto dell'URL mongo poiché contiene nome utente e password per il tuo database. Apri questo e vedrai che Prisma ha già inserito alcune informazioni.
+11. Aggiorniamo il `DATABASE_URL` in modo che sia il nostro nuovo indirizzo del server. 
+``` DATABASE_URL="mongodb+srv://remix_user:supersecretpassword@cluster0.cvvbu.mongodb.net/MyFirstDatabase"
+```
 
 ## SETUP Prisma
 
-Now that we've got prisma initialized, we can start modeling our app data. Because this isn't a prisma tutorial, I'll just hand you that and you can read more about the prisma scheme from [their docs](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference):
+Ora che hai inizializzato prisma, potrai iniziare a modellare i dati dell'app. Poiché questo non è un tutorial sui prisma, te li daremo e potrai leggere di più sullo schema dei prisma dai [loro documenti](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference):
 
 ```prisma filename=prisma/schema.prisma lines=[13-19]
 // This is your Prisma schema file,
@@ -97,13 +104,13 @@ model Twix {
 }
 ```
 
-💿 With that in place, run this:
+💿 Fatto ciò esegui questo comando:
 
 ```sh
 npx prisma db push
 ```
 
-This command will give you this output:
+Questo comando ti darà questo output:
 
 ```
 Environment variables loaded from .env
@@ -115,9 +122,9 @@ Datasource "db"
 ✔ Generated Prisma Client (3.10.0 | library) to ./node_modules/@prisma/client in 167ms
 ```
 
-This command did a few things. It pushed all the necessary changes to our database to match the schema we provided. Finally it generated Prisma's TypeScript types so we'll get stellar autocomplete and type checking as we use it's API for interacting with our database.
+Questo comando ha fatto alcune cose. Ha inviato tutte le modifiche necessarie al nostro database in modo che corrisponda allo schema che abbiamo fornito. Alla fine ha generato i tipi TypeScript di Prisma, quindi otterai un completamento automatico e un controllo del tipo stellari mentre utilizzerai la sua API per interagire con il tuo database.
 
-💿 Copy this into a new file called prisma/seed.ts
+💿 Copia questo in un nuovo file chiamato prisma/seed.ts
 
 ```ts filename=prisma/seed.ts
 import { PrismaClient } from "@prisma/client";
@@ -171,27 +178,29 @@ function getTwixes() {
 
 ```
 
-Feel free to add your own jokes if you like.
+Sentiti libera di aggiungere tutti i twix che vuoi.
 
-Now we just need to run this file. We wrote it in TypeScript to get type safety (this is much more useful as our app and data models grow in complexity). So we'll need a way to run it.
 
-💿 Install `esbuild-register` as a dev dependency:
+Ora dobbiamo solo eseguire questo file. L'abbiamo scritto in TypeScript per assicurarci di usare i tipi corretti (questo è molto più utile quando l'app e i modelli di dati crescono in complessità). Quindi avremo bisogno di un modo per eseguirlo.
+
+💿 Installa `esbuild-register` come dipendenza di sviluppo:
 
 ```sh
 npm install --save-dev esbuild-register
 ```
 
-💿 And now we can run our `seed.ts` file with that:
+💿 E ora possiamo eseguire il nostro file `seed.ts` con quello:
 
 ```sh
 node --require esbuild-register prisma/seed.ts
 ```
 
-Now our database has those jokes in it. No joke!
+Ora il tuo database ha dei twix dentro!
 
-But I don't want to have to remember to run that script any time I reset the database. Luckily, we don't have to!
 
-💿 Add this to your `package.json`:
+Ma non vorrai ricordarti di eseguire quello script ogni volta che resetti il database. Fortunatamente, non ti servirà!
+
+💿 Aggiungi questo al tuo `package.json`:
 
 ```json nocopy
 // ...
@@ -202,19 +211,19 @@ But I don't want to have to remember to run that script any time I reset the dat
 // ...
 ```
 
-Now, whenever we reset the database, prisma will call our seeding file as well.
+Ora, ogni volta che ripristinerai il database, prisma chiamerà anche il file di seeding.
 
-### Connect to the database
+### Connettiti al database
 
-This works just fine, but the problem is, during development, we don't want to close down and completely restart our server every time we make a server-side change. So `@remix-run/serve` actually rebuilds our code and requires it brand new. The problem here is that every time we make a code change, we'll make a new connection to the database and eventually run out of connections! This is such a common problem with database-accessing apps that Prisma has a warning for it:
+Questo funziona bene, ma il problema è che, durante lo sviluppo, non vorrai chiudere e riavviare completamente il tuo server ogni volta che apporterai una modifica lato server. Dato che `@remix-run/serve` ricostruisce effettivamente il nostro codice e lo richiede nuovo di zecca. Il problema qui è che ogni volta che apportiamo una modifica al codice, stabiliremo una nuova connessione al database e alla fine esauriremo le connessioni! Questo è un problema così comune con le app di accesso al database che Prisma ha un avviso per questo:
 
 > Warning: 10 Prisma Clients are already running
 
-So we've got a little bit of extra work to do to avoid this development time problem.
+Quindi abbiamo un po' di lavoro in più da fare per evitare questo problema in sviluppo.
 
-Note that this isn't a remix-only problem. Any time you have "live reload" of server code, you're going to have to either disconnect and reconnect to databases (which can be slow) or do the workaround I'm about to show you.
+Nota che questo non è un problema di solo remix. Ogni volta che hai un "ricaricamento in tempo reale" del codice del server, dovrai o disconnetterti e riconnetterti ai database (che può essere lento) o eseguire la soluzione alternativa qui sotto.
 
-💿 Copy this into a new file called `app/utils/db.server.ts`
+💿 Copia il codice in un nuovo file chiamato `app/utils/db.server.ts`
 
 ```ts filename=app/utils/db.server.ts
 import { PrismaClient } from "@prisma/client";
@@ -241,18 +250,17 @@ if (process.env.NODE_ENV === "production") {
 
 export { db };
 ```
+Ti lasciamo l'analisi di questo codice come esercizio perché, ancora una volta, questo non ha nulla a che fare direttamente con Remix.
 
-I'll leave analysis of this code as an exercise for the reader because again, this has nothing to do with Remix directly.
+L'unica cosa che ti facciamo notare è la convenzione del nome del file. La parte `.server` del nome del file informa Remix che questo codice non dovrebbe mai finire nel browser. Questo è facoltativo, perché Remix fa un buon lavoro nel garantire che il codice del server non finisca nel client. Ma a volte alcune dipendenze del solo server sono difficili da eliminare, quindi l'aggiunta di `.server` al nome del file è un suggerimento per il compilatore di non preoccuparsi di questo modulo o delle sue importazioni durante il l'impacchettamento (bundling) per il browser. Il `.server` agisce come una sorta di confine per il compilatore.
 
-The one thing that I will call out is the file name convention. The `.server` part of the filename informs Remix that this code should never end up in the browser. This is optional, because Remix does a good job of ensuring server code doesn't end up in the client. But sometimes some server-only dependencies are difficult to treeshake, so adding the `.server` to the filename is a hint to the compiler to not worry about this module or its imports when bundling for the browser. The `.server` acts as a sort of boundary for the compiler.
+### Leggi dal database in un loader di Remix
 
-### Read from the database in a Remix loader
+Ok, pronta per tornare a scrivere il codice Remix?
 
-Ok, ready to get back to writing Remix code? Me too!
+Il nostro obiettivo è mettere un elenco di twixes sul percorso `/twixes` in modo da poter avere un elenco di link a twix tra cui le persone possono scegliere. In Remix, ogni route module è responsabile dell'acquisizione dei propri dati. Quindi, se vogliamo dati sul percorso `/twixes`, aggiorneremo il file `app/routes/twixes.tsx`.
 
-Our goal is to put a list of twixes on the `/twixes` route so we can have a list of links to twixes people can choose from. In Remix, each route module is responsible for getting its own data. So if we want data on the `/twixes` route, then we'll be updating the `app/routes/twixes.tsx` file.
-
-To _load_ data in a Remix route module, you use a [`loader`](../api/conventions#loader). This is simply an `async` function you export that returns a response, and is accessed on the component through the [`useLoaderData`](../api/remix#useloaderdata) hook. Here's a quick example:
+Per _caricare_ i dati in un route module di Remix, usa un [`loader`](../api/conventions#loader). Questa è semplicemente una funzione `async` che esporti che restituisce una risposta, a cui si accede sul componente tramite l'hook [`useLoaderData`](../api/remix#useloaderdata). Ecco un rapido esempio:
 
 ```tsx nocopy
 // this is just an example. No need to copy/paste this 😄
