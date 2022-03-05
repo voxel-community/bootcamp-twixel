@@ -1,9 +1,10 @@
 ## Database (MongoDB)
 
 ### Setup MongoDB
-For this blog, we will be using Prisma with experimental features for connecting to a MongoDB database to store our twixes
+Utilizzeremo Prisma con funzionalità sperimentali per la connessione a un database MongoDB per salvare i nostri twix.
 
-Most real-world applications require some form of data persistence. In our case, we want to save our twixes to a database so people can read at our twixes and even submit their own (coming soon in the authentication section!).
+
+La maggior parte delle applicazioni del mondo reale richiede una qualche forma di persistenza dei dati. Nel nostro caso, vogliamo salvare i nostri twix su un database in modo che le persone possano leggere i nostri twix e persino inviare i propri (prossimamente nella sezione di autenticazione!).
 
 ### Set up Prisma
 
