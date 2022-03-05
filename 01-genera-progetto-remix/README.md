@@ -21,7 +21,7 @@ R E M I X - v#.#.#
 ? Do you want me to run `npm install`? Yes
 ```
 
-Una volta che l'installazione è completata has completed, è ora di aprire la cartella di `twixel`:
+Una volta che l'installazione è completata, è l'ora di aprire la cartella di `twixel`:
 
 💿 Se vuoi aprire il progetto da terminale puoi eseguire questi comandi: 
 

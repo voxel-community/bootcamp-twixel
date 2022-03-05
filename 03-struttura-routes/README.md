@@ -1,6 +1,6 @@
 ## Routes
 
-La prima cosa da fare è preparare la struttura delle pagine. Questa è la struttura dei file che avrà la nostra applicazione::
+La prima cosa da fare è preparare la struttura delle pagine. Questa è la struttura dei file che avrà la nostra applicazione:
 
 ```
 /
@@ -10,11 +10,11 @@ La prima cosa da fare è preparare la struttura delle pagine. Questa è la strut
 /login
 ```
 
-Si possono creare le pagine tramite [`remix.config.js`](../api/conventions#remixconfigjs), ma il modo più comune e semplice per creare la nostra struttura delle pagine è attraverso il file sistem, quindi creare i nostro link alle pagine usando una struttura di cartelle e file. Questo sistema è chiamato "file-based routing."
+Si possono creare le pagine tramite [`remix.config.js`](../api/conventions#remixconfigjs), ma il modo più comune e semplice per creare la nostra struttura delle pagine è attraverso il file system, quindi creando i nostri link alle pagine usando una struttura di cartelle e file. Questo sistema è chiamato "file-based routing."
 
-Ogni file che creiamo nella cartella `app/routes` viene chiamato ["Route Module"](../api/conventions#route-module-api) e seguendo una convenzione nel rinominare i file [the route filename convention](../api/conventions#route-filenames),possiamo creare gli URL e i link che rispettano la struttura che vogliamo creare. Remix si basa su [React Router](https://reactrouter.com/) per gestire il sistema di collegamento tra le varie pagine dell'applicazione.
+Ogni file che creiamo nella cartella `app/routes` viene chiamato ["Route Module"](../api/conventions#route-module-api) e seguendo una [convenzione nel rinominare i file](../api/conventions#route-filenames), possiamo creare gli URL e i link che rispettano la struttura che vogliamo creare. Remix si basa su [React Router](https://reactrouter.com/) per gestire il sistema di collegamento tra le varie pagine dell'applicazione.
 
-💿 Iniziamo creando la pagina iniziale, quella raggiungibile tramite (`/`). Per farlo, cra un file `app/routes/index.tsx` e con `export default` esporta un componente. Per adesso puoi far visualizzare quello che desideri, noi nell'esempio abbiamo voluto visualizzare **"Hello Index Route"**.
+💿 Iniziamo creando la pagina iniziale, quella raggiungibile tramite (`/`). Per farlo, crea un file `app/routes/index.tsx` e con `export default` esporta un componente. Per adesso puoi far visualizzare quello che desideri, noi nell'esempio abbiamo voluto visualizzare **"Hello Index Route"**.
 
 <details>
 
@@ -28,7 +28,7 @@ export default function IndexRoute() {
 
 </details>
 
-React Router supporta il "nested routing", che significa che possiamo avere pagine e sottopagine nei nostri link. Ad esempio `app/routes/index.tsx` è una sottopagina di `app/root.tsx`. Nel nested routing, le pagine "genitore" sono responsabili della gestione e visualizzazione delle proprie pagine "figli"/sottopagine.
+React Router supporta il "nested routing", che significa che possiamo avere pagine e sottopagine nei nostri link. Ad esempio `app/routes/index.tsx` è una sottopagina di `app/root.tsx`. Nel nested routing, le pagine "genitore" sono responsabili della gestione e visualizzazione delle proprie pagine "figli" o sottopagine.
 
 💿 Aggiorna `app/root.tsx` per posizionare la sottopagina. Puoi farlo utilizzando il componente `<Outlet />` che ti viene fornito da `remix`:
 
@@ -59,7 +59,7 @@ export default function App() {
 
 > Ricordati di avere il server avviato con il comando `npm run dev`
 
-Questo comando permetterà all'applicazione di "ascoltare" i cambiamenti ai file, ricostruire il sito e grazie al componente `<LiveReload />`, permettere al tuo browser di refresharsi e visualizzare le pagine aggiornate.
+Questo comando permetterà all'applicazione di "ascoltare" i cambiamenti ai file, ricostruire il sito e grazie al componente `<LiveReload />`, permettere al tuo browser di ricaricarsi e visualizzare le pagine aggiornate.
 
 💿 Apri il sito e dovresti visualizzare il messaggio che hai inserito:
 
@@ -67,7 +67,7 @@ Questo comando permetterà all'applicazione di "ascoltare" i cambiamenti ai file
 
 Ottimo! Ora gestiamo la pagina `/twixes`.
 
-💿 Crea un nuovo file `app/routes/twixes.tsx` (ricordati che questa è una pagina "genitore"keep in mind that this will be a parent route, so you'll want to use `<Outlet />` again).
+💿 Crea un nuovo file `app/routes/twixes.tsx` (ricordati che questa è una pagina "genitore" quindi vorrai usare `<Outlet />` di nuovo).
 
 <details>
 
@@ -90,7 +90,7 @@ export default function TwixesRoute() {
 
 </details>
 
-Ora dovresti vedere il il codice che hai appena scritto visitando la pagina [`/twixes`](http://localhost:3000/twixes). Adesso al posto di `<Outlet />` vogliamo visualizzare alcuni random twixes che ci sono nell "index route".
+Ora dovresti vedere il codice che hai appena scritto visitando la pagina [`/twixes`](http://localhost:3000/twixes). Adesso al posto di `<Outlet />` vogliamo visualizzare alcuni random twixes che ci sono nel "index route".
 
 💿 Crea un file `app/routes/twixes/index.tsx`
 
@@ -114,13 +114,13 @@ export default function TwixesIndexRoute() {
 
 </details>
 
-Adesso se refreshi la pagina [`/twixes`](http://localhost:3000/twixes), vedrai che sarà visualizzato sia il contenuto dal file `app/routes/twixes.tsx` che quello `app/routes/twixes/index.tsx`. Il risultato dovrebbe essere simile a questo:
+Adesso se ricarichi la pagina [`/twixes`](http://localhost:3000/twixes), vedrai che sarà visualizzato sia il contenuto dal file `app/routes/twixes.tsx` che quello `app/routes/twixes/index.tsx`. Il risultato dovrebbe essere simile a questo:
 
 ![Twix index](/assets/03-02.png)
 
-Come puoi notare, ogni pagina corrisponde al proprio pezzettino di URL. Avere questa gestione a file e cartelle per le pafine permette di avere un ottimo sistema per gestire pagine e sottopagine!
+Come puoi notare, ogni pagina corrisponde al proprio pezzettino di URL. Avere questa gestione a file e cartelle per le pagine permette di avere un ottimo sistema per gestire pagine e sottopagine!
 
-💿 Ora occupiamoci della pagina di creazione di un twix `/twixes/new`. Forse adesso avrai capito come creare una pagina che venga visualizzata all'url http://localhost:3000/twixes/new. Ricorda che in questa pagina permetteremo agli utenti di creare dei twix, quindi quello che vuoi visualizzare è un `form` con dei campi per `titolo` e `content`.
+💿 Ora occupiamoci della pagina di creazione di un twix `/twixes/new`. Forse adesso avrai capito come creare una pagina che venga visualizzata all'url http://localhost:3000/twixes/new. Ricorda che in questa pagina permetteremo agli utenti di creare dei twix, quindi quello che vuoi visualizzare è un `form` con dei campi per `titolo` e `contenuto`.
 
 <details>
 
@@ -165,9 +165,9 @@ Nei prossimi capitoli creeremo e salveremo i nostri twix su un database tramite 
 
 `/twixes/:twixId`
 
-Qui ci sono dei parametri `$twixId` nel nome del file può essere qualsiasi cosa, noi possiamo andare poi a cercare all'interno del nostro database questa parte di url e mostrare il twix corrispondente. Per creare una pagina con dei parametri dinamici, quando crei il file basta usare`$`. ([Read more about the convention here](../api/conventions#route-filenames)).
+Qui ci sono dei parametri `$twixId` nel nome del file può essere qualsiasi cosa, noi possiamo andare poi a cercare all'interno del nostro database questa parte di url e mostrare il twix corrispondente. Per creare una pagina con dei parametri dinamici, quando crei il file basta usare`$`. ([Scopri di più su questa convenzione qui](../api/conventions#route-filenames)).
 
-💿 Crea una nuova pagina `app/routes/twixes/$twixId.tsx`. Intanto non preoccuparti di cosa verrà visualizzato navigando a questa pagina (non abbiamo ancora settuppato il nostro database):
+💿 Crea una nuova pagina `app/routes/twixes/$twixId.tsx`. Intanto non preoccuparti di cosa verrà visualizzato navigando a questa pagina (non abbiamo ancora fatto il setup del nostro database):
 
 <details>
 
@@ -189,8 +189,9 @@ export default function TwixRoute() {
 
 </details>
 
-Ottimo ora andando al link [`/twixes/quell-che-vuoi`](http://localhost:3000/twixes/test) dovresti visualizzare il contenuto del file che hai appena creato:
+Ottimo ora andando al link [`/twixes/quello-che-vuoi`](http://localhost:3000/twixes/test) dovresti visualizzare il contenuto del file che hai appena creato:
 
 ![A new twix form](/twixes-tutorial/img/param-route.png)
+<!-- TODO -->
 
 Ottimo! Ora abbiamo creato tutte le principali pagine dell'applicazione

@@ -8,7 +8,7 @@ Puoi decidere di seguire questo tutorial su [CodeSandbox](https://codesandbox.co
 - [npm](https://www.npmjs.com) 7 or maggiore
 - Un code editor ([VSCode](https://code.visualstudio.com/))
 
-Eseguiremo anche comandi sul terminale. Puoi usare quello che **Visual Studio CodeWe** mette a disposizione.
+Eseguiremo anche comandi sul terminale. Puoi usare quello che **Visual Studio Code** mette a disposizione.
 
 > Se hai Windows, ricordati di non usare Powershell ma un altro tipo di terminale. La tipologia di terminale la puoi selezionare dalla tendina
 
@@ -19,4 +19,4 @@ Una pre conoscenza di React e Typescript non è necessaria, ma è sicuramente di
 
 Può essere utile, non richiesta, anche una conoscenza di [the HTTP API](https://developer.mozilla.org/en-US/docs/Web/HTTP).
 
-Ora possiamo iniziare creando il progetto
+Ora possiamo iniziare creando il progetto!

@@ -25,9 +25,9 @@ Parliamo dei file più importanti:
 - `app/` - Questa cartella contiene tutto il codice di Remix, il framework che stiamo utilizzando per realizzare Twixel
 - `app/entry.client.tsx` - Questo è il primo codice che verrà eseguito una volta aperto il sito sul browser. In questo file, Remix chiama una funzione di React chiamata "[hydrate](https://reactjs.org/docs/react-dom.html#hydrate)", che serve a "renderizzare" e sincronizzare i dati tra il browser (client) e il server (sito) che ospita il nostro sito.
 - `app/entry.server.tsx` - Questo invece è il primo codice che viene eseguito quando un richiesta arriva dal browser al nostro server, Remix carica tutti i dati necessari e invia una risposta al browser.
-- `app/root.tsx` - Qui metteremo la "root", ovvero il file principale, la radice, del nostro sito. Questo conterrà l'elemento [<html>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/html).
-- `app/routes/` - Qui andranno le nostre "routes". Remix userà i files in questa cartella per creare varie URL (pagine) per il nostro sito basandosi sul nome dei file.
-- `public/` - Qui andranno cose "statiche" (ovvero che non cambiano al cambiare dell'input) come immagini, font, etc
+- `app/root.tsx` - Qui metteremo la "root", ovvero il file principale, la radice, del nostro sito. Questo conterrà l'elemento "<[html](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/html)>".
+- `app/routes/` - Qui andranno le nostre "routes". Remix userà i file in questa cartella per creare vari URL (pagine) per il nostro sito basandosi sul nome dei file.
+- `public/` - Qui andranno cose "statiche" (ovvero che non cambiano al cambiare dell'input) come immagini, font, etc.
 - `remix.config.js` - Qui andranno delle configurazioni per il funzionamento di Remix.
 <!-- TODO: forse dovremmo aggiungere una spiegazione di cos'è un server e cos'è un client -->
 
@@ -111,6 +111,6 @@ npm run dev
 
 Apri [http://localhost:3000](http://localhost:3000) dovresti vedere "ciao mondo":
 
-![Ciao mondo](02-01.png)
+![Ciao mondo](../assets/02-01.png)
 
 Ottimo! Ora siamo pronte per iniziare ad aggiungere contenuti.
