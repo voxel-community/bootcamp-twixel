@@ -4,16 +4,14 @@
 
 Utilizzeremo Prisma con funzionalità sperimentali per la connessione a un database MongoDB per salvare i nostri twix.
 
-
 La maggior parte delle applicazioni reali richiede una qualche forma di persistenza dei dati. Nel nostro caso, vogliamo salvare i nostri twix su un database in modo che le persone possano leggere i nostri twix e persino inviare i propri (prossimamente nella sezione di autenticazione!).
 
 ### Set up Prisma
 
 Il team di prisma ha creato [un'estensione VSCode](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) che potresti trovare molto utile quando lavori sullo schema prisma.
 
-Andrai ad usare il database [MongoDB](https://www.mongodb.com/) 
+Andrai ad usare il database [MongoDB](https://www.mongodb.com/)
 attraverso [Prisma](https://www.prisma.io) una libreria che ti permette di interagine con i database con comandi più semplici ed intuitivi. È un ottimo punto di partenza se non sei sicura di quale database utilizzare.
-
 
 Ci sono due pacchetti di cui abbiamo bisogno per iniziare:
 
@@ -28,10 +26,10 @@ npm install @prisma/client
 ```
 
 💿 Invochiamo Prisma per verificare che si sia installato correttamente tramite il comando
+
 ```sh
 npx prisma
 ```
-
 
 💿 Ora possiamo inizializzare prisma che creerà la nostra cartella Prisma
 
@@ -57,14 +55,14 @@ More information in our documentation:
 https://pris.ly/d/getting-started
 ```
 
-## MongoDB:
+## MongoDB
 
 Utilizzeremo il Free Shared DB, è gratuito, non è richiesta la carta di credito per iniziare e puoi sfruttare la potenza del database cloud.
 
-1. Vai su https://account.mongodb.com/account/register?tck=docs_atlas e crea un account (puoi usare il Sign di Google o creare un account)
+1. Vai su <https://account.mongodb.com/account/register?tck=docs_atlas> e crea un account (puoi usare il Sign di Google o creare un account)
 2. Scegli il `Free Shared` account
 3. Scegli il cluster geograficamente più vicino a te e crea il cluster.
-4. In Security QuickStart, crea un autenticazione `Username and Password`. Salva queste informazioni perché ne avremo presto bisogno. Crea un utente ad esempio remix_user con una password sicura. 
+4. In Security QuickStart, crea un autenticazione `Username and Password`. Salva queste informazioni perché ne avremo presto bisogno. Crea un utente ad esempio remix_user con una password sicura.
 
 Per l'elenco di accesso IP, inseriremo 0.0.0.0 come IP per garantire che il nostro database sia attivo e funzionante rapidamente per lo sviluppo. Ti consigliamo di limitare gli IP per le app di produzione.
 
@@ -73,8 +71,10 @@ Per l'elenco di accesso IP, inseriremo 0.0.0.0 come IP per garantire che il nost
 8. Clicca `Connect your application`
 9. Copia la stringa di connessione fornita.
 10. Nella tua app Remix, cerca il file `.env` nella cartella root, quella principale. Questo è un file di ambiente locale in cui memorizzeremo il segreto dell'URL mongo poiché contiene nome utente e password per il tuo database. Apri questo e vedrai che Prisma ha già inserito alcune informazioni.
-11. Aggiorniamo il `DATABASE_URL` in modo che sia il nostro nuovo indirizzo del server. 
-``` DATABASE_URL="mongodb+srv://remix_user:supersecretpassword@cluster0.cvvbu.mongodb.net/MyFirstDatabase"
+11. Aggiorniamo il `DATABASE_URL` in modo che sia il nostro nuovo indirizzo del server.
+
+```
+DATABASE_URL="mongodb+srv://remix_user:supersecretpassword@cluster0.cvvbu.mongodb.net/MyFirstDatabase"
 ```
 
 ## SETUP Prisma
@@ -180,7 +180,6 @@ function getTwixes() {
 
 Sentiti libera di aggiungere tutti i twix che vuoi.
 
-
 Ora dobbiamo solo eseguire questo file. L'abbiamo scritto in TypeScript per assicurarci di usare i tipi corretti (questo è molto più utile quando l'app e i modelli di dati crescono in complessità). Quindi avremo bisogno di un modo per eseguirlo.
 
 💿 Installa `esbuild-register` come dipendenza di sviluppo:
@@ -196,7 +195,6 @@ node --require esbuild-register prisma/seed.ts
 ```
 
 Ora il tuo database ha dei twix dentro!
-
 
 Ma non vorrai ricordarti di eseguire quello script ogni volta che resetti il database. Fortunatamente, non ti servirà!
 
@@ -250,6 +248,7 @@ if (process.env.NODE_ENV === "production") {
 
 export { db };
 ```
+
 Ti lasciamo l'analisi di questo codice come esercizio perché, ancora una volta, questo non ha nulla a che fare direttamente con Remix.
 
 L'unica cosa che ti facciamo notare è la convenzione del nome del file. La parte `.server` del nome del file informa Remix che questo codice non dovrebbe mai finire nel browser. Questo è facoltativo, perché Remix fa un buon lavoro nel garantire che il codice del server non finisca nel client. Ma a volte alcune dipendenze del solo server sono difficili da eliminare, quindi l'aggiunta di `.server` al nome del file è un suggerimento per il compilatore di non preoccuparsi di questo modulo o delle sue importazioni durante il l'impacchettamento (bundling) per il browser. Il `.server` agisce come una sorta di confine per il compilatore.
@@ -263,7 +262,7 @@ Il nostro obiettivo è mettere un elenco di twixes sul percorso `/twixes` in mod
 Per _caricare_ i dati in un route module di Remix, usa un [`loader`](../api/conventions#loader). Questa è semplicemente una funzione `async` che esporti che restituisce una risposta, a cui si accede sul componente tramite l'hook [`useLoaderData`](../api/remix#useloaderdata). Ecco un rapido esempio:
 
 ```tsx nocopy
-// this is just an example. No need to copy/paste this 😄
+// questo è un esempio. Non serve copiarlo 😄
 import type { LoaderFunction } from "remix";
 import type { User } from "@prisma/client";
 
@@ -289,11 +288,9 @@ export default function Users() {
 }
 ```
 
-Does that give you a good idea of what to do here? If not, you can take a look at my solution in the `<details>` below 😄
+Remix e il file `tsconfig.json` che vengono creati in automatico vengono configurati in modo da permettere di importare tutti i file della cartella `app/` utilizzando la shortcut `~` (lo puoi vedere sopra per l'import delle utils). Questo ti permette di non dover importare i file scrivendo l'intero percorso `../../`.
 
-Remix and the `tsconfig.json` you get from the starter template are configured to allow imports from the `app/` directory via `~` as demonstrated above so you don't have `../../` all over the place.
-
-💿 Update the `app/routes/twixes.tsx` route module to load twixes from our database and render a list of links to the twixes.
+💿 Aggiorna il file `app/routes/twixes.tsx` in modo da caricare tutti i twixes dal nostro database e renderizzare una lista di collegamenti ai nostri twix.
 
 <details>
 
@@ -368,13 +365,13 @@ export default function TwixesRoute() {
 
 </details>
 
-And here's what we have with that now:
+Ora dovresti vedere questo:
 
 ![TODO List of links to twixes](/assets/)
 
-### Data overfetching
+### Scaricare solo il necessario
 
-I want to call out something specific in my solution. Here's my loader:
+Vediamo in dettaglio una parte della soluzione proposta:
 
 ```tsx lines=[8-10]
 type LoaderData = {
@@ -393,21 +390,13 @@ export const loader: LoaderFunction = async () => {
 };
 ```
 
-Notice that all I need for this page is the twix `id` and `title`. I don't need to bother getting the `content`. I'm also limiting to a total of 5 items and ordering by creation date so we get the latest twixes. So with `prisma`, I can change my query to be exactly what I need and avoid sending too much data to the client! That makes my app faster and more responsive for my users.
+Puoi notare che tutto quello che ci serve per questa pagina sono solamente l'`id` e il `title` di un twix. Non c'è bisogno di scaricare dal database anche il contenuto di ogni twix. Inoltre per non scaricare ogni volta dal database tutti i twix, andiamo a chiedere gli ultimi 5 twix ordinati per data di creazione, in modo da avere gli ultimi twix scritti. In tutto questo vi aiuta `prisma`, perché ci permette di richiedere al nostro database solamente quello che ci serve, evitando di mandare al client più dati del necessario. Tutte queste accortezze permettono di avere un'app più veloce e responsiva per chi la utilizza.
 
-And to make it even cooler, you don't necessarily need prisma or direct database access to do this. You've got a graphql backend you're hitting? Sweet, use your regular graphql stuff in your loader. It's even better than doing it on the client because you don't need to worry about shipping a [huge graphql client](https://bundlephobia.com/package/graphql@16.0.1) to the client. Keep that on your server and filter down to what you want.
-
-Oh, you've just got REST endpoints you hit? That's fine too! You can easily filter out the extra data before sending it off in your loader. Because it all happens on the server, you can save your user's download size easily without having to convince your backend engineers to change their entire API. Neat!
-
-### Network Type Safety
-
-In our code we're using the `useLoaderData`'s type generic and specifying our `LoaderData` so we can get nice auto-complete, but it's not _really_ getting us type safety because the `loader` and the `useLoaderData` are running in completely different environments. Remix ensures we get what the server sent, but who really knows? Maybe in a fit of rage, your co-worker set up your server to automatically remove references to dogs (they prefer cats).
-
-So the only way to really be 100% positive that your data is correct, you should use [assertion functions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions) on the `data` you get back from `useLoaderData`. That's outside the scope of this tutorial, but we're fans of [zod](https://npm.im/zod) which can aid in this.
+Tutte queste accortezze, le puoi realizzare anche avendo altri tipi di database o client, non ti serve necessariamente Prisma o l'accesso diretto ad un database: puoi adottare queste tecniche e mandare al client solo i dati che servono anche usando ad esempio GraphQL CLient o delle REST APIs, ti basta filtrare i dati extra prima di mandarli al loader!
 
 ### Wrap up database queries
 
-Before we get to the `/twixes/:twixId` route, here's a quick example of how you can access params (like `:twixId`) in your loader.
+Prima di occuparci dell'url `/twixes/:twixId`, ti lasciamo un piccolo esempio di come puoi avere accesso ai parametri (come ad esempio il `:twixId` dell'url):
 
 ```tsx nocopy
 export const loader: LoaderFunction = async ({
@@ -417,7 +406,7 @@ export const loader: LoaderFunction = async ({
 };
 ```
 
-And here's how you get the twix from prisma:
+E così è come puoi usare l'id del twix per chidere a Prisma e al database i dati del twix:
 
 ```tsx nocopy
 const twix = await db.twix.findUnique({
@@ -425,9 +414,9 @@ const twix = await db.twix.findUnique({
 });
 ```
 
-<docs-warning>Remember, when we're referencing the URL route, it's `/twixes/:twixId`, and when we talk about the file system it's `/app/routes/twixes/$twixId.tsx`.</docs-warning>
+> Ricorda che quando facciamo riferimento agli url diremo `/twixes/:twixId`, mentre quando faremo riferimento al file all'interno del progetto diremo `/app/routes/twixes/$twixId.tsx`
 
-💿 Great! Now you know everything you need to continue and connect the `/twixes/:twixId` route in `app/routes/twixes/$twixId.tsx`.
+💿 Ottimo! Ora possiamo lavorare sull'url `/twixes/:twixId` nel file `app/routes/twixes/$twixId.tsx`.
 
 <details>
 
@@ -458,7 +447,7 @@ export default function TwixRoute() {
 
   return (
     <div>
-      <p>Here's your hilarious twix:</p>
+      <p>Qui c'è il tuo twix divertente:</p>
       <p>{data.twix.content}</p>
       <Link to=".">{data.twix.title} Permalink</Link>
     </div>
@@ -468,15 +457,15 @@ export default function TwixRoute() {
 
 </details>
 
-With that you should be able to go to [`/twixes`](http://localhost:3000/twixes) and click on a link to get the twix:
+Ora dovresti essere in grado di andare all'url [`/twixes`](http://localhost:3000/twixes) e cliccando su un link, puoi ottenere il link al twix:
 
 ![twixes page showing a unique twix](/twixes-tutorial/img/twix-page.png)
 
-We'll handle the case where someone tries to access a twix that doesn't exist in the database in the next section.
+Gestiremo il caso in cui un utente prova ad accedere ad una pagina di un twix inestistente, nei prossimi capitoli.
 
-Next, let's handle the `/twixes` index route in `app/routes/twixes/index.tsx` that shows a random twix.
+Ora gestiamo la pagina `/twixes` nel file `app/routes/twixes/index.tsx` che mostra un twix randomico.
 
-Here's how you get a random twix from prisma:
+Questo è il modo per ottenere un twix random con prisma:
 
 ```tsx
 const count = await db.twix.count();
@@ -487,7 +476,7 @@ const [randomTwix] = await db.twix.findMany({
 });
 ```
 
-💿 You should be able to get the loader working from there.
+💿 Qui puoi vedere come modificare il file:
 
 <details>
 
@@ -530,6 +519,6 @@ export default function TwixesIndexRoute() {
 
 </details>
 
-With that your [`/twixes`](http://localhost:3000/twixes) route should display a list of links to twixes as well as a random twix:
+Adesso puoi andare su [`/twixes`](http://localhost:3000/twixes) e vedrai una lista di link a dei twix, con un intero twix visualizzato con anche il suo contenuto:
 
 ![twixes page showing a random twix](/assets/04-02.png)
