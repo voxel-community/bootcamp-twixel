@@ -112,7 +112,7 @@ npx prisma db push
 
 Questo comando ti darà questo output:
 
-```
+```sh
 Environment variables loaded from .env
 Prisma schema loaded from prisma/schema.prisma
 Datasource "db"

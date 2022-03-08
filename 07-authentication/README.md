@@ -1,16 +1,14 @@
-## Authentication
+## Autenticazione
 
-It's the moment we've all been waiting for! We're going to add authentication to our little application. The reason we want to add authentication is so jokes can be associated to the users who created them.
+È arrivato il momento che stavamo aspettando! Adesso aggiugerai l'autenticazione alla tua applicazione! Grazie all'autenticazione riuscirai ad associare ogni twix all'utente che l'ha creato!
 
-One thing that would be good to understand for this section is how [HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) work on the web.
+Un'ottima cosa da sapere per questa sezione sono i [cookies HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) e come funzionano sul web.
 
-We're going to handroll our own authentication from scratch. Don't worry, I promise it's not as scary as it sounds.
+Ci sono tanti modi per aggiungere l'autenticazione ad un'app, ad esempio puoi utilizzare dei servizi come ad esempio [Auth0](https://auth0.com/). Oggi però realizzerai la tua autenticazione da zero, non preoccuparti non è così spaventoso come può sembrare.
 
-### Preparing the database
+### Prepara il database
 
-<docs-warning>Remember, if your database gets messed up, you can always delete the `prisma/dev.db` file and run `npx prisma db push` again.</docs-warning>
-
-Let's start by showing you our updated `prisma/schema.prisma` file. 💿 Go ahead and update your `prisma/schema.prisma` file to look like this:
+Iniziamo andando ad aggiornare il file `prisma/schema.prisma` file nel seguente modo:
 
 ```prisma filename=prisma/schema.prisma lines=[13-20,24-25]
 // This is your Prisma schema file,
@@ -46,39 +44,25 @@ model Twix {
 }
 ```
 
-With that updated, let's go ahead and reset our database to this schema:
-
-💿 Run this:
+Adesso che abbiamo aggiornato lo schema puoi eseguire il seguente comando:
 
 ```sh
 npx prisma db push
 ```
 
-It will prompt you to reset the database, hit "y" to confirm.
+Questo comando ti darà questo output:
 
-That will give you this output:
-
-```
+```sh
 Environment variables loaded from .env
 Prisma schema loaded from prisma/schema.prisma
-Datasource "db": SQLite database "dev.db" at "file:./dev.db"
+Datasource "db"
 
+🚀  Your database is now in sync with your schema. Done in 194ms
 
-⚠️ We found changes that cannot be executed:
-
-  • Added the required column `jokesterId` to the `Joke` table without a default value. There are 9 rows in this table, it is not possible to execute this step.
-
-
-✔ To apply this change we need to reset the database, do you want to continue? All data will be lost. … yes
-The SQLite database "dev.db" from "file:./dev.db" was successfully reset.
-
-🚀  Your database is now in sync with your schema. Done in 1.56s
-
-✔ Generated Prisma Client (3.5.0) to ./node_modules/@prisma/
-client in 34ms
+✔ Generated Prisma Client (3.10.0 | library) to ./node_modules/@prisma/client in 167ms
 ```
 
-With this change, we're going to start experiencing some TypeScript errors in our project because you can no longer create a `joke` without a `jokesterId` value.
+With this change, we're going to start experiencing some TypeScript errors in our project because you can no longer create a `twix` without a `twixsterId` value.
 
 💿 Let's start by fixing our `prisma/seed.ts` file.
 
@@ -96,187 +80,115 @@ async function seed() {
     },
   });
   await Promise.all(
-    getJokes().map((joke) => {
-      const data = { jokesterId: kody.id, ...joke };
-      return db.joke.create({ data });
+    getTwixes().map((twix) => {
+      const data = { twixsterId: kody.id, ...twix };
+      return db.twix.create({ data });
     })
   );
 }
 
 seed();
 
-function getJokes() {
-  // shout-out to https://icanhazdadjoke.com/
+function getTwixes() {
+  // shout-out to https://icanhazdadtwix.com/
 
   return [
     {
-      name: "Road worker",
+      title: "Road worker",
       content: `I never wanted to believe that my Dad was stealing from his job as a road worker. But when I got home, all the signs were there.`,
     },
     {
-      name: "Frisbee",
+      title: "Frisbee",
       content: `I was wondering why the frisbee was getting bigger, then it hit me.`,
     },
     {
-      name: "Trees",
+      title: "Trees",
       content: `Why do trees seem suspicious on sunny days? Dunno, they're just a bit shady.`,
     },
     {
-      name: "Skeletons",
+      title: "Skeletons",
       content: `Why don't skeletons ride roller coasters? They don't have the stomach for it.`,
     },
     {
-      name: "Hippos",
+      title: "Hippos",
       content: `Why don't you find hippopotamuses hiding in trees? They're really good at it.`,
     },
     {
-      name: "Dinner",
+      title: "Dinner",
       content: `What did one plate say to the other plate? Dinner is on me!`,
     },
     {
-      name: "Elevator",
+      title: "Elevator",
       content: `My first time using an elevator was an uplifting experience. The second time let me down.`,
     },
   ];
 }
 ```
 
-💿 Great, now run the seed again:
+💿 Ottimo, ora avvia di nuovo il comando:
 
 ```sh
-npx prisma db seed
+npx prisma db push
 ```
 
-And that outputs:
+Questo comando ti darà questo output:
 
-```
+```sh
 Environment variables loaded from .env
-Running seed command `node --require esbuild-register prisma/seed.ts` ...
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db"
 
-🌱  The seed command has been executed.
+🚀  Your database is now in sync with your schema. Done in 194ms
+
+✔ Generated Prisma Client (3.10.0 | library) to ./node_modules/@prisma/client in 167ms
 ```
 
-Great! Our database is now ready to go.
+Ottimo! Ora il database è pronto.
 
-### Auth Flow Overview
+### Rivediamo il flow di autenticazione
 
-So our authentication will be of the traditional username/password variety. We'll be using [`bcryptjs`](https://npm.im/bcryptjs) to hash our passwords so nobody will be able to reasonably brute-force their way into an account.
+La nostra autenticazione sarà tradizionale, con username e password. Useremo la libreria [`bcryptjs`](https://npm.im/bcryptjs) per "mascherare" (in inglese _to hash_) le nostre password in modo tale che sia abbastanza difficile scoprire la password ed entrare nell'account.
 
-💿 Go ahead and get that installed right now so we don't forget:
+💿  Ora procedi e installa la libreria con il seguente comando:
 
 ```sh
 npm install bcryptjs
 ```
 
-💿 The `bcryptjs` library has TypeScript definitions in DefinitelyTyped, so let's install those as well:
+💿 La libreria `bcryptjs` has delle definizione TypeScript presenti in DefinitelyTyped, installiamo anche quelle così il nostro editor non si lamenterà:
 
 ```sh
 npm install --save-dev @types/bcryptjs
 ```
 
-Let me give you a quick diagram of the flow of things:
+Qui puoi vedere un diagramma di come funzionerà l'autenticazione che implementerai:
 
-![Excalidraw Authentication diagram](/jokes-tutorial/img/auth-flow.png)
+![TODO ricreare un diagramma di autenticazione](/assets/)
 
-Here's that written out:
+Ti lasciamo qui di seguito un piccolo riassunto di come funzionerà la nostra autenticazione:
 
-- On the `/login` route.
-- User submits login form.
-- Form data is validated.
-  - If the form data is invalid, return the form with the errors.
-- Login type is "register"
-  - Check whether the username is available
-    - If the username is not available, return the form with an error.
-  - Hash the password
-  - Create a new user
-- Login type is "login"
-  - Check whether the user exists
-    - If the user doesn't exist, return the form with an error.
-  - Check whether the password hash matches
-    - If the password hash doesn't match, return the form with an error.
-- Create a new session
-- Redirect to the `/jokes` route with the `Set-Cookie` header.
+- Alla pagina `/login`
+  - L'utente inserisce le proprie credenziali
+  - I dati vengono validati
+    - Se i dati non sono corretti viene mostrati all'utente un messaggio di errore
+- Se l'utente si sta registrando
+  - Va controllato che non esistano utenti con lo stesso username
+    - Se lo username è già utilizzato viene mostrati all'utente un messaggio di errore.
+  - Viene fatto un hash della password
+  - Viene creato un nuovo utente
+- Se l'utente è già registrato e sta accedendo
+  - Controllare che esista l'utente con quello username
+    - Se l'utente non esiste viene mostrato un messaggio di errore.
+  - Controllare che l'hashing delle password corrisponde
+    - Se gli hash delle password non corrispondono, viene mostrato un messaggio di errore
+- Viene creata una nuova sessione
+- L'utente viene riderizionato alla pagina `/twixes` con un header `Set-Cookie`.
 
-### Build the login form
+### Costruisci il form di login
 
-Alright, enough high-level stuff. Let's start writing some Remix code!
+Ottimo, ora che abbiamo parlato di un' po di concetti teorici, iniziamo a scrivere un po' di codice con Remix!
 
-We're going to create a login page, and I've got some CSS for you to use on that page:
-
-<details>
-
-<summary>💿 Copy this CSS into `app/styles/login.css`</summary>
-
-```css
-/*
- * when the user visits this page, this style will apply, when they leave, it
- * will get unloaded, so don't worry so much about conflicting styles between
- * pages!
- */
-
-body {
-  background-image: var(--gradient-background);
-}
-
-.container {
-  min-height: inherit;
-}
-
-.container,
-.content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.content {
-  padding: 1rem;
-  background-color: hsl(0, 0%, 100%);
-  border-radius: 5px;
-  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.5);
-  width: 400px;
-  max-width: 100%;
-}
-
-@media print, (min-width: 640px) {
-  .content {
-    padding: 2rem;
-    border-radius: 8px;
-  }
-}
-
-h1 {
-  margin-top: 0;
-}
-
-fieldset {
-  display: flex;
-  justify-content: center;
-}
-
-fieldset > :not(:last-child) {
-  margin-right: 2rem;
-}
-
-.links ul {
-  margin-top: 1rem;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.links a:hover {
-  text-decoration-style: wavy;
-  text-decoration-thickness: 1px;
-}
-```
-
-</details>
-
-💿 Create a `/login` route by adding a `app/routes/login.tsx` file.
+💿 Crea una pagina `/login` creando un file `app/routes/login.tsx`.
 
 <details>
 
@@ -285,12 +197,6 @@ fieldset > :not(:last-child) {
 ```tsx filename=app/routes/login.tsx
 import type { LinksFunction } from "remix";
 import { Link, useSearchParams } from "remix";
-
-import stylesUrl from "../styles/login.css";
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
-};
 
 export default function Login() {
   const [searchParams] = useSearchParams();
@@ -355,7 +261,7 @@ export default function Login() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/jokes">Jokes</Link>
+            <Link to="/twixes">Twixes</Link>
           </li>
         </ul>
       </div>
@@ -366,15 +272,15 @@ export default function Login() {
 
 </details>
 
-This should look something like this:
+Dovresti avere il seguente output:
 
-![A login form with a login/register radio button and username/password fields and a submit button](/jokes-tutorial/img/login-route.png)
+![A login form with a login/register radio button and username/password fields and a submit button](/assets/)
 
-Notice in my solution I'm using `useSearchParams` to get the `redirectTo` query parameter and putting that in a hidden input. This way our `action` can know where to redirect the user. This will be useful later when we redirect a user to the login page.
+Puoi notare che abbiamo usato `useSearchParams` per prendere il valore del parametro `redirectTo` e l'abbiamo messo in un input nascosto. In questo modo la nostra `action` saprà a quale pagina redirezionare l'utente. Questo sarà per noi molto utile quando nelle prossime sezioni ridirezionare l'utente alla pagina di login.
 
-Great, now that we've got the UI looking nice, let's add some logic. This will be very similar to the sort of thing we did in the `/jokes/new` route. Fill in as much as you can (validation and stuff) and we'll just leave comments for the parts of the logic we don't have implemented yet (like _actually_ registering/logging in).
+Ottimo, adesso che abbiamo la struttura della schermata procediamo con l'aggiugere un po' di interazioni. Le seguenti operazioni saranno molto simili a quello che è stato fatto per la pagina `/twixes/new`.
 
-💿 Implement validation with an `action` in `app/routes/login.tsx`
+💿 Implementa la validazione con una `action` nel file `app/routes/login.tsx`
 
 <details>
 
@@ -390,21 +296,16 @@ import {
 } from "remix";
 
 import { db } from "~/utils/db.server";
-import stylesUrl from "~/styles/login.css";
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
-};
 
 function validateUsername(username: unknown) {
   if (typeof username !== "string" || username.length < 3) {
-    return `Usernames must be at least 3 characters long`;
+    return `Usernames deve essere di almeno 3 caratteri`;
   }
 }
 
 function validatePassword(password: unknown) {
   if (typeof password !== "string" || password.length < 6) {
-    return `Passwords must be at least 6 characters long`;
+    return `Passwords deve essere di almeno 6 caratteri`;
   }
 }
 
@@ -431,7 +332,7 @@ export const action: ActionFunction = async ({
   const loginType = form.get("loginType");
   const username = form.get("username");
   const password = form.get("password");
-  const redirectTo = form.get("redirectTo") || "/jokes";
+  const redirectTo = form.get("redirectTo") || "/twixes";
   if (
     typeof loginType !== "string" ||
     typeof username !== "string" ||
@@ -455,7 +356,7 @@ export const action: ActionFunction = async ({
     case "login": {
       // login to get the user
       // if there's no user, return the fields and a formError
-      // if there is a user, create their session and redirect to /jokes
+      // if there is a user, create their session and redirect to /twixes
       return badRequest({
         fields,
         formError: "Not implemented",
@@ -472,7 +373,7 @@ export const action: ActionFunction = async ({
         });
       }
       // create the user
-      // create their session and redirect to /jokes
+      // create their session and redirect to /twixes
       return badRequest({
         fields,
         formError: "Not implemented",
@@ -606,7 +507,7 @@ export default function Login() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/jokes">Jokes</Link>
+            <Link to="/twixes">Twixes</Link>
           </li>
         </ul>
       </div>
@@ -617,22 +518,22 @@ export default function Login() {
 
 </details>
 
-Once you've got that done, your form should look something like this:
+Ora dovresti avere una cosa simile a questo: 
 
-![Login form with errors](/jokes-tutorial/img/login-form-with-errors.png)
+![Login form with errors](/assets/)
 
-Sweet! Now it's time for the juicy stuff. Let's start with the `login` side of things. We seed in a user with the username "kody" and the password (hashed) is "twixrox". So we want to implement enough logic that will allow us to login as that user. We're going to put this logic in a separate file called `app/utils/session.server.ts`.
+Bene! Adesso le cose si fanno più interessanti. Iniziamo con la parte legata al `login`. Abbiamo aggiunto in precedenza nel file di seed lo username "kody" e la password (hashed) è "twixrox". Ora vogliamo implementare la giusta quantità di logica in modo da fare login con solo queste credenziali. Metteremo questa logica in un nuovo file chiamato `app/utils/session.server.ts`.
 
-Here's what we need in that file to get started:
+Questo è il riassunto della logica che ci serve nel file:
 
-- Export a function called `login` that accepts the `username` and `password`
-- Queries prisma for a user with the `username`
-- If there is no user, return `null`
-- Use `bcrypt.compare` to compare the given `password` to the user's `passwordHash`
-- If the passwords don't match, return `null`
-- If the passwords match, return the user
+- Esporta una funzione chiamata `login` che accetta `username` e `password` come parametri
+- Interroga prisma per sapere se esiste quell'utente con quello `username`
+- Se non c'è un utente, ritorna `null`
+- Utilizza `bcrypt.compare` per comparare la `password` inserita dall'utente con la `passwordHash` dell'utente
+- Se le password non corrispondono, ritorna `null`
+- Se le password corrispondono, allora ritorna l'utente
 
-💿 Create a file called `app/utils/session.server.ts` and implement the above requirements.
+💿 Crea un file `app/utils/session.server.ts` e implementiamo i requisiti dei punti appena scritti:
 
 <details>
 
@@ -669,7 +570,7 @@ export async function login({
 
 </details>
 
-Great, with that in place, now we can update `app/routes/login.tsx` to use it:
+Ottimo con questo adesso possiamo ritornare al nostro file `app/routes/login.tsx` e aggiornarlo con la funzione che hai appena creato:
 
 <details>
 
@@ -698,7 +599,7 @@ export const action: ActionFunction = async ({
           formError: `Username/Password combination is incorrect`,
         });
       }
-      // if there is a user, create their session and redirect to /jokes
+      // if there is a user, create their session and redirect to /twixes
       return badRequest({
         fields,
         formError: "Not implemented",
@@ -715,13 +616,13 @@ export default function Login() {
 
 </details>
 
-To check our work, I added a `console.log` to `app/routes/login.tsx` after the `login` call.
+Per controllare abbiamo aggiunto un `console.log` al file `app/routes/login.tsx` dopo la chiamata `login` in modo da vedere le risposte nel terminale.
 
-<docs-info>Remember, `actions` and `loaders` run on the server, so `console.log` calls you put in those you can't see in the browser console. Those will show up in the terminal window you're running your server in.</docs-info>
+> Ricorda che `actions` e `loaders` vengono avviate sul server, quindi i `console.log` non li vedrai nella console del browser, ma li vedrai nel terminale dove hai avviato il server
 
-💿 With that in place, try to login with the username "kody" and the password "twixrox" and check the terminal output. Here's what I get:
+💿 Ora prova a fare login con username "kody" e password "twixrox" e controlla il terminale. Dovresti vedere una cosa simile a questa:
 
-```
+```sh
 {
   user: {
     id: '1dc45f54-4061-4d9e-8a6d-28d6df6a8d7f',
@@ -733,17 +634,15 @@ To check our work, I added a `console.log` to `app/routes/login.tsx` after the `
 }
 ```
 
-<docs-warning>If you're having trouble, run `npx prisma studio` to see the database in the browser. It's possible you don't have any data because you forgot to run `npx prisma db seed` (like I did when I was writing this 😅).</docs-warning>
+> [TODO DA VERIFICARE SE FUNZIONA] If you're having trouble, run `npx prisma studio` to see the database in the browser. It's possible you don't have any data because you forgot to run `npx prisma db seed` (like I did when I was writing this 😅).
 
-Wahoo! We got the user! Now we need to put that user's ID into the session. We're going to do this in `app/utils/session.server.ts`. Remix has a built-in abstraction to help us with managing several types of storage mechanisms for sessions ([here are the docs](../api/remix#sessions)). We'll be using [`createCookieSessionStorage`](../api/remix#createcookiesessionstorage) as it's the simplest and scales quite well.
+Wow! Ora abbiamo l'utente! Ora possiamo mettere l'id dell'utente nella sessione. Apri il file `app/utils/session.server.ts`. Remix è costruito in un modo astratto tale da permetterci di gestire diversi meccanismi di gestione delle sessioni. [here are the docs](../api/remix#sessions)). Noi useremo la funzione [`createCookieSessionStorage`](../api/remix#createcookiesessionstorage) dato che è la più semplice e la più scalabile.
 
-💿 Write a `createUserSession` function in `app/utils/session.server.ts` that accepts a user ID and a route to redirect to. It should do the following:
+💿 Scrivi una funzione `createUserSession` nel file `app/utils/session.server.ts` che accetta un ID utente e una pagina a cui ridirezionare l'utente:
 
-- creates a new session (via the cookie storage `getSession` function)
-- sets the `userId` field on the session
-- redirects to the given route setting the `Set-Cookie` header (via the cookie storage `commitSession` function)
-
-Note: If you need a hand, there's a small example of how the whole basic flow goes in [the session docs](../api/remix#sessions). Once you have that, you'll want to use it in `app/routes/login.tsx` to set the session and redirect to the `/jokes` route.
+- Crea una nuova sessione (usando la funzione `getSession` del cookie storage)
+- Setta il campo `userId` nella sessione
+- Ridireziona l'utente secondo le impostazioni date nell'header `Set-Cookie` header (usando la funzione `commitSession` del cookie storage function)
 
 <details>
 
@@ -849,23 +748,23 @@ export const action: ActionFunction = async ({
 
 </details>
 
-I want to call out the `SESSION_SECRET` environment variable I'm using really quick. The value of the `secrets` option is not the sort of thing you want in your code because the baddies could use it for their nefarious purposes. So instead we are going to read the value from the environment. This means you'll need to set the environment variable in your `.env` file. Incidentally, prisma loads that file for us automatically so all we need to do is make sure we set that value when we deploy to production (alternatively, during development we could use [dotenv](https://npm.im/dotenv) to load that when our app boots up).
+Vogliamo farti notare la variabile d'ambiente `SESSION_SECRET` che stiamo usando. Il valore dell'opzione `secrets` non lo vogliamo visibile all'interno del codice perché potrebbe venir utilizzato malevoli. Quindi andremo a leggere il valore dal nostro environment, questo significa che quello che devi fare è settare la variabile `SESSION_SECRET` nel tuo file `.env`. Prisma carica i dati del file automaticamente.
 
-💿 Update .env file with SESSION_SECRET (with any value you like).
+💿 Carichiamo nel file .env file la variabile `SESSION_SECRET` (con qualsiasi valore tu voglia).
 
-With that, pop open your [Network tab](https://developer.chrome.com/docs/devtools/network/reference/), go to [`/login`](http://localhost:3000/login) and enter `kody` and `twixrox` and check the response headers in the network tab. Should look something like this:
+Adesso apri la [Network tab](https://developer.chrome.com/docs/devtools/network/reference/), naviga alla pagina [`/login`](http://localhost:3000/login) e inserisci `kody` and `twixrox` come password. Ora controlla gli header della risposta. dovrebbe essere simile a questo:
 
-![DevTools Network tab showing a "Set-Cookie" header on the POST response](/jokes-tutorial/img/network-tab-set-cookie.png)
+![DevTools Network tab showing a "Set-Cookie" header on the POST response](/twixes-tutorial/img/network-tab-set-cookie.png)
 
-And if you check the cookies section of the [Application tab](https://developer.chrome.com/docs/devtools/storage/cookies/) then you should have the cookie set in there as well.
+E se controlli la parte relativa ai cookie nella [Application tab](https://developer.chrome.com/docs/devtools/storage/cookies/) allora vedrai che anche i cookie sono settati.
 
-![DevTools Application tab showing ](/jokes-tutorial/img/application-tab-cookies.png)
+![DevTools Application tab showing ](/twixes-tutorial/img/application-tab-cookies.png)
 
 And now every request the browser makes to our server will include that cookie (we don't have to do anything on the client, [this is how cookies work](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)):
 
-![Request headers showing the Cookie](/jokes-tutorial/img/cookie-header-on-request.png)
+![Request headers showing the Cookie](/twixes-tutorial/img/cookie-header-on-request.png)
 
-So we can now check whether the user is authenticated on the server by reading that header to get the `userId` we had set into it. To test this out, let's fix the `/jokes/new` route by adding the `jokesterId` field to `db.joke.create` call.
+So we can now check whether the user is authenticated on the server by reading that header to get the `userId` we had set into it. To test this out, let's fix the `/twixes/new` route by adding the `twixsterId` field to `db.twix.create` call.
 
 <docs-info>Remember to check [the docs](../api/remix#sessions) to learn how to get the session from the request</docs-info>
 
@@ -975,13 +874,13 @@ We'll cover this more in the error handling sections later.
 
 You may also notice that our solution makes use of the `login` route's `redirectTo` feature we had earlier.
 
-💿 Now update `app/routes/jokes/new.tsx` to use that function to get the userId and pass it to the `db.joke.create` call.
+💿 Now update `app/routes/twixes/new.tsx` to use that function to get the userId and pass it to the `db.twix.create` call.
 
 <details>
 
-<summary>app/routes/jokes/new.tsx</summary>
+<summary>app/routes/twixes/new.tsx</summary>
 
-```tsx filename=app/routes/jokes/new.tsx lines=[5,37,60]
+```tsx filename=app/routes/twixes/new.tsx lines=[5,37,60]
 import type { ActionFunction } from "remix";
 import { useActionData, redirect, json } from "remix";
 
@@ -990,13 +889,13 @@ import { requireUserId } from "~/utils/session.server";
 
 function validateJokeContent(content: string) {
   if (content.length < 10) {
-    return `That joke is too short`;
+    return `That twix is too short`;
   }
 }
 
 function validateJokeName(name: string) {
   if (name.length < 3) {
-    return `That joke's name is too short`;
+    return `That twix's name is too short`;
   }
 }
 
@@ -1040,10 +939,10 @@ export const action: ActionFunction = async ({
     return badRequest({ fieldErrors, fields });
   }
 
-  const joke = await db.joke.create({
-    data: { ...fields, jokesterId: userId },
+  const twix = await db.twix.create({
+    data: { ...fields, twixsterId: userId },
   });
-  return redirect(`/jokes/${joke.id}`);
+  return redirect(`/twixes/${twix.id}`);
 };
 
 export default function NewJokeRoute() {
@@ -1051,7 +950,7 @@ export default function NewJokeRoute() {
 
   return (
     <div>
-      <p>Add your own hilarious joke</p>
+      <p>Add your own hilarious twix</p>
       <form method="post">
         <div>
           <label>
@@ -1121,7 +1020,7 @@ export default function NewJokeRoute() {
 
 </details>
 
-Super! So now if a user attempts to create a new joke, they'll be redirected to the login page because a `userId` is required to create a new joke.
+Super! So now if a user attempts to create a new twix, they'll be redirected to the login page because a `userId` is required to create a new twix.
 
 ### Build Logout Action
 
@@ -1251,20 +1150,20 @@ export async function createUserSession(
 
 </details>
 
-💿 Great, now we're going to update the `app/routes/jokes.tsx` route so we can display a login link if the user isn't logged in. If they are logged in then we'll display their username and a logout form. I'm also going to clean up the UI a bit to match the class names we've got as well, so feel free to copy/paste the example when you're ready.
+💿 Great, now we're going to update the `app/routes/twixes.tsx` route so we can display a login link if the user isn't logged in. If they are logged in then we'll display their username and a logout form. I'm also going to clean up the UI a bit to match the class names we've got as well, so feel free to copy/paste the example when you're ready.
 
 <details>
 
-<summary>app/routes/jokes.tsx</summary>
+<summary>app/routes/twixes.tsx</summary>
 
-```tsx filename=app/routes/jokes.tsx lines=[6,14,30,52-63]
+```tsx filename=app/routes/twixes.tsx lines=[6,14,30,52-63]
 import type { User } from "@prisma/client";
 import type { LinksFunction, LoaderFunction } from "remix";
 import { Link, Outlet, useLoaderData } from "remix";
 
 import { db } from "~/utils/db.server";
 import { getUser } from "~/utils/session.server";
-import stylesUrl from "~/styles/jokes.css";
+import stylesUrl from "~/styles/twixes.css";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: stylesUrl }];
@@ -1272,13 +1171,13 @@ export const links: LinksFunction = () => {
 
 type LoaderData = {
   user: Awaited<ReturnType<typeof getUser>>;
-  jokeListItems: Array<{ id: string; name: string }>;
+  twixListItems: Array<{ id: string; name: string }>;
 };
 
 export const loader: LoaderFunction = async ({
   request,
 }) => {
-  const jokeListItems = await db.joke.findMany({
+  const twixListItems = await db.twix.findMany({
     take: 5,
     orderBy: { createdAt: "desc" },
     select: { id: true, name: true },
@@ -1286,24 +1185,24 @@ export const loader: LoaderFunction = async ({
   const user = await getUser(request);
 
   const data: LoaderData = {
-    jokeListItems,
+    twixListItems,
     user,
   };
   return data;
 };
 
-export default function JokesRoute() {
+export default function TwixesRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
-    <div className="jokes-layout">
-      <header className="jokes-header">
+    <div className="twixes-layout">
+      <header className="twixes-header">
         <div className="container">
           <h1 className="home-link">
             <Link
               to="/"
-              title="Remix Jokes"
-              aria-label="Remix Jokes"
+              title="Remix Twixes"
+              aria-label="Remix Twixes"
             >
               <span className="logo">🤪</span>
               <span className="logo-medium">J🤪KES</span>
@@ -1323,15 +1222,15 @@ export default function JokesRoute() {
           )}
         </div>
       </header>
-      <main className="jokes-main">
+      <main className="twixes-main">
         <div className="container">
-          <div className="jokes-list">
-            <Link to=".">Get a random joke</Link>
-            <p>Here are a few more jokes to check out:</p>
+          <div className="twixes-list">
+            <Link to=".">Get a random twix</Link>
+            <p>Here are a few more twixes to check out:</p>
             <ul>
-              {data.jokeListItems.map((joke) => (
-                <li key={joke.id}>
-                  <Link to={joke.id}>{joke.name}</Link>
+              {data.twixListItems.map((twix) => (
+                <li key={twix.id}>
+                  <Link to={twix.id}>{twix.name}</Link>
                 </li>
               ))}
             </ul>
@@ -1339,7 +1238,7 @@ export default function JokesRoute() {
               Add your own
             </Link>
           </div>
-          <div className="jokes-outlet">
+          <div className="twixes-outlet">
             <Outlet />
           </div>
         </div>
@@ -1384,13 +1283,13 @@ First, the new `logout` route is just there to make it easy for us to logout. Th
 </Link>
 ```
 
-Notice that the `to` prop is set to "new" without any `/`. This is the benefit of nested routing. You don't have to construct the entire URL. It can be relative. This is the same thing for the `<Link to=".">Get a random joke</Link>` link which will effectively tell Remix to reload the data for the current route.
+Notice that the `to` prop is set to "new" without any `/`. This is the benefit of nested routing. You don't have to construct the entire URL. It can be relative. This is the same thing for the `<Link to=".">Get a random twix</Link>` link which will effectively tell Remix to reload the data for the current route.
 
 Terrific, now our app looks like this:
 
-![Jokes page nice and designed](/jokes-tutorial/img/random-joke-designed.png)
+![Twixes page nice and designed](/twixes-tutorial/img/random-twix-designed.png)
 
-![New Joke form designed](/jokes-tutorial/img/new-joke-designed.png)
+![New Joke form designed](/twixes-tutorial/img/new-twix-designed.png)
 
 ### User Registration
 
@@ -1593,7 +1492,7 @@ export const action: ActionFunction = async ({
   const loginType = form.get("loginType");
   const username = form.get("username");
   const password = form.get("password");
-  const redirectTo = form.get("redirectTo") || "/jokes";
+  const redirectTo = form.get("redirectTo") || "/twixes";
   if (
     typeof loginType !== "string" ||
     typeof username !== "string" ||
@@ -1771,7 +1670,7 @@ export default function Login() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/jokes">Jokes</Link>
+            <Link to="/twixes">Twixes</Link>
           </li>
         </ul>
       </div>
