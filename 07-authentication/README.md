@@ -748,7 +748,7 @@ export const action: ActionFunction = async ({
 
 </details>
 
-Vogliamo farti notare la variabile d'ambiente `SESSION_SECRET` che stiamo usando. Il valore dell'opzione `secrets` non lo vogliamo visibile all'interno del codice perché potrebbe venir utilizzato malevoli. Quindi andremo a leggere il valore dal nostro environment, questo significa che quello che devi fare è settare la variabile `SESSION_SECRET` nel tuo file `.env`. Prisma carica i dati del file automaticamente.
+Vogliamo farti notare la variabile d'ambiente `SESSION_SECRET` che stiamo usando. Il valore dell'opzione `secrets` non lo vogliamo visibile all'interno del codice perché potrebbe venir utilizzato per scopi malevoli. Quindi andremo a leggere il valore dal nostro environment, questo significa che quello che devi fare è settare la variabile `SESSION_SECRET` nel tuo file `.env`. Prisma carica i dati del file automaticamente.
 
 💿 Carichiamo nel file .env file la variabile `SESSION_SECRET` (con qualsiasi valore tu voglia).
 
@@ -760,15 +760,15 @@ E se controlli la parte relativa ai cookie nella [Application tab](https://devel
 
 ![DevTools Application tab showing ](/twixes-tutorial/img/application-tab-cookies.png)
 
-And now every request the browser makes to our server will include that cookie (we don't have to do anything on the client, [this is how cookies work](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)):
+E ora ogni richiesta che verrà fatta dal browser al server, includerà il cookie (non dobbiamo fare nulla sulla parte client, [qui trovi una spiegazione su come funzionano i cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)):
 
-![Request headers showing the Cookie](/twixes-tutorial/img/cookie-header-on-request.png)
+![TODO Request headers showing the Cookie](/assets/)
 
-So we can now check whether the user is authenticated on the server by reading that header to get the `userId` we had set into it. To test this out, let's fix the `/twixes/new` route by adding the `twixsterId` field to `db.twix.create` call.
+Adesso che abbiamo settato il cookie possiamo verificare se l'utente è autencato leggendo l'header e ottenendo il valore dello `userId` che ci abbiamo inserito. Per testarne il funzionamento andiamo a modificare la pagina `/twixes/new` e aggiungiamo il campo `twixsterId` alla chiamata `db.twix.create`.
 
-<docs-info>Remember to check [the docs](../api/remix#sessions) to learn how to get the session from the request</docs-info>
+> Puoi controllare la [documentazione per scoprire nuove come ottenere le sessioni dalla richiestas](../api/remix#sessions)
 
-💿 Update `app/utils/session.server.ts` to get the `userId` from the session. In my solution I create three functions: `getUserSession(request: Request)`, `getUserId(request: Request)` and `requireUserId(request: Request, redirectTo: string)`.
+💿 Aggiorniamo quindi il file `app/utils/session.server.ts` per ottenere lo `userId` dalla sessione. Nella soluzione che ti proponiamo abbiamo creato 3 funzioni: `getUserSession(request: Request)`, `getUserId(request: Request)` and `requireUserId(request: Request, redirectTo: string)`.
 
 <details>
 
@@ -866,15 +866,11 @@ export async function createUserSession(
 
 </details>
 
-<docs-info>Did you notice in my example that we're `throw`ing a `Response`?!</docs-info>
+Nell'esempio abbiamo creato una funzione `requireUserId` che se non c'è uno `userId` ritornerà in risposta un `redirect`. Ricorda che `redirect` è una funzione di Remix che ritorna un oggetto [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response). Remix catturerà questa risposta e la manderà al client. Facendo fare all'utente un redirect ci assicuriamo e possiamo assumere che dalla funzione `requireUserId` verrà sempre dato in risposta uno `userId` e non dobbiamo preoccuparci di cosa succede se non c'è uno `userId` in risposta perché se non c'è uno `userId` l'esecuzione della funzione verrà fermata dal codice `throw redirect(`/login?${searchParams}`);`!
 
-In my example, I created a `requireUserId` which will throw a `redirect`. Remember `redirect` is a utility function that returns a [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object. Remix will catch that thrown response and send it back to the client. It's a great way to "exit early" in abstractions like this so users of our `requireUserId` function can just assume that the return will always give us the `userId` and don't need to worry about what happens if there isn't a `userId` because the response is thrown which stops their code execution!
+Della gestione degli errori parleremo meglio nelle prossime sezioni
 
-We'll cover this more in the error handling sections later.
-
-You may also notice that our solution makes use of the `login` route's `redirectTo` feature we had earlier.
-
-💿 Now update `app/routes/twixes/new.tsx` to use that function to get the userId and pass it to the `db.twix.create` call.
+💿 Adesso aggiorniamo il file `app/routes/twixes/new.tsx` in modo da usare la funzione creata e ottenere uno `userId` da usare e passare alla chiamata `db.twix.create`.
 
 <details>
 
@@ -1020,13 +1016,13 @@ export default function NewJokeRoute() {
 
 </details>
 
-Super! So now if a user attempts to create a new twix, they'll be redirected to the login page because a `userId` is required to create a new twix.
+Fantastico! Adesso se un utente prova a creare un nuovo twix, verrà ridirezionato alla pagina di login perché per creare di nuovi bisogna essere autenticati (e dev'esserci uno `userId` nella sessione).
 
-### Build Logout Action
+### Costruisci un'azione per il logout
 
-We should probably give people the ability to see that they're logged in and a way to log out right? Yeah, I think so. Let's implement that.
+Ora che abbiamo l'autenticazione dovremmo permettere alle persone di vedere se sono loggati oppure permettere di fare log out, no?
 
-💿 Update `app/utils/session.server.ts` to add a `getUser` function that gets the user from prisma and a `logout` function that uses [`destroySession`](../api/remix#using-sessions) to log the user out.
+💿 Aggiorna il file `app/utils/session.server.ts` e aggiungi la funzione `getUser` che ci permette di ottenere l'utente da prisma e passarlo alla funzione di `logout` che userà la [`funzione destroySession`](../api/remix#using-sessions) per fare il logout dell'utente.
 
 <details>
 
@@ -1150,7 +1146,7 @@ export async function createUserSession(
 
 </details>
 
-💿 Great, now we're going to update the `app/routes/twixes.tsx` route so we can display a login link if the user isn't logged in. If they are logged in then we'll display their username and a logout form. I'm also going to clean up the UI a bit to match the class names we've got as well, so feel free to copy/paste the example when you're ready.
+💿 Ottimo, adesso andremo ad aggiornare il file `app/routes/twixes.tsx` così possiamo mostra il link alla pagina di login se l'utente non è loggato. Se invece l'utente è loggato allora mostreremo il suo nome utente e un pulsante per fare il logout.
 
 <details>
 
@@ -1163,11 +1159,6 @@ import { Link, Outlet, useLoaderData } from "remix";
 
 import { db } from "~/utils/db.server";
 import { getUser } from "~/utils/session.server";
-import stylesUrl from "~/styles/twixes.css";
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
-};
 
 type LoaderData = {
   user: Awaited<ReturnType<typeof getUser>>;
@@ -1273,9 +1264,7 @@ export const loader: LoaderFunction = async () => {
 
 </details>
 
-Hopefully getting the user in the loader and rendering them in the component was pretty straightforward. There are a few things I want to call out about other parts of my version of the code before we continue.
-
-First, the new `logout` route is just there to make it easy for us to logout. The reason that we're using an action (rather than a loader) is because we want to avoid [CSRF](https://developer.mozilla.org/en-US/docs/Glossary/CSRF) problems by using a POST request rather than a GET request. This is why the logout button is a form and not a link. Additionally, Remix will only re-call our loaders when we perform an `action`, so if we used a `loader` then the cache would not get invalidated. The `loader` is just there in case someone somehow lands on that page, we'll just redirect them back home.
+La nuova pagina `logout` è stata creata per facilitarci il logout: Il motivo per cui stiamo usando una action (invece che usare il loader) è perché vogliamo evitare problemi di [CSRF](https://developer.mozilla.org/en-US/docs/Glossary/CSRF) che subentrano quando usiamo una richiesta POST invece di una GET. Questo è perché il bottone di logout è un form e non un link. In aggiunta Remix richiama i loader solo quando viene eseguita una `action`, quindi se avessimo usato un `loader` non saremmo riusciti ad invalidare la cache (rischiando di avere l'utente che sembra loggato ma invece non lo è più). Il `loader` viene usato solamente se una persona arriva con un link diretto alla pagina di logout e allora solo in quel caso verrà ridirezionato alla home.
 
 ```tsx
 <Link to="new" className="button">
@@ -1283,7 +1272,7 @@ First, the new `logout` route is just there to make it easy for us to logout. Th
 </Link>
 ```
 
-Notice that the `to` prop is set to "new" without any `/`. This is the benefit of nested routing. You don't have to construct the entire URL. It can be relative. This is the same thing for the `<Link to=".">Get a random twix</Link>` link which will effectively tell Remix to reload the data for the current route.
+Nota come il `to` è settato a "new" `/`. This is the benefit of nested routing. You don't have to construct the entire URL. It can be relative. This is the same thing for the `<Link to=".">Get a random twix</Link>` link which will effectively tell Remix to reload the data for the current route.
 
 Terrific, now our app looks like this:
 
