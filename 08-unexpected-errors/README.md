@@ -1,16 +1,16 @@
-## Unexpected errors
+## Errori inaspettati errors
 
-I'm sorry, but there's no way you'll be able to avoid errors at some point. Servers fall over, co-workers use `// @ts-ignore`, and so on. So we need to just embrace the possibility of unexpected errors and deal with them.
+Ci spiace dirlo, ma non sempre gli errori di un'applicazione sono evitabili (es. il server smette di rispondere). Quindi dobbiamo accettare la possibilità di avere degli errori inaspettati e dobbiamo cercare di gestirli.
 
-Luckily, error handling in Remix is stellar. You may have used React's [Error Boundary feature](https://reactjs.org/docs/error-boundaries.html#gatsby-focus-wrapper). With Remix, your route modules can export an [`ErrorBoundary` component](../api/conventions#errorboundary) and it will be used. But it's even cooler because it works on the server too! Not only that, but it'll handle errors in `loader`s and `action`s too! Wowza! So let's get to it!
+Fortunatamente la gestione degli errori in Remix è ottima. Se hai usato in passato React, dovrebbe esserti familiare la funzionalità degli [Error Boundary feature](https://reactjs.org/docs/error-boundaries.html#gatsby-focus-wrapper). Con Remix, puoi esportare nelle fare pagine un componente[`ErrorBoundary`](../api/conventions#errorboundary) che funziona anche lato server. Inoltre puoi gestire gli errori sia nei `loader` che nelle `action`!
 
-We're going to add four Error Boundaries in our app. One in each of the child routes in `app/routes/jokes/*` in case there's an error reading or processing stuff with the jokes, and one in `app/root.tsx` to handle errors for everything else.
+Quello che ora andremo a fare sarà aggiungere 4 Error Boundaries alla nostra applicazione. Ne inseriremo uno in ogni pagina "figlio" di `app/routes/twixes/*` per gestire errori legati ai twixes e uno nel file `app/root.tsx` per gestire tutti gli altri errori to handle errors for everything else.
 
-<docs-info>The `app/root.tsx` ErrorBoundary is a bit more complicated</docs-info>
+> L'ErrorBoundari del file `app/root.tsx` sarà quello un po' più complicato.
 
-Remember that the `app/root.tsx` module is responsible for rendering our `<html>` element. When the `ErrorBoundary` is rendered, it's rendered _in place_ of the default export. That means the `app/root.tsx` module should render the `<html>` element along with the `<Link />` elements, etc.
+Ricorda che il file `app/root.tsx` è responsabile di renderizzare tutto l'`<html>` . Quando viene renderizzato un `ErrorBoundary`, questo viene renderizzato al posto di ciò che è esportato di default.
 
-💿 Add a simple ErrorBoundary to each of those files.
+💿 Aggiungi un semplice ErrorBoundary ad ognuno dei seguenti file.
 
 <details>
 
@@ -19,29 +19,6 @@ Remember that the `app/root.tsx` module is responsible for rendering our `<html>
 ```tsx filename=app/root.tsx lines=[57-67]
 import type { LinksFunction } from "remix";
 import { Links, LiveReload, Outlet } from "remix";
-
-import globalStylesUrl from "./styles/global.css";
-import globalMediumStylesUrl from "./styles/global-medium.css";
-import globalLargeStylesUrl from "./styles/global-large.css";
-
-export const links: LinksFunction = () => {
-  return [
-    {
-      rel: "stylesheet",
-      href: globalStylesUrl,
-    },
-    {
-      rel: "stylesheet",
-      href: globalMediumStylesUrl,
-      media: "print, (min-width: 640px)",
-    },
-    {
-      rel: "stylesheet",
-      href: globalLargeStylesUrl,
-      media: "screen and (min-width: 1024px)",
-    },
-  ];
-};
 
 function Document({
   children,
@@ -89,9 +66,9 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 <details>
 
-<summary>app/routes/jokes/$jokeId.tsx</summary>
+<summary>app/routes/twixes/$twixId.tsx</summary>
 
-```tsx filename=app/routes/jokes/$jokeId.tsx nocopy
+```tsx filename=app/routes/twixes/$twixId.tsx nocopy
 // ...
 
 import { Link, useLoaderData, useParams } from "remix";
@@ -99,9 +76,9 @@ import { Link, useLoaderData, useParams } from "remix";
 // ...
 
 export function ErrorBoundary() {
-  const { jokeId } = useParams();
+  const { twixId } = useParams();
   return (
-    <div className="error-container">{`There was an error loading joke by the id ${jokeId}. Sorry.`}</div>
+    <div className="error-container">{`C'è stato un problema nel caricare il twix con l'id${twixId}. Ci scusiamo.`}</div>
   );
 }
 ```
@@ -110,15 +87,15 @@ export function ErrorBoundary() {
 
 <details>
 
-<summary>app/routes/jokes/new.tsx</summary>
+<summary>app/routes/twixes/new.tsx</summary>
 
-```tsx filename=app/routes/jokes/new.tsx nocopy
+```tsx filename=app/routes/twixes/new.tsx nocopy
 // ...
 
 export function ErrorBoundary() {
   return (
     <div className="error-container">
-      Something unexpected went wrong. Sorry about that.
+      Qualcosa è andato storto, ci scusiamo.
     </div>
   );
 }
@@ -128,15 +105,15 @@ export function ErrorBoundary() {
 
 <details>
 
-<summary>app/routes/jokes/index.tsx</summary>
+<summary>app/routes/twixes/index.tsx</summary>
 
-```tsx filename=app/routes/jokes/index.tsx nocopy
+```tsx filename=app/routes/twixes/index.tsx nocopy
 // ...
 
 export function ErrorBoundary() {
   return (
     <div className="error-container">
-      I did a whoopsies.
+      Ooops! C'è stato un problema
     </div>
   );
 }
@@ -144,14 +121,14 @@ export function ErrorBoundary() {
 
 </details>
 
-Ok great, with those in place, let's check what happens when there's an error. Go ahead and just add this to the default component, loader, or action of each of the routes. Here's what I get:
+Ottimo, ora che hai inserito tutti e 4 gli ErrorBoundary vediamo cosa succede quando c'è un errore. Dovresti vedere le seguenti schermate: 
 
-![App error](/jokes-tutorial/img/app-level-error.png)
+![TODO App error](/twixes-tutorial/img/app-level-error.png)
 
-![Joke Page Error](/jokes-tutorial/img/joke-id-error.png)
+![TODO Twix Page Error](/twixes-tutorial/img/twix-id-error.png)
 
-![Joke Index Page Error](/jokes-tutorial/img/jokes-index-error.png)
+![TODO Twix Index Page Error](/twixes-tutorial/img/twixes-index-error.png)
 
-![New Joke Page Error](/jokes-tutorial/img/new-joke-error.png)
+![TODO New Twix Page Error](/twixes-tutorial/img/new-twix-error.png)
 
-What I love about this is that in the case of the children routes, the only unusable part of the app is the part that actually broke. The rest of the app is completely interactive. There's another point for the user's experience!
+La cosa fantastica di aver gestito gli errori nelle singole parti, è che se ci sono degli errori sono inutilizzabili solo le parti che hanno un errore, il resto dell'applicazione rimane interattiva. Questo è un'ottima cosa, perché solitamente nelle applicazione se c'è un errore, tutta l'applicazione diventa inutilizzabile
