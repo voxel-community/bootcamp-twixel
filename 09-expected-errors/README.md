@@ -410,21 +410,19 @@ export function ErrorBoundary() {
 
 Here's what I've got with that:
 
-![App 400 Bad Request](/twixes-tutorial/img/app-400.png)
+![TODO App 400 Bad Request](/twixes-tutorial/img/app-400.png)
 
-![A 404 on the twix page](/twixes-tutorial/img/twix-404.png)
+![TODO A 404 on the twix page](/twixes-tutorial/img/twix-404.png)
 
-![A 404 on the random twix page](/twixes-tutorial/img/twixes-404.png)
+![TODO A 404 on the random twix page](/twixes-tutorial/img/twixes-404.png)
 
-![A 401 on the new twix page](/twixes-tutorial/img/new-twix-401.png)
+![TODO A 401 on the new twix page](/twixes-tutorial/img/new-twix-401.png)
 
-Awesome! We're ready to handle errors and it didn't complicate our happy path one bit! 🎉
+Fantastico! Ora siamo pronti a gestire gli errori e tutto ciò senza dover modificare il codice scritto in precedenza! 🎉
 
-Oh, and don't you love how just like with the `ErrorBoundary`, it's all contextual? So the rest of the app continues to function just as well. Another point for user experience 💪
+Ora perché non miglioriamo il file `app/routes/twixes/$twixId.tsx` in modo da permettere all'utente di eliminare un proprio twix? L'eliminazione sarà possibile solo da chi ha creato il twix, se non è loro, daremo in risposta un errore 401 nel catch boundary.
 
-You know what, while we're adding catch boundaries. Why don't we improve the `app/routes/twixes/$twixId.tsx` route a bit by allowing users to delete the twix if they own it. If they don't, we can give them a 401 error in the catch boundary.
-
-One thing to keep in mind with `delete` is that HTML forms only support `method="get"` and `method="post"`. They don't support `method="delete"`. So to make sure our form will work with and without JavaScript, it's a good idea to do something like this:
+Un altra cosa da tenere a mente è che i form non supportano `method="delete"` ma solamente `method="get"` e `method="post"`. Quindi per assicurarci che il nostro form funzioni, è utile fare una cosa come la seguente: 
 
 ```tsx
 <form method="post">
@@ -433,9 +431,9 @@ One thing to keep in mind with `delete` is that HTML forms only support `method=
 </form>
 ```
 
-And then the `action` can determine whether the intention is to delete based on the `request.formData().get('_method')`.
+E poi nella `action` possiamo verificare la tipologia andando a prendere il dato con `request.formData().get('_method')`.
 
-💿 Add a delete capability to `app/routes/twixes/$twixId.tsx` route.
+💿 Aggiungi la funzionalità di eliminazione al file `app/routes/twixes/$twixId.tsx`.
 
 <details>
 
@@ -568,7 +566,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 </details>
 
-Now that people will get a proper error message if they try to delete a twix that is not theirs, maybe we could also simply hide the delete button if the user doesn't own the twix.
+Ora gli utenti riceveranno un messaggio appropriato se vogliono eliminare un twix che non appartiene a loro. In aggiunta a questo, possiamo però nascondere il pulsante di eliminazione se non è un loro twix.
 
 <details>
 
