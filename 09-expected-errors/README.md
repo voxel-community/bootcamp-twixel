@@ -1,23 +1,23 @@
-## Expected errors
+## Errori aspettati
 
-Sometimes users do things we can anticipate. I'm not talking about validation necessarily. I'm talking about things like whether the user's authenticated (status `401`) or authorized (status `403`) to do what they're trying to do. Or maybe they're looking for something that isn't there (status `404`).
+A volte gli utenti fanno delle azioni che possiamo anticipare. Non stiamo parlando solamente di validazioni, ma ad esempio possono esserci errori come il un utente che non è autenticato (status `401`) oppure non autorizzato (status `403`) a eseguire delle particolari azioni. Oppure semplicemente stanno cercando di andare ad una pagina che non esiste (status `404`).
 
-It might help to think of the unexpected errors as 500-level errors ([server errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses)) and the expected errors as 400-level errors ([client errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#client_error_responses)).
+Una differenza che ti può aiutare è quella di pensare agli errori inaspettati come errori che hanno un codice di livello 500 ([server errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses)) e agli errori attesti come errori di livello 400 ([client errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#client_error_responses)).
 
-For client error responses, Remix offers something similar to Error Boundaries. It's called [`Catch Boundaries`](../api/conventions#catchboundary) and it works almost exactly the same. In this case, when your server code detects a problem, it'll throw a [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object. Remix then catches that thrown response and renders your `CatchBoundary`. Just like the `useLoaderData` hook to get data from the `loader` and the `useActionData` hook to get data from the `action`, the `CatchBoundary` gets its data from the `useCatch` hook. This will return the `Response` that was thrown.
+Per le risposte degli errori client, Remix offre una funzione simile agli Error Boundaries che abbiamo usato nella precedente sezione: si chiamano [`Catch Boundaries`](../api/conventions#catchboundary) e funzionano in modo molto simile. Nel nostro caso quando il server intercetta un problema, ci darà un oggetto [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response). Remix poi lo catturerà questa risposa e renderizzerà il `CatchBoundary`. Così come `useLoaderData` viene usato per avere i dati dal `loader` e `useActionData` per avere i dati dalle `action`, anche il `CatchBoundary` ottiene i suoi dati da `useCatch` che ritornerà una `Response`.
 
-One last thing, this isn't for form validations and stuff. We already discussed that earlier with `useActionData`. This is just for situations where the user did something that means we can't reasonably render our default component so we want to render something else instead.
+Ti ricordiamo che questi `CatchBoundary` non servono per la validazione dei form, per quelle situazioni basta uno `useActionData`. Questi `CatchBoundary` servono invece a gestire tutte le situazione in cui l'utente fa qualcosa che non ci permette di renderizzare il nostro componente e quindi quello che vogliamo è visualizzare qualcosaltro
 
-<docs-info>`ErrorBoundary` and `CatchBoundary` allow our default exports to represent the "happy path" and not worry about errors. If the default component is rendered, then we can assume all is right with the world.</docs-info>
+> `ErrorBoundary` e `CatchBoundary` permettono di vedere i default export come delle situazioni ideali (dette "happy path") e non preoccuparci al loro interno degli errori. Se infatti il componente viene renderizzato significa che non ci sono stati problemi (se ci fossero vedremmo il contenuto di un Error o un Catch Boundary)
 
-With that understanding, we're going to add a `CatchBoundary` component to the following routes:
+Dopo aver chiarito tutto questo, andiamo avanti aggiungendo un componente `CatchBoundary` alle seguenti pagine per gestire varie situazioni:
 
-- `app/root.tsx` - Just as a last resort fallback.
-- `app/routes/jokes/$jokeId.tsx` - When a user tries to access a joke that doesn't exist (404).
-- `app/routes/jokes/new.tsx` - When a user tries to go to this page without being authenticated (401). Right now they'll just get redirected to the login if they try to submit it without authenticating. That would be super annoying to spend time writing a joke only to get redirected. Rather than inexplicably redirecting them, we could render a message that says they need to authenticate first.
-- `app/routes/jokes/index.tsx` - If there are no jokes in the database then a random joke is 404-not found. (simulate this by deleting the `prisma/dev.db` and running `npx prisma db push`. Don't forget to run `npx prisma db seed` afterwards to get your seed data back.)
+- `app/routes/twixes/$twixId.tsx` - quando un utente tenta di accedere ad un twix che non esiste (404).
+- `app/routes/twixes/new.tsx` - quando un utente prova a creare un twix senza essere autenticato (401). Per ora venivano ridirezionati alla login ogni volta che provavano a salvare un twix non essendo autenticati, ma se ci immaginiamo la situazione, per un utente sarebbe molto frustrante spendere il proprio tempo per scrivere un twix e poi essere ridirezionati al login perdendo tutti i dati e senza sapere perché. Quindi invece di ridirezionare l'utente senza spiegargli come mai, possiamo postrare un messaggio che comunica all'utente che per creare nuovi twix bisogna prima loggarsi.
+- `app/routes/twixes/index.tsx` - per gestire quando non ci sono più twixes nel database e un random twix non viene trovato (404). (puoi simulare questo eliminando da MongoDB i twixes creati)
+- `app/root.tsx` - per gestire tutti gli altri errori.
 
-💿 Let's add these CatchBoundaries to the routes.
+💿 Aggiungiamo quindi i CatchBoundaries:
 
 <details>
 
@@ -26,29 +26,6 @@ With that understanding, we're going to add a `CatchBoundary` component to the f
 ```tsx filename=app/root.tsx lines=[2,57-71]
 import type { LinksFunction } from "remix";
 import { Links, LiveReload, Outlet, useCatch } from "remix";
-
-import globalStylesUrl from "./styles/global.css";
-import globalMediumStylesUrl from "./styles/global-medium.css";
-import globalLargeStylesUrl from "./styles/global-large.css";
-
-export const links: LinksFunction = () => {
-  return [
-    {
-      rel: "stylesheet",
-      href: globalStylesUrl,
-    },
-    {
-      rel: "stylesheet",
-      href: globalMediumStylesUrl,
-      media: "print, (min-width: 640px)",
-    },
-    {
-      rel: "stylesheet",
-      href: globalLargeStylesUrl,
-      media: "screen and (min-width: 1024px)",
-    },
-  ];
-};
 
 function Document({
   children,
@@ -112,9 +89,9 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 <details>
 
-<summary>app/routes/jokes/$jokeId.tsx</summary>
+<summary>app/routes/twixes/$twixId.tsx</summary>
 
-```tsx filename=app/routes/jokes/$jokeId.tsx lines=[5,20-24,41-52]
+```tsx filename=app/routes/twixes/$twixId.tsx lines=[5,20-24,41-52]
 import type { LoaderFunction } from "remix";
 import {
   Link,
@@ -122,35 +99,35 @@ import {
   useCatch,
   useParams,
 } from "remix";
-import type { Joke } from "@prisma/client";
+import type { Twix } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 
-type LoaderData = { joke: Joke };
+type LoaderData = { twix: Twix };
 
 export const loader: LoaderFunction = async ({
   params,
 }) => {
-  const joke = await db.joke.findUnique({
-    where: { id: params.jokeId },
+  const twix = await db.twix.findUnique({
+    where: { id: params.twixId },
   });
-  if (!joke) {
-    throw new Response("What a joke! Not found.", {
+  if (!twix) {
+    throw new Response("What a twix! Not found.", {
       status: 404,
     });
   }
-  const data: LoaderData = { joke };
+  const data: LoaderData = { twix };
   return data;
 };
 
-export default function JokeRoute() {
+export default function TwixRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
     <div>
-      <p>Here's your hilarious joke:</p>
-      <p>{data.joke.content}</p>
-      <Link to=".">{data.joke.name} Permalink</Link>
+      <p>Here's your hilarious twix:</p>
+      <p>{data.twix.content}</p>
+      <Link to=".">{data.twix.title} Permalink</Link>
     </div>
   );
 }
@@ -161,7 +138,7 @@ export function CatchBoundary() {
   if (caught.status === 404) {
     return (
       <div className="error-container">
-        Huh? What the heck is "{params.jokeId}"?
+        Huh? What the heck is "{params.twixId}"?
       </div>
     );
   }
@@ -169,9 +146,9 @@ export function CatchBoundary() {
 }
 
 export function ErrorBoundary() {
-  const { jokeId } = useParams();
+  const { twixId } = useParams();
   return (
-    <div className="error-container">{`There was an error loading joke by the id ${jokeId}. Sorry.`}</div>
+    <div className="error-container">{`There was an error loading twix by the id ${twixId}. Sorry.`}</div>
   );
 }
 ```
@@ -180,42 +157,42 @@ export function ErrorBoundary() {
 
 <details>
 
-<summary>app/routes/jokes/index.tsx</summary>
+<summary>app/routes/twixes/index.tsx</summary>
 
-```tsx filename=app/routes/jokes/index.tsx lines=[2,16-20,39-52]
+```tsx filename=app/routes/twixes/index.tsx lines=[2,16-20,39-52]
 import type { LoaderFunction } from "remix";
 import { useLoaderData, Link, useCatch } from "remix";
-import type { Joke } from "@prisma/client";
+import type { Twix } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 
-type LoaderData = { randomJoke: Joke };
+type LoaderData = { randomTwix: Twix };
 
 export const loader: LoaderFunction = async () => {
-  const count = await db.joke.count();
+  const count = await db.twix.count();
   const randomRowNumber = Math.floor(Math.random() * count);
-  const [randomJoke] = await db.joke.findMany({
+  const [randomTwix] = await db.twix.findMany({
     take: 1,
     skip: randomRowNumber,
   });
-  if (!randomJoke) {
-    throw new Response("No random joke found", {
+  if (!randomTwix) {
+    throw new Response("No random twix found", {
       status: 404,
     });
   }
-  const data: LoaderData = { randomJoke };
+  const data: LoaderData = { randomTwix };
   return data;
 };
 
-export default function JokesIndexRoute() {
+export default function TwixsIndexRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
     <div>
-      <p>Here's a random joke:</p>
-      <p>{data.randomJoke.content}</p>
-      <Link to={data.randomJoke.id}>
-        "{data.randomJoke.name}" Permalink
+      <p>Here's a random twix:</p>
+      <p>{data.randomTwix.content}</p>
+      <Link to={data.randomTwix.id}>
+        "{data.randomTwix.title}" Permalink
       </Link>
     </div>
   );
@@ -227,7 +204,7 @@ export function CatchBoundary() {
   if (caught.status === 404) {
     return (
       <div className="error-container">
-        There are no jokes to display.
+        There are no twixes to display.
       </div>
     );
   }
@@ -249,9 +226,9 @@ export function ErrorBoundary() {
 
 <details>
 
-<summary>app/routes/jokes/new.tsx</summary>
+<summary>app/routes/twixes/new.tsx</summary>
 
-```tsx filename=app/routes/jokes/new.tsx lines=[6,16-24,156-167]
+```tsx filename=app/routes/twixes/new.tsx lines=[6,16-24,156-167]
 import type { ActionFunction, LoaderFunction } from "remix";
 import {
   useActionData,
@@ -277,15 +254,15 @@ export const loader: LoaderFunction = async ({
   return {};
 };
 
-function validateJokeContent(content: string) {
+function validateTwixContent(content: string) {
   if (content.length < 10) {
-    return `That joke is too short`;
+    return `That twix is too short`;
   }
 }
 
-function validateJokeName(name: string) {
+function validateTwixTitle(name: string) {
   if (name.length < 3) {
-    return `That joke's name is too short`;
+    return `That twix's name is too short`;
   }
 }
 
@@ -309,10 +286,10 @@ export const action: ActionFunction = async ({
 }) => {
   const userId = await requireUserId(request);
   const form = await request.formData();
-  const name = form.get("name");
+  const title = form.get("title");
   const content = form.get("content");
   if (
-    typeof name !== "string" ||
+    typeof title !== "string" ||
     typeof content !== "string"
   ) {
     return badRequest({
@@ -321,52 +298,52 @@ export const action: ActionFunction = async ({
   }
 
   const fieldErrors = {
-    name: validateJokeName(name),
-    content: validateJokeContent(content),
+    title: validateTwixTitle(title),
+    content: validateTwixContent(content),
   };
-  const fields = { name, content };
+  const fields = { title, content };
   if (Object.values(fieldErrors).some(Boolean)) {
     return badRequest({ fieldErrors, fields });
   }
 
-  const joke = await db.joke.create({
-    data: { ...fields, jokesterId: userId },
+  const twix = await db.twix.create({
+    data: { ...fields, twixesterId: userId },
   });
-  return redirect(`/jokes/${joke.id}`);
+  return redirect(`/twixes/${twix.id}`);
 };
 
-export default function NewJokeRoute() {
+export default function NewTwixRoute() {
   const actionData = useActionData<ActionData>();
 
   return (
     <div>
-      <p>Add your own hilarious joke</p>
+      <p>Add your own hilarious twix</p>
       <form method="post">
         <div>
           <label>
             Name:{" "}
             <input
               type="text"
-              defaultValue={actionData?.fields?.name}
-              name="name"
+              defaultValue={actionData?.fields?.title}
+              name="title"
               aria-invalid={
-                Boolean(actionData?.fieldErrors?.name) ||
+                Boolean(actionData?.fieldErrors?.title) ||
                 undefined
               }
               aria-errormessage={
-                actionData?.fieldErrors?.name
+                actionData?.fieldErrors?.title
                   ? "name-error"
                   : undefined
               }
             />
           </label>
-          {actionData?.fieldErrors?.name ? (
+          {actionData?.fieldErrors?.title ? (
             <p
               className="form-validation-error"
               role="alert"
-              id="name-error"
+              id="title-error"
             >
-              {actionData.fieldErrors.name}
+              {actionData.fieldErrors.title}
             </p>
           ) : null}
         </div>
@@ -413,7 +390,7 @@ export function CatchBoundary() {
   if (caught.status === 401) {
     return (
       <div className="error-container">
-        <p>You must be logged in to create a joke.</p>
+        <p>You must be logged in to create a twix.</p>
         <Link to="/login">Login</Link>
       </div>
     );
@@ -433,21 +410,19 @@ export function ErrorBoundary() {
 
 Here's what I've got with that:
 
-![App 400 Bad Request](/jokes-tutorial/img/app-400.png)
+![TODO App 400 Bad Request](/twixes-tutorial/img/app-400.png)
 
-![A 404 on the joke page](/jokes-tutorial/img/joke-404.png)
+![TODO A 404 on the twix page](/twixes-tutorial/img/twix-404.png)
 
-![A 404 on the random joke page](/jokes-tutorial/img/jokes-404.png)
+![TODO A 404 on the random twix page](/twixes-tutorial/img/twixes-404.png)
 
-![A 401 on the new joke page](/jokes-tutorial/img/new-joke-401.png)
+![TODO A 401 on the new twix page](/twixes-tutorial/img/new-twix-401.png)
 
-Awesome! We're ready to handle errors and it didn't complicate our happy path one bit! 🎉
+Fantastico! Ora siamo pronti a gestire gli errori e tutto ciò senza dover modificare il codice scritto in precedenza! 🎉
 
-Oh, and don't you love how just like with the `ErrorBoundary`, it's all contextual? So the rest of the app continues to function just as well. Another point for user experience 💪
+Ora perché non miglioriamo il file `app/routes/twixes/$twixId.tsx` in modo da permettere all'utente di eliminare un proprio twix? L'eliminazione sarà possibile solo da chi ha creato il twix, se non è loro, daremo in risposta un errore 401 nel catch boundary.
 
-You know what, while we're adding catch boundaries. Why don't we improve the `app/routes/jokes/$jokeId.tsx` route a bit by allowing users to delete the joke if they own it. If they don't, we can give them a 401 error in the catch boundary.
-
-One thing to keep in mind with `delete` is that HTML forms only support `method="get"` and `method="post"`. They don't support `method="delete"`. So to make sure our form will work with and without JavaScript, it's a good idea to do something like this:
+Un altra cosa da tenere a mente è che i form non supportano `method="delete"` ma solamente `method="get"` e `method="post"`. Quindi per assicurarci che il nostro form funzioni, è utile fare una cosa come la seguente: 
 
 ```tsx
 <form method="post">
@@ -456,16 +431,16 @@ One thing to keep in mind with `delete` is that HTML forms only support `method=
 </form>
 ```
 
-And then the `action` can determine whether the intention is to delete based on the `request.formData().get('_method')`.
+E poi nella `action` possiamo verificare la tipologia andando a prendere il dato con `request.formData().get('_method')`.
 
-💿 Add a delete capability to `app/routes/jokes/$jokeId.tsx` route.
+💿 Aggiungi la funzionalità di eliminazione al file `app/routes/twixes/$twixId.tsx`.
 
 <details>
 
-<summary>app/routes/jokes/$jokeId.tsx</summary>
+<summary>app/routes/twixes/$twixId.tsx</summary>
 
-```tsx filename=app/routes/jokes/$jokeId.tsx lines=[2,7,12,31-61,71-80,89-95,103-109]
-import type { Joke } from "@prisma/client";
+```tsx filename=app/routes/twixes/$twixId.tsx lines=[2,7,12,31-61,71-80,89-95,103-109]
+import type { Twix } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "remix";
 import {
   Link,
@@ -478,20 +453,20 @@ import {
 import { db } from "~/utils/db.server";
 import { requireUserId } from "~/utils/session.server";
 
-type LoaderData = { joke: Joke };
+type LoaderData = { twix: Twix };
 
 export const loader: LoaderFunction = async ({
   params,
 }) => {
-  const joke = await db.joke.findUnique({
-    where: { id: params.jokeId },
+  const twix = await db.twix.findUnique({
+    where: { id: params.twixId },
   });
-  if (!joke) {
-    throw new Response("What a joke! Not found.", {
+  if (!twix) {
+    throw new Response("What a twix! Not found.", {
       status: 404,
     });
   }
-  const data: LoaderData = { joke };
+  const data: LoaderData = { twix };
   return data;
 };
 
@@ -507,34 +482,34 @@ export const action: ActionFunction = async ({
     );
   }
   const userId = await requireUserId(request);
-  const joke = await db.joke.findUnique({
-    where: { id: params.jokeId },
+  const twix = await db.twix.findUnique({
+    where: { id: params.twixId },
   });
-  if (!joke) {
+  if (!twix) {
     throw new Response("Can't delete what does not exist", {
       status: 404,
     });
   }
-  if (joke.jokesterId !== userId) {
+  if (twix.twixesterId !== userId) {
     throw new Response(
-      "Pssh, nice try. That's not your joke",
+      "Pssh, nice try. That's not your twix",
       {
         status: 401,
       }
     );
   }
-  await db.joke.delete({ where: { id: params.jokeId } });
-  return redirect("/jokes");
+  await db.twix.delete({ where: { id: params.twixId } });
+  return redirect("/twixes");
 };
 
-export default function JokeRoute() {
+export default function TwixRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
     <div>
-      <p>Here's your hilarious joke:</p>
-      <p>{data.joke.content}</p>
-      <Link to=".">{data.joke.name} Permalink</Link>
+      <p>Here's your hilarious twix:</p>
+      <p>{data.twix.content}</p>
+      <Link to=".">{data.twix.title} Permalink</Link>
       <form method="post">
         <input
           type="hidden"
@@ -563,14 +538,14 @@ export function CatchBoundary() {
     case 404: {
       return (
         <div className="error-container">
-          Huh? What the heck is {params.jokeId}?
+          Huh? What the heck is {params.twixId}?
         </div>
       );
     }
     case 401: {
       return (
         <div className="error-container">
-          Sorry, but {params.jokeId} is not your joke.
+          Sorry, but {params.twixId} is not your twix.
         </div>
       );
     }
@@ -582,23 +557,23 @@ export function CatchBoundary() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   console.error(error);
-  const { jokeId } = useParams();
+  const { twixId } = useParams();
   return (
-    <div className="error-container">{`There was an error loading joke by the id ${jokeId}. Sorry.`}</div>
+    <div className="error-container">{`There was an error loading twix by the id ${twixId}. Sorry.`}</div>
   );
 }
 ```
 
 </details>
 
-Now that people will get a proper error message if they try to delete a joke that is not theirs, maybe we could also simply hide the delete button if the user doesn't own the joke.
+Ora gli utenti riceveranno un messaggio appropriato se vogliono eliminare un twix che non appartiene a loro. In aggiunta a questo, possiamo però nascondere il pulsante di eliminazione se non è un loro twix.
 
 <details>
 
-<summary>app/routes/jokes/$jokeId.tsx</summary>
+<summary>app/routes/twixes/$twixId.tsx</summary>
 
-```tsx filename=app/routes/jokes/$jokeId.tsx lines=[13,17,23,34,79-90]
-import type { Joke } from "@prisma/client";
+```tsx filename=app/routes/twixes/$twixId.tsx lines=[13,17,23,34,79-90]
+import type { Twix } from "@prisma/client";
 import type { ActionFunction, LoaderFunction } from "remix";
 import {
   Link,
@@ -614,24 +589,24 @@ import {
   requireUserId,
 } from "~/utils/session.server";
 
-type LoaderData = { joke: Joke; isOwner: boolean };
+type LoaderData = { twix: Twix; isOwner: boolean };
 
 export const loader: LoaderFunction = async ({
   request,
   params,
 }) => {
   const userId = await getUserId(request);
-  const joke = await db.joke.findUnique({
-    where: { id: params.jokeId },
+  const twix = await db.twix.findUnique({
+    where: { id: params.twixId },
   });
-  if (!joke) {
-    throw new Response("What a joke! Not found.", {
+  if (!twix) {
+    throw new Response("What a twix! Not found.", {
       status: 404,
     });
   }
   const data: LoaderData = {
-    joke,
-    isOwner: userId === joke.jokesterId,
+    twix,
+    isOwner: userId === twix.twixesterId,
   };
   return data;
 };
@@ -648,34 +623,34 @@ export const action: ActionFunction = async ({
     );
   }
   const userId = await requireUserId(request);
-  const joke = await db.joke.findUnique({
-    where: { id: params.jokeId },
+  const twix = await db.twix.findUnique({
+    where: { id: params.twixId },
   });
-  if (!joke) {
+  if (!twix) {
     throw new Response("Can't delete what does not exist", {
       status: 404,
     });
   }
-  if (joke.jokesterId !== userId) {
+  if (twix.twixesterId !== userId) {
     throw new Response(
-      "Pssh, nice try. That's not your joke",
+      "Pssh, nice try. That's not your twix",
       {
         status: 401,
       }
     );
   }
-  await db.joke.delete({ where: { id: params.jokeId } });
-  return redirect("/jokes");
+  await db.twix.delete({ where: { id: params.twixId } });
+  return redirect("/twixes");
 };
 
-export default function JokeRoute() {
+export default function TwixRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
     <div>
-      <p>Here's your hilarious joke:</p>
-      <p>{data.joke.content}</p>
-      <Link to=".">{data.joke.name} Permalink</Link>
+      <p>Here's your hilarious twix:</p>
+      <p>{data.twix.content}</p>
+      <Link to=".">{data.twix.title} Permalink</Link>
       {data.isOwner ? (
         <form method="post">
           <input
@@ -706,14 +681,14 @@ export function CatchBoundary() {
     case 404: {
       return (
         <div className="error-container">
-          Huh? What the heck is {params.jokeId}?
+          Huh? What the heck is {params.twixId}?
         </div>
       );
     }
     case 401: {
       return (
         <div className="error-container">
-          Sorry, but {params.jokeId} is not your joke.
+          Sorry, but {params.twixId} is not your twix.
         </div>
       );
     }
@@ -726,9 +701,9 @@ export function CatchBoundary() {
 export function ErrorBoundary({ error }: { error: Error }) {
   console.error(error);
 
-  const { jokeId } = useParams();
+  const { twixId } = useParams();
   return (
-    <div className="error-container">{`There was an error loading joke by the id ${jokeId}. Sorry.`}</div>
+    <div className="error-container">{`There was an error loading twix by the id ${twixId}. Sorry.`}</div>
   );
 }
 ```

@@ -1,16 +1,16 @@
-## SEO with Meta tags
+## SEO con Meta tags
 
-Meta tags are useful for SEO and social media. The tricky bit is that often the part of the code that has access to the data you need is in components that request/use the data.
+I Meta tag sono utili per il SEO (_Search Engine Optimization_ - il processo di rendere i siti ottimizzati per i motori di ricerca) e i social media. La parte un po' tricky è che spesso i dati che servono sono contenutinei componenti che richiedono o utilizzano il dato.
 
-This is why Remix has the [`meta`](../api/conventions#meta) export. Why don't you go through and add a useful few meta tags to the following routes:
+Per questo motivo Remix ha sviluppato un export [`meta`](../api/conventions#meta) che andremo ad aggiungere ai seguenti file: 
 
 - `app/routes/index.tsx`
 - `app/routes/login.tsx`
-- `app/routes/jokes/$jokeId.tsx` - (this one you can reference the joke's name in the title which is fun)
+- `app/routes/twixes/$twixId.tsx`
 
-But before you get started, remember that we're in charge of rendering everything from the `<html>` to the `</html>` which means we need to make sure these `meta` tags are rendered in the `<head>` of the `<html>`. This is why Remix gives us a [`<Meta />` component](../api/remix#meta-links-scripts).
+Ma prima di iniziare ricorda che i tag devono essere renderizzati nella parte `<head>` di un `<html>`. Per fare questo Remix ci fornosce un componente [`<Meta />`](../api/remix#meta-links-scripts).
 
-💿 Add the `<Meta />` component to `app/root.tsx`, and add the `meta` export to the routes mentioned above. The `<Meta />` component needs to be placed above the existing `<title>` tag to be able to overwrite it when provided.
+💿 Aggiungi il comeponente `<Meta />` al file `app/root.tsx` e aggiungi l'export `meta` nelle pagine che abbiamo elencato sopra. Il componente `<Meta />` ha bisogno di essere posizionato sopra al tag `<title>`.
 
 <details>
 
@@ -26,39 +26,16 @@ import {
   Meta,
 } from "remix";
 
-import globalStylesUrl from "./styles/global.css";
-import globalMediumStylesUrl from "./styles/global-medium.css";
-import globalLargeStylesUrl from "./styles/global-large.css";
-
-export const links: LinksFunction = () => {
-  return [
-    {
-      rel: "stylesheet",
-      href: globalStylesUrl,
-    },
-    {
-      rel: "stylesheet",
-      href: globalMediumStylesUrl,
-      media: "print, (min-width: 640px)",
-    },
-    {
-      rel: "stylesheet",
-      href: globalLargeStylesUrl,
-      media: "screen and (min-width: 1024px)",
-    },
-  ];
-};
-
 export const meta: MetaFunction = () => {
-  const description = `Learn Remix and laugh at the same time!`;
+  const description = `Il mio primo sito in Remix fatto durante il Voxel Bootcamp! @voxelcommunity`;
   return {
     description,
-    keywords: "Remix,jokes",
-    "twitter:image": "https://remix-jokes.lol/social.png",
+    keywords: "Remix,twixes",
+    "twitter:image": "https://remix-twixes.lol/social.png",
     "twitter:card": "summary_large_image",
     "twitter:creator": "@remix_run",
     "twitter:site": "@remix_run",
-    "twitter:title": "Remix Jokes",
+    "twitter:title": "Remix Twixes",
     "twitter:description": description,
   };
 };
@@ -141,7 +118,7 @@ export const links: LinksFunction = () => {
 export const meta: MetaFunction = () => ({
   title: "Remix: So great, it's funny!",
   description:
-    "Remix jokes app. Learn Remix and laugh at the same time!",
+    "Remix twixes app. Learn Remix and laugh at the same time!",
 });
 
 export default function Index() {
@@ -149,12 +126,12 @@ export default function Index() {
     <div className="container">
       <div className="content">
         <h1>
-          Remix <span>Jokes!</span>
+          Remix <span>Twixes!</span>
         </h1>
         <nav>
           <ul>
             <li>
-              <Link to="jokes">Read Jokes</Link>
+              <Link to="twixes">Read Twixes</Link>
             </li>
           </ul>
         </nav>
@@ -189,17 +166,12 @@ import {
   login,
   register,
 } from "~/utils/session.server";
-import stylesUrl from "~/styles/login.css";
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
-};
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Remix Jokes | Login",
+    title: "Remix Twixes | Login",
     description:
-      "Login to submit your own jokes to Remix Jokes!",
+      "Login to submit your own twixes to Remix Twixes!",
   };
 };
 
@@ -238,7 +210,7 @@ export const action: ActionFunction = async ({
   const loginType = form.get("loginType");
   const username = form.get("username");
   const password = form.get("password");
-  const redirectTo = form.get("redirectTo") || "/jokes";
+  const redirectTo = form.get("redirectTo") || "/twixes";
   if (
     typeof loginType !== "string" ||
     typeof username !== "string" ||
@@ -416,7 +388,7 @@ export default function Login() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/jokes">Jokes</Link>
+            <Link to="/twixes">Twixes</Link>
           </li>
         </ul>
       </div>
@@ -429,9 +401,9 @@ export default function Login() {
 
 <details>
 
-<summary>app/routes/jokes/$jokeId.tsx</summary>
+<summary>app/routes/twixes/$twixId.tsx</summary>
 
-```tsx filename=app/routes/jokes/$jokeId.tsx lines=[4,21-36]
+```tsx filename=app/routes/twixes/$twixId.tsx lines=[4,21-36]
 import type {
   ActionFunction,
   LoaderFunction,
@@ -444,7 +416,7 @@ import {
   redirect,
   useParams,
 } from "remix";
-import type { Joke } from "@prisma/client";
+import type { Twix } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 import {
@@ -459,34 +431,34 @@ export const meta: MetaFunction = ({
 }) => {
   if (!data) {
     return {
-      title: "No joke",
-      description: "No joke found",
+      title: "No twix",
+      description: "No twix found",
     };
   }
   return {
-    title: `"${data.joke.name}" joke`,
-    description: `Enjoy the "${data.joke.name}" joke and much more`,
+    title: `"${data.twix.title}" twix`,
+    description: `Enjoy the "${data.twix.title}" twix and much more`,
   };
 };
 
-type LoaderData = { joke: Joke; isOwner: boolean };
+type LoaderData = { twix: Twix; isOwner: boolean };
 
 export const loader: LoaderFunction = async ({
   request,
   params,
 }) => {
   const userId = await getUserId(request);
-  const joke = await db.joke.findUnique({
-    where: { id: params.jokeId },
+  const twix = await db.twix.findUnique({
+    where: { id: params.twixId },
   });
-  if (!joke) {
-    throw new Response("What a joke! Not found.", {
+  if (!twix) {
+    throw new Response("What a twix! Not found.", {
       status: 404,
     });
   }
   const data: LoaderData = {
-    joke,
-    isOwner: userId === joke.jokesterId,
+    twix,
+    isOwner: userId === twix.twixesterId,
   };
   return data;
 };
@@ -503,34 +475,34 @@ export const action: ActionFunction = async ({
     );
   }
   const userId = await requireUserId(request);
-  const joke = await db.joke.findUnique({
-    where: { id: params.jokeId },
+  const twix = await db.twix.findUnique({
+    where: { id: params.twixId },
   });
-  if (!joke) {
+  if (!twix) {
     throw new Response("Can't delete what does not exist", {
       status: 404,
     });
   }
-  if (joke.jokesterId !== userId) {
+  if (twix.twixesterId !== userId) {
     throw new Response(
-      "Pssh, nice try. That's not your joke",
+      "Pssh, nice try. That's not your twix",
       {
         status: 401,
       }
     );
   }
-  await db.joke.delete({ where: { id: params.jokeId } });
-  return redirect("/jokes");
+  await db.twix.delete({ where: { id: params.twixId } });
+  return redirect("/twixes");
 };
 
-export default function JokeRoute() {
+export default function TwixRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
     <div>
-      <p>Here's your hilarious joke:</p>
-      <p>{data.joke.content}</p>
-      <Link to=".">{data.joke.name} Permalink</Link>
+      <p>Here's your hilarious twix:</p>
+      <p>{data.twix.content}</p>
+      <Link to=".">{data.twix.title} Permalink</Link>
       {data.isOwner ? (
         <form method="post">
           <input
@@ -561,14 +533,14 @@ export function CatchBoundary() {
     case 404: {
       return (
         <div className="error-container">
-          Huh? What the heck is {params.jokeId}?
+          Huh? What the heck is {params.twixId}?
         </div>
       );
     }
     case 401: {
       return (
         <div className="error-container">
-          Sorry, but {params.jokeId} is not your joke.
+          Sorry, but {params.twixId} is not your twix.
         </div>
       );
     }
@@ -579,13 +551,13 @@ export function CatchBoundary() {
 }
 
 export function ErrorBoundary() {
-  const { jokeId } = useParams();
+  const { twixId } = useParams();
   return (
-    <div className="error-container">{`There was an error loading joke by the id ${jokeId}. Sorry.`}</div>
+    <div className="error-container">{`There was an error loading twix by the id ${twixId}. Sorry.`}</div>
   );
 }
 ```
 
 </details>
 
-Sweet! Now search engines and social media platforms will like our site a bit better.
+Benissimo! Ora i motori di ricerca e i social apprezzeranno il sito ottimizzato!

@@ -4,7 +4,7 @@ Maybe we should actually include JavaScript on our JavaScript app. 😂
 
 Seriously, pull up your network tab and navigate to our app.
 
-![Network tab indicating no JavaScript is loaded](/jokes-tutorial/img/no-javascript.png)
+![Network tab indicating no JavaScript is loaded](/twixes-tutorial/img/no-javascript.png)
 
 Did you notice that our app isn't loading any JavaScript before now? 😆 This actually is pretty significant. Our entire app can work without JavaScript on the page at all. This is because Remix leverages the platform so well for us.
 
@@ -60,12 +60,12 @@ export const meta: MetaFunction = () => {
   const description = `Learn Remix and laugh at the same time!`;
   return {
     description,
-    keywords: "Remix,jokes",
-    "twitter:image": "https://remix-jokes.lol/social.png",
+    keywords: "Remix,twixes",
+    "twitter:image": "https://remix-twixes.lol/social.png",
     "twitter:card": "summary_large_image",
     "twitter:creator": "@remix_run",
     "twitter:site": "@remix_run",
-    "twitter:title": "Remix Jokes",
+    "twitter:title": "Remix Twixes",
     "twitter:description": description,
   };
 };
@@ -134,11 +134,11 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 </details>
 
-![Network tab showing JavaScript loaded](/jokes-tutorial/img/yes-javascript.png)
+![Network tab showing JavaScript loaded](/twixes-tutorial/img/yes-javascript.png)
 
 💿 Another thing we can do now is you can accept the `error` prop in all your `ErrorBoundary` components and `console.error(error);` and you'll get even server-side errors logged in the browser's console. 🤯
 
-![Browser console showing the log of a server-side error](/jokes-tutorial/img/server-side-error-in-browser.png)
+![Browser console showing the log of a server-side error](/twixes-tutorial/img/server-side-error-in-browser.png)
 
 ### Forms
 
@@ -154,4 +154,4 @@ If a user focuses or mouses-over a link, it's likely they want to go there. So w
 <Link prefetch="intent" to="somewhere/neat">Somewhere Neat</Link>
 ```
 
-💿 Add `prefetch="intent"` to the list of Joke links in `app/routes/jokes.tsx`.
+💿 Add `prefetch="intent"` to the list of Twix links in `app/routes/twixes.tsx`.
