@@ -1,16 +1,16 @@
-## SEO with Meta tags
+## SEO con Meta tags
 
-Meta tags are useful for SEO and social media. The tricky bit is that often the part of the code that has access to the data you need is in components that request/use the data.
+I Meta tag sono utili per il SEO (_Search Engine Optimization_ - il processo di rendere i siti ottimizzati per i motori di ricerca) e i social media. La parte un po' tricky è che spesso i dati che servono sono contenutinei componenti che richiedono o utilizzano il dato.
 
-This is why Remix has the [`meta`](../api/conventions#meta) export. Why don't you go through and add a useful few meta tags to the following routes:
+Per questo motivo Remix ha sviluppato un export [`meta`](../api/conventions#meta) che andremo ad aggiungere ai seguenti file: 
 
 - `app/routes/index.tsx`
 - `app/routes/login.tsx`
-- `app/routes/twixes/$twixId.tsx` - (this one you can reference the twix's name in the title which is fun)
+- `app/routes/twixes/$twixId.tsx`
 
-But before you get started, remember that we're in charge of rendering everything from the `<html>` to the `</html>` which means we need to make sure these `meta` tags are rendered in the `<head>` of the `<html>`. This is why Remix gives us a [`<Meta />` component](../api/remix#meta-links-scripts).
+Ma prima di iniziare ricorda che i tag devono essere renderizzati nella parte `<head>` di un `<html>`. Per fare questo Remix ci fornosce un componente [`<Meta />`](../api/remix#meta-links-scripts).
 
-💿 Add the `<Meta />` component to `app/root.tsx`, and add the `meta` export to the routes mentioned above. The `<Meta />` component needs to be placed above the existing `<title>` tag to be able to overwrite it when provided.
+💿 Aggiungi il comeponente `<Meta />` al file `app/root.tsx` e aggiungi l'export `meta` nelle pagine che abbiamo elencato sopra. Il componente `<Meta />` ha bisogno di essere posizionato sopra al tag `<title>`.
 
 <details>
 
@@ -27,7 +27,7 @@ import {
 } from "remix";
 
 export const meta: MetaFunction = () => {
-  const description = `Learn Remix and laugh at the same time!`;
+  const description = `Il mio primo sito in Remix fatto durante il Voxel Bootcamp! @voxelcommunity`;
   return {
     description,
     keywords: "Remix,twixes",
@@ -166,11 +166,6 @@ import {
   login,
   register,
 } from "~/utils/session.server";
-import stylesUrl from "~/styles/login.css";
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
-};
 
 export const meta: MetaFunction = () => {
   return {
@@ -565,4 +560,4 @@ export function ErrorBoundary() {
 
 </details>
 
-Sweet! Now search engines and social media platforms will like our site a bit better.
+Benissimo! Ora i motori di ricerca e i social apprezzeranno il sito ottimizzato!
