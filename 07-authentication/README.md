@@ -889,20 +889,20 @@ function validateTwixContent(content: string) {
   }
 }
 
-function validateTwixName(name: string) {
-  if (name.length < 3) {
-    return `That twix's name is too short`;
+function validateTwixTitle(title: string) {
+  if (title.length < 3) {
+    return `That twix's title is too short`;
   }
 }
 
 type ActionData = {
   formError?: string;
   fieldErrors?: {
-    name: string | undefined;
+    title: string | undefined;
     content: string | undefined;
   };
   fields?: {
-    name: string;
+    title: string;
     content: string;
   };
 };
@@ -915,10 +915,10 @@ export const action: ActionFunction = async ({
 }) => {
   const userId = await requireUserId(request);
   const form = await request.formData();
-  const name = form.get("name");
+  const title = form.get("title");
   const content = form.get("content");
   if (
-    typeof name !== "string" ||
+    typeof title !== "string" ||
     typeof content !== "string"
   ) {
     return badRequest({
@@ -927,10 +927,10 @@ export const action: ActionFunction = async ({
   }
 
   const fieldErrors = {
-    name: validateTwixName(name),
+    title: validateTwixTitle(title),
     content: validateTwixContent(content),
   };
-  const fields = { name, content };
+  const fields = { title, content };
   if (Object.values(fieldErrors).some(Boolean)) {
     return badRequest({ fieldErrors, fields });
   }
@@ -953,26 +953,26 @@ export default function NewTwixRoute() {
             Name:{" "}
             <input
               type="text"
-              defaultValue={actionData?.fields?.name}
+              defaultValue={actionData?.fields?.title}
               name="name"
               aria-invalid={
-                Boolean(actionData?.fieldErrors?.name) ||
+                Boolean(actionData?.fieldErrors?.title) ||
                 undefined
               }
               aria-errormessage={
-                actionData?.fieldErrors?.name
+                actionData?.fieldErrors?.title
                   ? "name-error"
                   : undefined
               }
             />
           </label>
-          {actionData?.fieldErrors?.name ? (
+          {actionData?.fieldErrors?.title ? (
             <p
               className="form-validation-error"
               role="alert"
               id="name-error"
             >
-              {actionData.fieldErrors.name}
+              {actionData.fieldErrors.title}
             </p>
           ) : null}
         </div>
@@ -1221,7 +1221,7 @@ export default function TwixesRoute() {
             <ul>
               {data.twixListItems.map((twix) => (
                 <li key={twix.id}>
-                  <Link to={twix.id}>{twix.name}</Link>
+                  <Link to={twix.id}>{twix.title}</Link>
                 </li>
               ))}
             </ul>

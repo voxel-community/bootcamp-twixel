@@ -79,11 +79,11 @@ export default function App() {
 
 Great, now check [`/`](http://localhost:3000/) again and it should be nice and styled for you:
 
-![The homepage with a purple gradient background and white text with the words "Hello Index Route"](/jokes-tutorial/img/homepage-styles.png)
+![The homepage with a purple gradient background and white text with the words "Hello Index Route"](/twixes-tutorial/img/homepage-styles.png)
 
-Hooray! But I want to call out something important and exciting. You know how the CSS we wrote styles the `body` element? What would you expect to happen on the [`/jokes`](http://localhost:3000/jokes) route? Go ahead and check it out.
+Hooray! But I want to call out something important and exciting. You know how the CSS we wrote styles the `body` element? What would you expect to happen on the [`/twixes`](http://localhost:3000/twixes) route? Go ahead and check it out.
 
-![The jokes page with no background gradient](/jokes-tutorial/img/jokes-no-styles.png)
+![The twixes page with no background gradient](/twixes-tutorial/img/twixes-no-styles.png)
 
 🤯 What is this? Why aren't the CSS rules applied? Did the `body` get removed or something?! Nope. If you open the Elements tab of the dev tools you'll notice that the link tag isn't there at all!
 
@@ -798,7 +798,7 @@ export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: stylesUrl }];
 };
 
-export default function JokesRoute() {
+export default function TwixesRoute() {
   return (
     <div className="jokes-layout">
       <header className="jokes-header">
@@ -806,8 +806,8 @@ export default function JokesRoute() {
           <h1 className="home-link">
             <Link
               to="/"
-              title="Remix Jokes"
-              aria-label="Remix Jokes"
+              title="Remix Twixes"
+              aria-label="Remix Twixes"
             >
               <span className="logo">🤪</span>
               <span className="logo-medium">J🤪KES</span>
@@ -867,12 +867,12 @@ export default function Index() {
     <div className="container">
       <div className="content">
         <h1>
-          Remix <span>Jokes!</span>
+          Remix <span>Twixes!</span>
         </h1>
         <nav>
           <ul>
             <li>
-              <Link to="jokes">Read Jokes</Link>
+              <Link to="jokes">Read Twixes</Link>
             </li>
           </ul>
         </nav>

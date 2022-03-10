@@ -2,36 +2,36 @@
 
 Now that we have JavaScript on the page, we can benefit from _progressive enhancement_ and make our site _even better_ with JavaScript by adding some _optimistic UI_ to our app.
 
-Even though our app is quite fast (especially locally 😅), some users may have a poor connection to our app. This means that they're going to submit their jokes, but then they'll have to wait for a while before they see anything. We could add a loading spinner somewhere, but it'd be a much better user experience to be optimistic about the success of the request and render what the user would see.
+Even though our app is quite fast (especially locally 😅), some users may have a poor connection to our app. This means that they're going to submit their twixes, but then they'll have to wait for a while before they see anything. We could add a loading spinner somewhere, but it'd be a much better user experience to be optimistic about the success of the request and render what the user would see.
 
 We have a pretty in depth [guide on Optimistic UI](../guides/optimistic-ui), so go give that a read
 
-💿 Add Optimistic UI to the `app/routes/jokes/new.tsx` route.
+💿 Add Optimistic UI to the `app/routes/twixes/new.tsx` route.
 
-Note, you'll probably want to create a new file in `app/components/` called `joke.tsx` so you can reuse that UI in both routes.
+Note, you'll probably want to create a new file in `app/components/` called `twix.tsx` so you can reuse that UI in both routes.
 
 <details>
 
-<summary>app/components/joke.tsx</summary>
+<summary>app/components/twix.tsx</summary>
 
-```tsx filename=app/components/joke.tsx
+```tsx filename=app/components/twix.tsx
 import { Link, Form } from "remix";
-import type { Joke } from "@prisma/client";
+import type { Twix } from "@prisma/client";
 
-export function JokeDisplay({
-  joke,
+export function TwixDisplay({
+  twix,
   isOwner,
   canDelete = true,
 }: {
-  joke: Pick<Joke, "content" | "name">;
+  twix: Pick<Twix, "content" | "title">;
   isOwner: boolean;
   canDelete?: boolean;
 }) {
   return (
     <div>
-      <p>Here's your hilarious joke:</p>
-      <p>{joke.content}</p>
-      <Link to=".">{joke.name} Permalink</Link>
+      <p>Here's your hilarious twix:</p>
+      <p>{twix.content}</p>
+      <Link to=".">{twix.title} Permalink</Link>
       {isOwner ? (
         <Form method="post">
           <input
@@ -57,9 +57,9 @@ export function JokeDisplay({
 
 <details>
 
-<summary>app/routes/jokes/$jokeId.tsx</summary>
+<summary>app/routes/twixes/$twixId.tsx</summary>
 
-```tsx filename=app/routes/jokes/$jokeId.tsx lines=[19,97]
+```tsx filename=app/routes/twixes/$twixId.tsx lines=[19,97]
 import type {
   LoaderFunction,
   ActionFunction,
@@ -71,14 +71,14 @@ import {
   redirect,
   useParams,
 } from "remix";
-import type { Joke } from "@prisma/client";
+import type { Twix } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 import {
   getUserId,
   requireUserId,
 } from "~/utils/session.server";
-import { JokeDisplay } from "~/components/joke";
+import { TwixDisplay } from "~/components/twix";
 
 export const meta: MetaFunction = ({
   data,
@@ -87,17 +87,17 @@ export const meta: MetaFunction = ({
 }) => {
   if (!data) {
     return {
-      title: "No joke",
-      description: "No joke found",
+      title: "No twix",
+      description: "No twix found",
     };
   }
   return {
-    title: `"${data.joke.name}" joke`,
-    description: `Enjoy the "${data.joke.name}" joke and much more`,
+    title: `"${data.twix.title}" twix`,
+    description: `Enjoy the "${data.twix.title}" twix and much more`,
   };
 };
 
-type LoaderData = { joke: Joke; isOwner: boolean };
+type LoaderData = { twix: Twix; isOwner: boolean };
 
 export const loader: LoaderFunction = async ({
   request,
@@ -105,17 +105,17 @@ export const loader: LoaderFunction = async ({
 }) => {
   const userId = await getUserId(request);
 
-  const joke = await db.joke.findUnique({
-    where: { id: params.jokeId },
+  const twix = await db.twix.findUnique({
+    where: { id: params.twixId },
   });
-  if (!joke) {
-    throw new Response("What a joke! Not found.", {
+  if (!twix) {
+    throw new Response("What a twix! Not found.", {
       status: 404,
     });
   }
   const data: LoaderData = {
-    joke,
-    isOwner: userId === joke.jokesterId,
+    twix,
+    isOwner: userId === twix.twixesterId,
   };
   return data;
 };
@@ -132,31 +132,31 @@ export const action: ActionFunction = async ({
     );
   }
   const userId = await requireUserId(request);
-  const joke = await db.joke.findUnique({
-    where: { id: params.jokeId },
+  const twix = await db.twix.findUnique({
+    where: { id: params.twixId },
   });
-  if (!joke) {
+  if (!twix) {
     throw new Response("Can't delete what does not exist", {
       status: 404,
     });
   }
-  if (joke.jokesterId !== userId) {
+  if (twix.twixesterId !== userId) {
     throw new Response(
-      "Pssh, nice try. That's not your joke",
+      "Pssh, nice try. That's not your twix",
       {
         status: 401,
       }
     );
   }
-  await db.joke.delete({ where: { id: params.jokeId } });
-  return redirect("/jokes");
+  await db.twix.delete({ where: { id: params.twixId } });
+  return redirect("/twixes");
 };
 
-export default function JokeRoute() {
+export default function TwixRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
-    <JokeDisplay joke={data.joke} isOwner={data.isOwner} />
+    <TwixDisplay twix={data.twix} isOwner={data.isOwner} />
   );
 }
 
@@ -174,14 +174,14 @@ export function CatchBoundary() {
     case 404: {
       return (
         <div className="error-container">
-          Huh? What the heck is {params.jokeId}?
+          Huh? What the heck is {params.twixId}?
         </div>
       );
     }
     case 401: {
       return (
         <div className="error-container">
-          Sorry, but {params.jokeId} is not your joke.
+          Sorry, but {params.twixId} is not your twix.
         </div>
       );
     }
@@ -194,9 +194,9 @@ export function CatchBoundary() {
 export function ErrorBoundary({ error }: { error: Error }) {
   console.error(error);
 
-  const { jokeId } = useParams();
+  const { twixId } = useParams();
   return (
-    <div className="error-container">{`There was an error loading joke by the id ${jokeId}. Sorry.`}</div>
+    <div className="error-container">{`There was an error loading twix by the id ${twixId}. Sorry.`}</div>
   );
 }
 ```
@@ -205,9 +205,9 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 <details>
 
-<summary>app/routes/jokes/new.tsx</summary>
+<summary>app/routes/twixes/new.tsx</summary>
 
-```tsx filename=app/routes/jokes/new.tsx lines=[9,12,89-109]
+```tsx filename=app/routes/twixes/new.tsx lines=[9,12,89-109]
 import type { ActionFunction, LoaderFunction } from "remix";
 import {
   useActionData,
@@ -219,7 +219,7 @@ import {
   useTransition,
 } from "remix";
 
-import { JokeDisplay } from "~/components/joke";
+import { TwixDisplay } from "~/components/twix";
 import { db } from "~/utils/db.server";
 import {
   requireUserId,
@@ -236,15 +236,15 @@ export const loader: LoaderFunction = async ({
   return {};
 };
 
-function validateJokeContent(content: string) {
+function validateTwixContent(content: string) {
   if (content.length < 10) {
-    return `That joke is too short`;
+    return `That twix is too short`;
   }
 }
 
-function validateJokeName(name: string) {
+function validateTwixName(name: string) {
   if (name.length < 3) {
-    return `That joke's name is too short`;
+    return `That twix's name is too short`;
   }
 }
 
@@ -280,21 +280,21 @@ export const action: ActionFunction = async ({
   }
 
   const fieldErrors = {
-    name: validateJokeName(name),
-    content: validateJokeContent(content),
+    name: validateTwixName(name),
+    content: validateTwixContent(content),
   };
   const fields = { name, content };
   if (Object.values(fieldErrors).some(Boolean)) {
     return badRequest({ fieldErrors, fields });
   }
 
-  const joke = await db.joke.create({
-    data: { ...fields, jokesterId: userId },
+  const twix = await db.twix.create({
+    data: { ...fields, twixesterId: userId },
   });
-  return redirect(`/jokes/${joke.id}`);
+  return redirect(`/twixes/${twix.id}`);
 };
 
-export default function NewJokeRoute() {
+export default function NewTwixRoute() {
   const actionData = useActionData<ActionData>();
   const transition = useTransition();
 
@@ -305,12 +305,12 @@ export default function NewJokeRoute() {
     if (
       typeof name === "string" &&
       typeof content === "string" &&
-      !validateJokeContent(content) &&
-      !validateJokeName(name)
+      !validateTwixContent(content) &&
+      !validateTwixName(name)
     ) {
       return (
-        <JokeDisplay
-          joke={{ name, content }}
+        <TwixDisplay
+          twix={{ name, content }}
           isOwner={true}
           canDelete={false}
         />
@@ -320,33 +320,33 @@ export default function NewJokeRoute() {
 
   return (
     <div>
-      <p>Add your own hilarious joke</p>
+      <p>Add your own hilarious twix</p>
       <Form method="post">
         <div>
           <label>
             Name:{" "}
             <input
               type="text"
-              defaultValue={actionData?.fields?.name}
+              defaultValue={actionData?.fields?.title}
               name="name"
               aria-invalid={
-                Boolean(actionData?.fieldErrors?.name) ||
+                Boolean(actionData?.fieldErrors?.title) ||
                 undefined
               }
               aria-errormessage={
-                actionData?.fieldErrors?.name
+                actionData?.fieldErrors?.title
                   ? "name-error"
                   : undefined
               }
             />
           </label>
-          {actionData?.fieldErrors?.name ? (
+          {actionData?.fieldErrors?.title ? (
             <p
               className="form-validation-error"
               role="alert"
-              id="name-error"
+              id="title-error"
             >
-              {actionData.fieldErrors.name}
+              {actionData.fieldErrors.title}
             </p>
           ) : null}
         </div>
@@ -393,7 +393,7 @@ export function CatchBoundary() {
   if (caught.status === 401) {
     return (
       <div className="error-container">
-        <p>You must be logged in to create a joke.</p>
+        <p>You must be logged in to create a twix.</p>
         <Link to="/login">Login</Link>
       </div>
     );
@@ -419,4 +419,4 @@ That said, this declarative optimistic UI approach is fantastic because we don't
 
 Here's a demonstration of what that experience looks like:
 
-<video src="/jokes-tutorial/img/optimistic-ui.mp4" controls muted loop autoplay></video>
+<video src="/twixes-tutorial/img/optimistic-ui.mp4" controls muted loop autoplay></video>
