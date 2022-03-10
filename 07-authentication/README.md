@@ -883,13 +883,13 @@ import { useActionData, redirect, json } from "remix";
 import { db } from "~/utils/db.server";
 import { requireUserId } from "~/utils/session.server";
 
-function validateJokeContent(content: string) {
+function validateTwixContent(content: string) {
   if (content.length < 10) {
     return `That twix is too short`;
   }
 }
 
-function validateJokeName(name: string) {
+function validateTwixName(name: string) {
   if (name.length < 3) {
     return `That twix's name is too short`;
   }
@@ -927,8 +927,8 @@ export const action: ActionFunction = async ({
   }
 
   const fieldErrors = {
-    name: validateJokeName(name),
-    content: validateJokeContent(content),
+    name: validateTwixName(name),
+    content: validateTwixContent(content),
   };
   const fields = { name, content };
   if (Object.values(fieldErrors).some(Boolean)) {
@@ -941,7 +941,7 @@ export const action: ActionFunction = async ({
   return redirect(`/twixes/${twix.id}`);
 };
 
-export default function NewJokeRoute() {
+export default function NewTwixRoute() {
   const actionData = useActionData<ActionData>();
 
   return (
@@ -1272,21 +1272,21 @@ La nuova pagina `logout` è stata creata per facilitarci il logout: Il motivo pe
 </Link>
 ```
 
-Nota come il `to` è settato a "new" `/`. This is the benefit of nested routing. You don't have to construct the entire URL. It can be relative. This is the same thing for the `<Link to=".">Get a random twix</Link>` link which will effectively tell Remix to reload the data for the current route.
+Nota come il valore di `to` è "new" senza avere `/`. Questo è possibile grazie al nested routing. Non bisogna quindi ogni volta riscrivere l'intero URL, può essere relativo. Lo stesso concetto è valido per il link `<Link to=".">Get a random twix</Link>` che avendo il valore di to settato a `.`, dirà a Remix di ricaricare la pagina.
 
-Terrific, now our app looks like this:
+Fantastico, adesso la tua app dovrebbe somigliare a questa:
 
-![Twixes page nice and designed](/twixes-tutorial/img/random-twix-designed.png)
+![TODO Twixes page nice and designed](/assets/)
 
-![New Joke form designed](/twixes-tutorial/img/new-twix-designed.png)
+![New Twix form designed](/assets/)
 
-### User Registration
+### Registrazione utente
 
-I suppose now would be a good time to add support for user registration! Did you forget like I did? 😅 Well, let's get that bit added before moving on.
+Ora che abbiamo gestito logout e login, è ora di gestire anche la registrazione di nuovi utenti.
 
-Luckily, all we need to do to support this is to update `app/utils/session.server.ts` with a `register` function that's pretty similar to our `login` function. The difference here is that we need to use `bcrypt.hash` to hash the password before we store it in the database. Then update the `register` case in our `app/routes/login.tsx` route to handle the registration.
+Fortunatamente tutto quello che dobbiamo fare per supportare la registrazione è aggiornare il file `app/utils/session.server.ts` con la funzione `register` che è molto simile alla funzione `login`. La differenza è che ora dobbiamo usare `bcrypt.hash` per fare un hash della password prima di salvarla nel nostro database. Poi va aggiornata la funzione `register` nel file `app/routes/login.tsx` per gestire la registrazione.
 
-💿 Update both `app/utils/session.server.ts` and `app/routes/login.tsx` to handle user registration.
+💿 Aggiorna sia `app/utils/session.server.ts` che `app/routes/login.tsx` per gestire la registrazione utente.
 
 <details>
 
@@ -1670,4 +1670,4 @@ export default function Login() {
 
 </details>
 
-Phew, there we go. Now users can register for a new account!
+Ottimo, ci siamo. Ora gli utenti potranno registrarsi e creare il loro account!
