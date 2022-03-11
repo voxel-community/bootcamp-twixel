@@ -1,22 +1,23 @@
 ## JavaScript...
 
-Maybe we should actually include JavaScript on our JavaScript app. 😂
+Forse dovremmo effettivamente includere JavaScript nella nostra app JavaScript. 😂
 
-Seriously, pull up your network tab and navigate to our app.
+Seriamente, vai alla tua app, tasto destro clicca `Ispeziona` e vai sulla tab `Network`.
 
-![Network tab indicating no JavaScript is loaded](/twixes-tutorial/img/no-javascript.png)
+![Network tab indicating no JavaScript is loaded](../assets/11/no-javascript.png)
 
-Did you notice that our app isn't loading any JavaScript before now? 😆 This actually is pretty significant. Our entire app can work without JavaScript on the page at all. This is because Remix leverages the platform so well for us.
+Hai notato che la nostra app non caricava JavaScript prima d'ora? 😆 Questo in realtà è piuttosto significativo. La nostra intera app può funzionare senza JavaScript sulla pagina. Questo perché Remix sfrutta la piattaforma così bene per noi.
 
-Why does it matter that our app works without JavaScript? Is it because we're worried about the 0.002% of users who run around with JS disabled? Not really. It's because not everyone's connected to your app on a lightning-fast connection and sometimes JavaScript takes some time to load or fails to load at all. Making your app functional without JavaScript means that when that happens, your app _still works_ for your users even before the JavaScript finishes loading.
+Perché è importante che la nostra app funzioni senza JavaScript? È perché siamo preoccupati per lo 0,002% di utenti che girano con JS disabilitato? Non proprio. È perché non tutti sono connessi alla tua app con una connessione velocissima e a volte JavaScript impiega del tempo per caricarsi o non riesce affatto a caricarsi. Rendere la tua app funzionante senza JavaScript significa che, quando ciò accade, la tua app _funziona ancora_ per i tuoi utenti anche prima che JavaScript termini il caricamento.
 
-Another point for user experience!
+Un altro punto per l'esperienza dell'utente!
 
-There are reasons to include JavaScript on the page. For example, some common UI experiences can't be accessible without JavaScript (focus management in particular is not great when you have full-page reloads all over the place). And we can make an even nicer user experience with optimistic UI (coming soon) when we have JavaScript on the page. But we thought it'd be cool to show you how far you can get with Remix without JavaScript for your users on poor network connections. 💪
+Ci sono ragioni per includere JavaScript nella pagina. Ad esempio, alcune esperienze UI comuni non possono essere accessibili senza JavaScript (la gestione del focus, quando ti muovi in una pagina con i tasti invece che con il cursore, in particolare non è eccezionale quando si hanno ricaricamenti a tutta pagina ovunque). E possiamo rendere l'esperienza utente ancora più piacevole con una UI ottimistica (in arrivo nel prossimo capitolo) quando abbiamo JavaScript sulla pagina. Ma abbiamo pensato che sarebbe bello mostrarti quanto lontano puoi arrivare con Remix senza JavaScript per i tuoi utenti con connessioni di rete scadenti. 💪
 
-Ok, so let's load JavaScript on this page now 😆
+Ok, quindi carichiamo JavaScript su questa pagina ora 😆
 
-💿 Use Remix's [`<Scripts />` component](../api/remix#meta-links-scripts) component to load all the JavaScript files in `app/root.tsx`.
+💿 Usa il componente di Remix [`<Scripts />` component](../api/remix#meta-links-scripts) 
+per caricare tutti i file JavaScript dentro `app/root.tsx`.
 
 <details>
 
@@ -134,24 +135,24 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 </details>
 
-![Network tab showing JavaScript loaded](/twixes-tutorial/img/yes-javascript.png)
+![Network tab showing JavaScript loaded](../assets/11/yes-javascript.png)
 
-💿 Another thing we can do now is you can accept the `error` prop in all your `ErrorBoundary` components and `console.error(error);` and you'll get even server-side errors logged in the browser's console. 🤯
+💿 Un'altra cosa che possiamo fare ora è che puoi accettare la prop `error` in tutti i tuoi componenti `ErrorBoundary` e `console.error(error);` e otterrai anche gli errori lato server loggati nella console del browser.
 
-![Browser console showing the log of a server-side error](/twixes-tutorial/img/server-side-error-in-browser.png)
+![Browser console showing the log of a server-side error](../assets/11/server-side-error-in-browser.png)
 
 ### Forms
 
-Remix has its own [`<Form />`](../api/remix#form) component. When JavaScript is not yet loaded, it works the same way as a regular form, but when JavaScript is enabled, it's "progressively enhanced" to make a `fetch` request instead so we don't do a full-page reload.
+Remix ha il suo componente [`<Form />`](../api/remix#form). Quando JavaScript non è ancora caricato, funziona allo stesso modo di un modulo normale, ma quando JavaScript è abilitato, viene "progressivamente migliorato" per fare invece una richiesta di "fetch" in modo da non ricaricare l'intera pagina.
 
-💿 Find all `<form />` elements and change them to the Remix `<Form />` component.
+💿 Trova tutti gli elementi `<form />` e cambiali nel componente Remix `<Form />`.
 
-### Prefetching
+### Precaricare
 
-If a user focuses or mouses-over a link, it's likely they want to go there. So we can prefetch the page that they're going to. And this is all it takes to enable that for a specific link:
+Se un utente mette a fuoco o passa il mouse su un link, è probabile che voglia accedervi. Quindi possiamo precaricare la pagina a cui stanno andando. E questo è tutto ciò che serve per abilitarlo per un link specifico:
 
 ```
 <Link prefetch="intent" to="somewhere/neat">Somewhere Neat</Link>
 ```
 
-💿 Add `prefetch="intent"` to the list of Twix links in `app/routes/twixes.tsx`.
+💿 Aggiungi `prefetch="intent"` alla lista di link di Twix in `app/routes/twixes.tsx`.
