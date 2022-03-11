@@ -1,14 +1,14 @@
-## Resource Routes
+## Percorsi delle risorse
 
-Sometimes we want our routes to render something other than an HTML document. For example, maybe you have an endpoint that generates your social image for a blog post, or the image for a product, or the CSV data for a report, or an RSS feed, or sitemap, or maybe you want to implement API routes for your mobile app, or anything else.
+A volte vogliamo che i nostri link visualizzino qualcosa di diverso da un documento HTML. Ad esempio, forse hai un URL che genera la tua immagine social per un post del blog, o l'immagine per un prodotto, o i dati CSV per un report, o un feed RSS, o una sitemap del sito, o forse vuoi implementare un'API per la tua app mobile o qualsiasi altra cosa.
 
-This is what [Resource Routes](../guides/resource-routes) are for. I think it'd be cool to have an RSS feed of all our twixes. I think it would make sense to be at the URL `/twixes.rss`. For that to work, you'll need to escape the `.` because that character has special meaning in Remix route filenames. Learn more about [escaping special characters here](../api/conventions#escaping-special-characters).
+Ecco a cosa servono le [Resource Routes](../guides/resource-routes). Penso che sarebbe bello avere un feed RSS di tutti i nostri twix. Penso che avrebbe senso essere all'URL `/twixes.rss`. Ma affinché funzioni, dovrai trattare il punto `.` in modo particolare perchè venga riconosciuto come tale perché quel carattere ha un significato speciale nei nomi dei file di percorso Remix. Scopri di più su [escaping caratteri speciali qui](../api/conventions#escaping-special-characters).
 
-<docs-info>Believe it or not, you've actually already made one of these. Check out your logout route! No UI necessary because it's just there to handle mutations and redirect lost souls.</docs-info>
+<docs-info>Che tu ci creda o no, in realtà ne hai già fatto uno. Controlla il tuo percorso di logout! Nessuna interfaccia utente è necessaria perché è lì solo per gestire le mutazioni e reindirizzare le anime perse.</docs-info>
 
-For this one, you'll probably want to at least peek at the example unless you want to go read up on the RSS spec 😅.
+Per questo, probabilmente vorrai almeno dare un'occhiata all'esempio a meno che tu non voglia leggere le specifiche RSS 😅.
 
-💿 Make a `/twixes.rss` route.
+💿 Crea un percorso `/twixes.rss`.
 
 <details>
 
@@ -103,7 +103,9 @@ export const loader: LoaderFunction = async ({
 </details>
 
 ![XML document for RSS feed](/twixes-tutorial/img/twixes-rss-feed.png)
+<!-- TODO -->
 
-Wahoo! You can seriously do anything you can imagine with this API. You could even make a JSON API for a native version of your app if you wanted to. Lots of power here.
 
-💿 Feel free to throw a link to that RSS feed on `app/routes/index.tsx` and `app/routes/twixes.tsx` pages. Note that if you use `<Link />` you'll want to use the `reloadDocument` prop because you can't do a client-side transition to a URL that's not technically part of the React app.
+Wow! Puoi seriamente fare qualsiasi cosa tu possa immaginare con questa API. Se lo desideri, potresti persino creare un'API JSON per una versione nativa della tua app. Tanta potenza qui.
+
+💿 Sentiti libera di mettere un link a quel feed RSS sulle pagine `app/routes/index.tsx` e `app/routes/twixes.tsx`. Nota che se usi `<Link />` vorrai usare il prop `reloadDocument` perché non puoi eseguire una transizione lato client a un URL che non fa tecnicamente parte dell'app React.
