@@ -1,5 +1,10 @@
 ## Pagine con risorse
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 09-seo](../09-seo)| [11-javascript ▶︎](../11-javascript) |
+
+
 A volte vogliamo che le nostre pagine visualizzino qualcosa di diverso da un documento HTML. Ad esempio, forse hai un URL che genera la tua immagine social per un post del blog, o l'immagine per un prodotto, o i dati CSV per un report, o un feed RSS, o una sitemap del sito, o forse vuoi implementare un'API per la tua app mobile o qualsiasi altra cosa.
 
 Ecco a cosa servono le [Resource Routes](../guides/resource-routes). Penso che sarebbe bello avere un feed RSS di tutti i nostri twix. Penso che avrebbe senso essere all'URL `/twixes.rss`. Ma affinché funzioni, dovrai trattare il punto `.` in modo particolare perchè venga riconosciuto come tale perché quel carattere ha un significato speciale nei nomi dei file di percorso Remix. Scopri di più su [escaping caratteri speciali qui](../api/conventions#escaping-special-characters).

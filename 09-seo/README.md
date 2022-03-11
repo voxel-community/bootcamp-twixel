@@ -1,5 +1,10 @@
 ## SEO con Meta tags
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 08-expected-errors](../08-expected-errors)| [10-resource-routes ▶︎](../10-resource-routes) |
+
+
 I Meta tag sono utili per il SEO (_Search Engine Optimization_ - il processo di rendere i siti ottimizzati per i motori di ricerca) e i social media. La parte un po' tricky è che spesso i dati che servono sono contenutinei componenti che richiedono o utilizzano il dato.
 
 Per questo motivo Remix ha sviluppato un export [`meta`](../api/conventions#meta) che andremo ad aggiungere ai seguenti file: 

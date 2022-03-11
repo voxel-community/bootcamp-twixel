@@ -1,5 +1,10 @@
 # Routes
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 02-esplora-struttura-progetto](../02-esplora-struttura-progetto)| [04-database ▶︎](../04-database) |
+
+
 Un sito web è formato da pagine. La prima cosa da fare, dunque, è preparare la struttura delle pagine. Questa è la struttura che avranno dentro Twixel:
 
 

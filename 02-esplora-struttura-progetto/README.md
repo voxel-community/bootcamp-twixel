@@ -1,5 +1,10 @@
 # Esplora la struttura del progetto
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 01-genera-progetto-remix](../01-genera-progetto-remix)| [03-struttura-routes ▶︎](../03-struttura-routes) |
+
+
 Una volta aperto il progetto, la struttura delle cartelle e dei file dovrebbe essere simile a questa:
 
 ```

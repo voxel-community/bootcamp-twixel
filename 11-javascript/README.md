@@ -1,5 +1,9 @@
 ## JavaScript...
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 10-resource-routes](../10-resource-routes)| [12-optimistic-ui ▶︎](../12-optimistic-ui) |
+
 Forse dovremmo effettivamente includere JavaScript nella nostra app JavaScript. 😂
 
 Seriamente, vai alla tua app, tasto destro clicca `Ispeziona` e vai sulla tab `Network`.

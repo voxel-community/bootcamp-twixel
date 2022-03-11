@@ -1,5 +1,10 @@
 ## Caricamento online 
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 12-optimistic-ui](../12-optimistic-ui)| [14-styling ▶︎](../14-styling) |
+
+
 Ora manca ancora un ultimo, fondamentale, passaggio che rende tale un social: caricarlo online.
 Per fare ciò ci sono diversi dettagli da seguire:
 

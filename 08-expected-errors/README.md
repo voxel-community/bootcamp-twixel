@@ -1,5 +1,10 @@
 ## Errori aspettati
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 07-unexpected-errors](../07-unexpected-errors)| [09-seo ▶︎](../09-seo) |
+
+
 A volte gli utenti fanno delle azioni che possiamo anticipare. Non stiamo parlando solamente di validazioni, ma ad esempio possono esserci errori come il un utente che non è autenticato (status `401`) oppure non autorizzato (status `403`) a eseguire delle particolari azioni. Oppure semplicemente stanno cercando di andare ad una pagina che non esiste (status `404`).
 
 Una differenza che ti può aiutare è quella di pensare agli errori inaspettati come errori che hanno un codice di livello 500 ([server errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses)) e agli errori attesti come errori di livello 400 ([client errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#client_error_responses)).

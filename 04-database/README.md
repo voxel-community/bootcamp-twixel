@@ -1,5 +1,10 @@
 # Database (MongoDB)
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 03-struttura-routes](../03-struttura-routes)| [05-mutations ▶︎](../05-mutations) |
+
+
 ## Setup MongoDB
 
 Utilizzeremo Prisma con funzionalità sperimentali per la connessione a un database MongoDB per salvare i nostri twix.

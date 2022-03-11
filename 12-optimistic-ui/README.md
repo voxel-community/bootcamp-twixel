@@ -1,5 +1,10 @@
 ## UI ottimistica
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 11-javascript](../11-javascript)| [13-deployment ▶︎](../13-deployment) |
+
+
 Ora che abbiamo JavaScript sulla pagina, possiamo beneficiare del _miglioramento progressivo_ e rendere il nostro sito _ancora migliore_ con JavaScript aggiungendo un po' di _UI ottimistica_ alla nostra app.
 
 Anche se la nostra app è abbastanza veloce (soprattutto in locale 😅), alcuni utenti potrebbero avere una connessione lenta. Ciò significa che pubblicheranno i loro twixes, ma poi dovranno aspettare un po' prima di vedere qualcosa. Potremmo aggiungere uno spinner di caricamento da qualche parte, ma sarebbe un'esperienza utente molto migliore se fossimo ottimisti sul successo della richiesta e mostrare ciò che l'utente vedrebbe.

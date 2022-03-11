@@ -1,5 +1,10 @@
 ## Mutazioni
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 04-database](../04-database)| [06-authentication ▶︎](../06-authentication) |
+
+
 Nei precedenti capitoli abbiamo creato una pagina al link `/twixes/new`, ma per ora il form che vediamo non fa ancora nulla. Questo dovrebbe essre il codice presente nel file `app/routes/twixes/new.tsx` (è importante che sia presente il `method="post"`, quindi controlla che sia presente):
 
 ```tsx filename=app/routes/twixes/new.tsx

@@ -1,5 +1,9 @@
 ## Autenticazione
 
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 05-mutations](../05-mutations)| [07-unexpected-errors ▶︎](../07-unexpected-errors) |
+
 È arrivato il momento che stavamo aspettando! Adesso aggiugerai l'autenticazione alla tua applicazione! Grazie all'autenticazione riuscirai ad associare ogni twix all'utente che l'ha creato!
 
 Un'ottima cosa da sapere per questa sezione sono i [cookies HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) e come funzionano sul web.
