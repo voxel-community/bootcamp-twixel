@@ -1,14 +1,15 @@
-## Optimistic UI
+## UI ottimistica
 
-Now that we have JavaScript on the page, we can benefit from _progressive enhancement_ and make our site _even better_ with JavaScript by adding some _optimistic UI_ to our app.
+Ora che abbiamo JavaScript sulla pagina, possiamo beneficiare del _miglioramento progressivo_ e rendere il nostro sito _ancora migliore_ con JavaScript aggiungendo un po' di _UI ottimistica_ alla nostra app.
 
-Even though our app is quite fast (especially locally 😅), some users may have a poor connection to our app. This means that they're going to submit their twixes, but then they'll have to wait for a while before they see anything. We could add a loading spinner somewhere, but it'd be a much better user experience to be optimistic about the success of the request and render what the user would see.
+Anche se la nostra app è abbastanza veloce (soprattutto in locale 😅), alcuni utenti potrebbero avere una connessione lenta. Ciò significa che pubblicheranno i loro twixes, ma poi dovranno aspettare un po' prima di vedere qualcosa. Potremmo aggiungere uno spinner di caricamento da qualche parte, ma sarebbe un'esperienza utente molto migliore se fossimo ottimisti sul successo della richiesta e mostrare ciò che l'utente vedrebbe.
 
-We have a pretty in depth [guide on Optimistic UI](../guides/optimistic-ui), so go give that a read
 
-💿 Add Optimistic UI to the `app/routes/twixes/new.tsx` route.
+C'è questa [guida sull'optimistic UI](../guides/optimistic-ui) piuttosto approfondita, se vuoi darci una letta.
 
-Note, you'll probably want to create a new file in `app/components/` called `twix.tsx` so you can reuse that UI in both routes.
+💿 Aggiungi l'ptimistic UI alla route `app/routes/twixes/new.tsx`.
+
+Nota, probabilmente vorrai creare un nuovo file in `app/components/` chiamato `twix.tsx` in modo da poter riutilizzare quella UI in entrambe le route.
 
 <details>
 
@@ -413,10 +414,12 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 </details>
 
-One thing I like about my example is that it can use the _exact_ same validation functions that the server uses! So if what they submitted will fail server-side validation, we don't even bother rendering the optimistic UI because we know it would fail.
+Vedi come puoi usare la _stessa_ validazione utlizzata lato server nel client, quindi, se ciò che gli utenti inviano fallisce la convalida lato server, non ci preoccupiamo nemmeno di eseguire il rendering dell'UI ottimistica perché sappiamo che fallirebbe. 
 
-That said, this declarative optimistic UI approach is fantastic because we don't have to worry about error recovery. If the request fails, then our component will be re-rendered, it will no longer be a submission and everything will work as it did before. Nice!
+Detto questo, questo approccio dichiarativo della UI ottimistica è fantastico perché non dobbiamo preoccuparci del ripristino degli errori. Se la richiesta non va a buon fine, il nostro componente verrà rirenderizzato. Carino!
 
-Here's a demonstration of what that experience looks like:
+Ecco una dimostrazione di come sarebbe quell'esperienza:
 
 <video src="/twixes-tutorial/img/optimistic-ui.mp4" controls muted loop autoplay></video>
+
+<!-- TODO -->
