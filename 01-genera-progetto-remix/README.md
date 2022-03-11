@@ -1,5 +1,10 @@
 ## Genera un nuovo progetto di Remix
 
+|                                            | Capitolo successivo                                                                    |
+| :----------------------------------------- | -------------------------------------------------------------------------------------: |
+| [◀︎ 00-setup](../00-setup) | [02-esplora-struttura-progetto ▶︎](../02-esplora-struttura-progetto) |
+
+
 💿 Apri il terminale ed esegui questo comando:
 
 ```sh

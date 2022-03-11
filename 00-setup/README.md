@@ -1,5 +1,11 @@
 ## Setup
 
+|                                                                               | Capitolo successivo                                                                      |
+| :---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------: |
+| [◀︎ Introduzione](https://github.com/voxel-community/bootcamp-twixel/) | [01-genera-progetto-remix ▶︎](../01-genera-progetto-remix) |
+
+
+
 ## Prerequisiti
 
 Puoi decidere di seguire questo tutorial su [CodeSandbox](https://codesandbox.com/) (un editor online) oppure sul tuo computer (*scelta consigliata*). Se vuoi seguire il tutorial usando CodeSandbox quello che ti serve è una buona connessione internet e un browser moderno. Se invece vuoi sviluppare l'app in locale sul tuo computer ti serviranno un paio di programmi installati:
