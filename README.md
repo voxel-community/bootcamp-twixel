@@ -15,6 +15,18 @@ Il bootcamp è strutturato in * capitoli.
 00. [Setup iniziale](00-setup)
 01. [Genera progetto Remix](01-genera-progetto-remix)
 02. [Esplora la struttura del progetto](02-esplora-struttura-progetto)
+03. [Struttura delle pagine](03-struttura-routes)
+04. [Database](04-database)
+05. [Mutazioni](05-mutations)
+06. [Autenticazione](06-authentication)
+07. [Errori inaspettati](07-unexpected-errors)
+08. [Errori aspettati](08-expected-errors)
+09. [SEO](09-seo)
+10. [Pagine con risorse](10-resource-routes)
+11. [Javascript](11-javascript)
+12. [UI Ottimistica](12-optimistic-ui)
+13. [Caricamento online](13-deployment)
+14. [Stilying](14-styling)
 
 #### Approfondimenti
 

@@ -1,4 +1,4 @@
-## Errori inaspettati errors
+## Errori inaspettati
 
 Ci spiace dirlo, ma non sempre gli errori di un'applicazione sono evitabili (es. il server smette di rispondere). Quindi dobbiamo accettare la possibilità di avere degli errori inaspettati e dobbiamo cercare di gestirli.
 
