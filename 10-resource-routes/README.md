@@ -1,14 +1,14 @@
-## Percorsi delle risorse
+## Pagine con risorse
 
-A volte vogliamo che i nostri link visualizzino qualcosa di diverso da un documento HTML. Ad esempio, forse hai un URL che genera la tua immagine social per un post del blog, o l'immagine per un prodotto, o i dati CSV per un report, o un feed RSS, o una sitemap del sito, o forse vuoi implementare un'API per la tua app mobile o qualsiasi altra cosa.
+A volte vogliamo che le nostre pagine visualizzino qualcosa di diverso da un documento HTML. Ad esempio, forse hai un URL che genera la tua immagine social per un post del blog, o l'immagine per un prodotto, o i dati CSV per un report, o un feed RSS, o una sitemap del sito, o forse vuoi implementare un'API per la tua app mobile o qualsiasi altra cosa.
 
 Ecco a cosa servono le [Resource Routes](../guides/resource-routes). Penso che sarebbe bello avere un feed RSS di tutti i nostri twix. Penso che avrebbe senso essere all'URL `/twixes.rss`. Ma affinché funzioni, dovrai trattare il punto `.` in modo particolare perchè venga riconosciuto come tale perché quel carattere ha un significato speciale nei nomi dei file di percorso Remix. Scopri di più su [escaping caratteri speciali qui](../api/conventions#escaping-special-characters).
 
-<docs-info>Che tu ci creda o no, in realtà ne hai già fatto uno. Controlla il tuo percorso di logout! Nessuna interfaccia utente è necessaria perché è lì solo per gestire le mutazioni e reindirizzare le anime perse.</docs-info>
+<docs-info>Che tu ci creda o no, in realtà ne hai già fatta una. Controlla la pagina di logout! Nessuna interfaccia utente è necessaria perché è lì solo per gestire le mutazioni e reindirizzare le anime perse.</docs-info>
 
 Per questo, probabilmente vorrai almeno dare un'occhiata all'esempio a meno che tu non voglia leggere le specifiche RSS 😅.
 
-💿 Crea un percorso `/twixes.rss`.
+💿 Crea una pagina `/twixes.rss`.
 
 <details>
 
