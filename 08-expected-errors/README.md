@@ -714,3 +714,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
 ```
 
 </details>
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 07-unexpected-errors](../07-unexpected-errors)| [09-seo ▶︎](../09-seo) |

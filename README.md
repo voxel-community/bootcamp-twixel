@@ -26,7 +26,7 @@ Il bootcamp è strutturato in * capitoli.
 11. [Javascript](11-javascript)
 12. [UI Ottimistica](12-optimistic-ui)
 13. [Caricamento online](13-deployment)
-14. [Stilying](14-styling)
+14. [Styling](14-styling)
 
 #### Approfondimenti
 

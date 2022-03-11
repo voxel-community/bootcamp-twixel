@@ -160,3 +160,7 @@ Se un utente mette a fuoco o passa il mouse su un link, è probabile che voglia 
 ```
 
 💿 Aggiungi `prefetch="intent"` alla lista di link di Twix in `app/routes/twixes.tsx`.
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 10-resource-routes](../10-resource-routes)| [12-optimistic-ui ▶︎](../12-optimistic-ui) |

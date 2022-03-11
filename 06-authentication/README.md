@@ -1675,3 +1675,7 @@ export default function Login() {
 </details>
 
 Ottimo, ci siamo. Ora gli utenti potranno registrarsi e creare il loro account!
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 05-mutations](../05-mutations)| [07-unexpected-errors ▶︎](../07-unexpected-errors) |

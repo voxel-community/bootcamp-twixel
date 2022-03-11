@@ -14,3 +14,7 @@ Per fare ciò ci sono diversi dettagli da seguire:
 - Dopodiché dal terminale del progetto, compila il codice eseguendo il comando `yarn build`
 - Per pubblicare l'app esegui il comando `vercel --prod`
 - Ora la tua app è già online, può accederci cliccando sul link che ti appare sul terminale 🎉🎉
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 12-optimistic-ui](../12-optimistic-ui)| [14-styling ▶︎](../14-styling) |

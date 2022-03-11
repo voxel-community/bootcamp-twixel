@@ -41,3 +41,7 @@ code . # per aprire il progetto su VSCode
 ```
 
 > In alternativa puoi trascinare la cartella sull'icona di **VSCode** oppure aprire **Visual Studio Code** e tramite il menù aprire la cartella `twixel`
+
+|                                            | Capitolo successivo                                                                    |
+| :----------------------------------------- | -------------------------------------------------------------------------------------: |
+| [◀︎ 00-setup](../00-setup) | [02-esplora-struttura-progetto ▶︎](../02-esplora-struttura-progetto) |

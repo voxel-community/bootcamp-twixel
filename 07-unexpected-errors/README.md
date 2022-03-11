@@ -136,3 +136,7 @@ Ottimo, ora che hai inserito tutti e 4 gli ErrorBoundary vediamo cosa succede qu
 ![TODO New Twix Page Error](/twixes-tutorial/img/new-twix-error.png)
 
 La cosa fantastica di aver gestito gli errori nelle singole parti, è che se ci sono degli errori sono inutilizzabili solo le parti che hanno un errore, il resto dell'applicazione rimane interattiva. Questo è un'ottima cosa, perché solitamente nelle applicazione se c'è un errore, tutta l'applicazione diventa inutilizzabile
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 06-authentication](../06-authentication)| [08-expected-errors ▶︎](../08-expected-errors) |

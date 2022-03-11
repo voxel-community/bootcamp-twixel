@@ -128,3 +128,7 @@ Ottimo! Ora siamo pronte per iniziare ad aggiungere contenuti.
 
 * Avviare una versione di sviluppo dell'app: `npm run dev`
 * Costruire la versione dell'app pronta per il server: `npm run build`
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 01-genera-progetto-remix](../01-genera-progetto-remix)| [03-struttura-routes ▶︎](../03-struttura-routes) |

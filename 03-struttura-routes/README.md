@@ -214,3 +214,7 @@ Ottimo ora andando al link [`/twixes/quello-che-vuoi`](http://localhost:3000/twi
 ![A new twix form](/assets/03/random-twix.png)
 
 Fantastico! Abbiamo appena creato tutte le principali pagine dell'applicazione. Manca solo la pagina di login ma di quella ci occuperemo quando faremo l'autenticazione.
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 02-esplora-struttura-progetto](../02-esplora-struttura-progetto)| [04-database ▶︎](../04-database) |

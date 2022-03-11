@@ -560,3 +560,7 @@ export default function TwixesIndexRoute() {
 Adesso puoi andare su [`/twixes`](http://localhost:3000/twixes) e vedrai una lista di link a dei twix, con un intero twix visualizzato con anche il suo contenuto:
 
 ![twixes page showing a random twix](/assets/04-02.png)
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 03-struttura-routes](../03-struttura-routes)| [05-mutations ▶︎](../05-mutations) |

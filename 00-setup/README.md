@@ -26,3 +26,7 @@ Una conoscenza pregressa di React e Typescript non è necessaria, ma è sicurame
 Può essere utile, non richiesta, anche una conoscenza di [HTTP API](https://developer.mozilla.org/en-US/docs/Web/HTTP).
 
 Ora possiamo iniziare creando il progetto!
+
+|                                                                               | Capitolo successivo                                                                      |
+| :---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------: |
+| [◀︎ Introduzione](https://github.com/voxel-community/bootcamp-twixel/) | [01-genera-progetto-remix ▶︎](../01-genera-progetto-remix) |

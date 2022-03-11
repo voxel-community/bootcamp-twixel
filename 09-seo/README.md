@@ -566,3 +566,7 @@ export function ErrorBoundary() {
 </details>
 
 Benissimo! Ora i motori di ricerca e i social apprezzeranno il sito ottimizzato!
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 08-expected-errors](../08-expected-errors)| [10-resource-routes ▶︎](../10-resource-routes) |

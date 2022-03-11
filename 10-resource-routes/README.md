@@ -114,3 +114,7 @@ export const loader: LoaderFunction = async ({
 Wow! Puoi seriamente fare qualsiasi cosa tu possa immaginare con questa API. Se lo desideri, potresti persino creare un'API JSON per una versione nativa della tua app. Tanta potenza qui.
 
 💿 Sentiti libera di mettere un link a quel feed RSS sulle pagine `app/routes/index.tsx` e `app/routes/twixes.tsx`. Nota che se usi `<Link />` vorrai usare il prop `reloadDocument` perché non puoi eseguire una transizione lato client a un URL che non fa tecnicamente parte dell'app React.
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 09-seo](../09-seo)| [11-javascript ▶︎](../11-javascript) |

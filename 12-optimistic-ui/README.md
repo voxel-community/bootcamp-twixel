@@ -428,3 +428,8 @@ Ecco una dimostrazione di come sarebbe quell'esperienza:
 <video src="/twixes-tutorial/img/optimistic-ui.mp4" controls muted loop autoplay></video>
 
 <!-- TODO -->
+
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 11-javascript](../11-javascript)| [13-deployment ▶︎](../13-deployment) |

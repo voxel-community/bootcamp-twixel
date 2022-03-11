@@ -278,3 +278,7 @@ La funzione `badRequest` è importante perché ci permette di fare un typechecki
 Un'altra cosa da notare è la programmazione e il modo dichiarativo utilizzato. Non dobbiamo pensare a gestire lo stato della vista, le `actions` ottengono i dati, vengono poi processati e il componente poi utilizza i dati e li renderizza.
 
 E se volessi validare il form client side (ad esempio mentre l'utente sta scrivendo), ti basterebbe chiamare le due funzioni `validateTwixContent` e `validateTwixTitle`!
+
+| Capitolo precedente  | Capitolo successivo     |
+| :--------------- | ---------------: |
+| [◀︎ 04-database](../04-database)| [06-authentication ▶︎](../06-authentication) |
