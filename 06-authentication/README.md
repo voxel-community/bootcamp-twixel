@@ -4,7 +4,7 @@
 | :--------------- | ---------------: |
 | [◀︎ 05-mutations](../05-mutations)| [07-unexpected-errors ▶︎](../07-unexpected-errors) |
 
-È arrivato il momento che stavamo aspettando! Adesso aggiugerai l'autenticazione alla tua applicazione: grazie all'autenticazione riuscirai ad associare ogni twix all'utente che l'ha creato!
+È arrivato il momento che stavamo aspettando! Adesso aggiungerai l'autenticazione alla tua applicazione: grazie all'autenticazione riuscirai ad associare ogni twix all'utente che l'ha creato!
 
 Da sapere per questa sezione è cosa sono i [cookies HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies) e come funzionano sul web.
 

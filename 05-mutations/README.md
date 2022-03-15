@@ -269,13 +269,14 @@ Ottimo! Ora hai un form che valida i campi sul server e mostra sul client gli er
 
 Ora riguardando il codice, andiamo a capire al meglio alcuni aspetti.
 
-Per prima cosa andiamo a notare come il tipo di `ActionData` per avere un po' di _type safety_ (ovvero ci garantisca un controllo nel caso stiamo scrivendo dei dati in cui mancano proprietà o abbiano un formato sbagliato). Ricorca che `useActionData` può ritornare `undefined` se l'action non è stata ancora chiamata, quindi abbiamo bisogno di una programmazione un po' difensiva che controlli prima che `useActionData` sia definito.
+Per prima cosa andiamo a notare come il tipo di `ActionData` abbia un po' di _type safety_ ovvero ci garantisce un controllo nel caso stiamo scrivendo dei dati in cui mancano proprietà o abbiano un formato sbagliato. 
+Ricorda che `useActionData` può ritornare `undefined` se l'action non è stata ancora chiamata, quindi abbiamo bisogno di una programmazione un po' difensiva che controlli prima che `useActionData` sia definito.
 
-Puoi anche notare come vengono ritornati anche tutti i campi del form. Questo è per far si che il form possa essere nuovamente renderizzato con i valori inviati dal server se Javascript dovesse avere problemi a caricare per qualche ragione.
+Possiamo anche notare come vengono ritornati tutti i campi del form. Questo è per far si che il form possa essere nuovamente renderizzato con i valori inviati dal server se Javascript dovesse avere problemi a caricare per qualche ragione.
 
-La funzione `badRequest` è importante perché ci permette di fare un _typechecking_ che assicura di ritornare lo stesso valore di `ActionData` con anche le informazioni accurate riguardo allo status HTTP, [`400 Bad Request`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400). Se ritornassimo sempre solo il valore di `ActionData` senza lo status, questo causerebbe sempre una risposa`200 OK`, che non ci permetterebbe di gestire gli errori del form.
+La funzione `badRequest` è importante perché ci permette di fare un _typechecking_ che assicura di ritornare lo stesso valore di `ActionData` con anche le informazioni accurate riguardo allo status HTTP, [`400 Bad Request`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400). Se ritornassimo sempre solo il valore di `ActionData` senza lo status, questo causerebbe sempre una risposa`200 OK`, che non ci permetterebbe di gestire gli errori del form con conseguenze anche lato SEO (vedremo questo capitolo più avanti).
 
-Un'altra cosa da notare è la programmazione e il modo dichiarativo utilizzato. Non dobbiamo pensare a gestire lo stato della vista, le `actions` ottengono i dati, vengono poi processati e il componente poi utilizza i dati e li renderizza.
+Un'altra cosa da notare è la programmazione e il modo dichiarativo utilizzato. Non dobbiamo pensare a gestire lo stato della vista perchè le `actions` ottengono i dati, questi vengono poi processati e il componente infine utilizza i dati e li renderizza.
 
 E se volessi validare il form client side nel browser (ad esempio mentre l'utente sta scrivendo), ti basterebbe chiamare le due funzioni `validateTwixContent` e `validateTwixTitle`!
 
