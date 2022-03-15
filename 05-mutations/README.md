@@ -5,7 +5,7 @@
 | [◀︎ 04-database](../04-database)| [06-authentication ▶︎](../06-authentication) |
 
 
-Nei precedenti capitoli abbiamo creato una pagina al link `/twixes/new`, ma per ora il form che vediamo non fa ancora nulla. Questo dovrebbe essre il codice presente nel file `app/routes/twixes/new.tsx` (è importante che sia presente il `method="post"`, quindi controlla che sia presente):
+Nei precedenti capitoli abbiamo creato una pagina al link `/twixes/new`, ma per ora il form che vediamo non fa ancora nulla. Questo dovrebbe essre il codice presente nel file `app/routes/twixes/new.tsx` (è importante che sia presente il `method="post"`, quindi controlla che ci sia):
 
 ```tsx filename=app/routes/twixes/new.tsx
 export default function NewTwixRoute() {
@@ -34,7 +34,7 @@ export default function NewTwixRoute() {
 }
 ```
 
-La chiamata per creare un nuovo twix utilizzando prisma è la seguente:
+La chiamata per creare un nuovo twix utilizzando Prisma è la seguente:
 
 ```tsx
 const twix = await db.twix.create({
@@ -60,8 +60,8 @@ export const action: ActionFunction = async ({
   const form = await request.formData();
   const title = form.get("title");
   const content = form.get("content");
-  // we do this type check to be extra sure and to make TypeScript happy
-  // we'll explore validation next!
+  // qui facciamo un piccolo type check per rendere TypeScript felice
+  // dopo ci occuperemo della validazione!
   if (
     typeof title !== "string" ||
     typeof content !== "string"
@@ -78,21 +78,21 @@ export const action: ActionFunction = async ({
 export default function NewTwixRoute() {
   return (
     <div>
-      <p>Add your own hilarious twix</p>
+      <p>Crea il tuo twix</p>
       <form method="post">
         <div>
           <label>
-            Title: <input type="text" name="title" />
+            Titolo: <input type="text" name="title" />
           </label>
         </div>
         <div>
           <label>
-            Content: <textarea name="content" />
+            Contenuto: <textarea name="content" />
           </label>
         </div>
         <div>
           <button type="submit" className="button">
-            Add
+            Aggiungi
           </button>
         </div>
       </form>
@@ -105,21 +105,21 @@ export default function NewTwixRoute() {
 
 Con il codice appena scritto dovresti essere in grado di creare dei nuovi twix ed essere redirezionata alla pagina del twix una volta salvato.
 
-La funzione `redirect` è una semplice utility di Remix che permette di creare un oggetto [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) con i corretti dati di headers/status per redirezionare l'utente.
+La funzione `redirect` che abbiamo usato è una semplice utility di Remix. Con questa utiliti possiamo impostare i corretti valori degli header HTML che ci permettono di redirezionare l'utente all'interno della nostra app dove vogliamo, informando correttamente il browser.
 
-![TODO Create new twix form filled out](/assets/)
+![Create new twix form filled out](../assets/05/new-twix-filled.png)
 
-![TODO Newly created twix displayed](/assets/)
+![Newly created twix displayed](../assets/05/new-twix-displayed.png)
 
-Evviva! Con un semplice form e delle semplici funzioni per inviare il nostro twix al database sei riuscita a creare un form.
+Fantastico! Con un semplice form e delle semplici funzioni per inviare il nostro twix al database sei riuscita a creare un nuovo twix.
 
 Un'altro aspetto da notare è che quando vieni redirezionata alla pagina del nuovo twix appena creato, vedrai tutti i dati senza doverti occupare della gestione della cache. Dell'invalidazione della cache se ne occupa Remix automaticamente 😎
 
 ## Validazioni
 
-Ora perché non aggiungiamo delle validazioni?
+Ora perché non aggiungiamo delle validazioni? Con le validazioni, controlliamo che i nostri valori abbiano le caratteristiche minime per essere accettabili.
 
-> Prima di occuparcene, c'è una piccola cosa che da sapere riguardo al funzionamento delle funzione `actions`. Il valore che la funzione ritorna dev'essere lo stesso che ritorna la funzione `loader`: Una risposta, o un oggetto Javascript.
+> Prima di occuparcene, c'è una piccola cosa che da sapere riguardo al funzionamento delle funzione `actions`. Il valore che la funzione ritorna dev'essere lo stesso che ritorna la funzione `loader`: Una risposta o un oggetto Javascript.
 
 💿 Ora continua con le validazioni di `title` e `content` affinché abbiano una lunghezza minima. Per esempio possiamo indicare che il titolo debba essere lungo almeno 2 caratteri e che il contenuto sia di almeno 10 caratteri.
 
@@ -265,19 +265,19 @@ export default function NewTwixRoute() {
 
 Ottimo! Ora hai un form che valida i campi sul server e mostra sul client gli errori!
 
-![TODO New twix form with validation errors](/assets/)
+![New twix form with validation errors](../assets/05/twix-error-validation.png)
 
 Ora riguardando il codice, andiamo a capire al meglio alcuni aspetti.
 
-Per prima cosa andiamo a notacome il tipo di `ActionData` per avere un po' di type safety. Ricorca che `useActionData` può ritornare `undefined` se l'action non è stata ancora chiamata, quindi abbiamo bisogno di una programmazione un po' difensiva.
+Per prima cosa andiamo a notare come il tipo di `ActionData` per avere un po' di _type safety_ (ovvero ci garantisca un controllo nel caso stiamo scrivendo dei dati in cui mancano proprietà o abbiano un formato sbagliato). Ricorca che `useActionData` può ritornare `undefined` se l'action non è stata ancora chiamata, quindi abbiamo bisogno di una programmazione un po' difensiva che controlli prima che `useActionData` sia definito.
 
-Puoi anche notare come vengono ritornati anche tutti i campi del form. Questo è per far si che il form possa essere nuovamente renderizzato con i valore inviati dal server se Javascript dovesse avere problemi a caricare per qualche ragione.
+Puoi anche notare come vengono ritornati anche tutti i campi del form. Questo è per far si che il form possa essere nuovamente renderizzato con i valori inviati dal server se Javascript dovesse avere problemi a caricare per qualche ragione.
 
-La funzione `badRequest` è importante perché ci permette di fare un typechecking che assicura di ritornare lo stesso valore di `ActionData` con anche le informazioni accurate riguardo allo status HTTP, [`400 Bad Request`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400). Se ritornassimo sempre solo il valore di `ActionData` senza lo status, questo causerebbe sempre una risposa`200 OK`, che non ci permetterebbe di gestire gli errori del form.
+La funzione `badRequest` è importante perché ci permette di fare un _typechecking_ che assicura di ritornare lo stesso valore di `ActionData` con anche le informazioni accurate riguardo allo status HTTP, [`400 Bad Request`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400). Se ritornassimo sempre solo il valore di `ActionData` senza lo status, questo causerebbe sempre una risposa`200 OK`, che non ci permetterebbe di gestire gli errori del form.
 
 Un'altra cosa da notare è la programmazione e il modo dichiarativo utilizzato. Non dobbiamo pensare a gestire lo stato della vista, le `actions` ottengono i dati, vengono poi processati e il componente poi utilizza i dati e li renderizza.
 
-E se volessi validare il form client side (ad esempio mentre l'utente sta scrivendo), ti basterebbe chiamare le due funzioni `validateTwixContent` e `validateTwixTitle`!
+E se volessi validare il form client side nel browser (ad esempio mentre l'utente sta scrivendo), ti basterebbe chiamare le due funzioni `validateTwixContent` e `validateTwixTitle`!
 
 | Capitolo precedente  | Capitolo successivo     |
 | :--------------- | ---------------: |
