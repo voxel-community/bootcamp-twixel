@@ -5,7 +5,7 @@
 | [◀︎ 08-expected-errors](../08-expected-errors)| [10-resource-routes ▶︎](../10-resource-routes) |
 
 
-I Meta tag sono utili per il SEO (_Search Engine Optimization_ - il processo di rendere i siti ottimizzati per i motori di ricerca) e i social media. La parte un po' tricky è che spesso i dati che servono sono contenutinei componenti che richiedono o utilizzano il dato.
+I Meta tag sono utili per il SEO (_Search Engine Optimization_ - il processo di rendere i siti ottimizzati per i motori di ricerca) e i social media. La parte un po' tricky è che spesso i dati che servono sono contenuti nei componenti che richiedono o utilizzano il dato.
 
 Per questo motivo Remix ha sviluppato un export [`meta`](../api/conventions#meta) che andremo ad aggiungere ai seguenti file: 
 
@@ -13,7 +13,7 @@ Per questo motivo Remix ha sviluppato un export [`meta`](../api/conventions#meta
 - `app/routes/login.tsx`
 - `app/routes/twixes/$twixId.tsx`
 
-Ma prima di iniziare ricorda che i tag devono essere renderizzati nella parte `<head>` di un `<html>`. Per fare questo Remix ci fornosce un componente [`<Meta />`](../api/remix#meta-links-scripts).
+Ma prima di iniziare ricorda che i tag devono essere renderizzati nella parte `<head>` di un `<html>`. Per fare questo Remix ci fornisce un componente [`<Meta />`](../api/remix#meta-links-scripts).
 
 💿 Aggiungi il comeponente `<Meta />` al file `app/root.tsx` e aggiungi l'export `meta` nelle pagine che abbiamo elencato sopra. Il componente `<Meta />` ha bisogno di essere posizionato sopra al tag `<title>`.
 
@@ -121,9 +121,9 @@ export const links: LinksFunction = () => {
 };
 
 export const meta: MetaFunction = () => ({
-  title: "Remix: So great, it's funny!",
+  title: "Twixes",
   description:
-    "Remix twixes app. Learn Remix and laugh at the same time!",
+    "Il Twitter di Voxel!",
 });
 
 export default function Index() {
@@ -172,13 +172,11 @@ import {
   register,
 } from "~/utils/session.server";
 
-export const meta: MetaFunction = () => {
-  return {
-    title: "Remix Twixes | Login",
-    description:
-      "Login to submit your own twixes to Remix Twixes!",
-  };
-};
+export const meta: MetaFunction = () => ({
+  title: "Twixes",
+  description:
+    "Il Twitter di Voxel!",
+});
 
 function validateUsername(username: unknown) {
   if (typeof username !== "string" || username.length < 3) {
