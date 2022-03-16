@@ -1,17 +1,19 @@
-## Errori aspettati
+# Gestione Errori Aspettati
 
 | Capitolo precedente  | Capitolo successivo     |
 | :--------------- | ---------------: |
 | [◀︎ 07-unexpected-errors](../07-unexpected-errors)| [09-seo ▶︎](../09-seo) |
 
 
-A volte gli utenti fanno delle azioni che possiamo anticipare. Non stiamo parlando solamente di validazioni, ma ad esempio possono esserci errori come il un utente che non è autenticato (status `401`) oppure non autorizzato (status `403`) a eseguire delle particolari azioni. Oppure semplicemente stanno cercando di andare ad una pagina che non esiste (status `404`).
+A volte gli utenti fanno delle azioni che possiamo anticipare. Non stiamo parlando solamente di validazioni, ma ad esempio possono esserci errori come un utente che non è autenticato che sta eseguendo operazioni che richiedono invece di esserlo (status `401`) oppure l'utente, per il ruolo che ha, non è autorizzato (status `403`) a eseguire delle particolari azioni. Oppure semplicemente stanno cercando di andare ad una pagina che non esiste (status `404`).
 
 Una differenza che ti può aiutare è quella di pensare agli errori inaspettati come errori che hanno un codice di livello 500 ([server errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses)) e agli errori attesti come errori di livello 400 ([client errors](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#client_error_responses)).
 
-Per le risposte degli errori client, Remix offre una funzione simile agli Error Boundaries che abbiamo usato nella precedente sezione: si chiamano [`Catch Boundaries`](../api/conventions#catchboundary) e funzionano in modo molto simile. Nel nostro caso quando il server intercetta un problema, ci darà un oggetto [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response). Remix poi lo catturerà questa risposa e renderizzerà il `CatchBoundary`. Così come `useLoaderData` viene usato per avere i dati dal `loader` e `useActionData` per avere i dati dalle `action`, anche il `CatchBoundary` ottiene i suoi dati da `useCatch` che ritornerà una `Response`.
+Ogni errore a un suo codice standard che permette di identificarlo e si chiama `status`.
 
-Ti ricordiamo che questi `CatchBoundary` non servono per la validazione dei form, per quelle situazioni basta uno `useActionData`. Questi `CatchBoundary` servono invece a gestire tutte le situazione in cui l'utente fa qualcosa che non ci permette di renderizzare il nostro componente e quindi quello che vogliamo è visualizzare qualcosaltro
+Per le risposte degli errori client previsti (i `400`), Remix offre una funzione simile agli Error Boundaries che abbiamo usato nella precedente sezione: si chiamano [`Catch Boundaries`](../api/conventions#catchboundary) e funzionano in modo molto simile. Nel nostro caso quando il server intercetta un problema, ci darà un oggetto [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response). Remix poi catturerà questa risposa e renderizzerà il `CatchBoundary`. Così come `useLoaderData` viene usato per avere i dati dal `loader` e `useActionData` per avere i dati dalle `action`, anche il `CatchBoundary` ottiene i suoi dati da `useCatch` che ritornerà una `Response`.
+
+Ti ricordiamo che questi `CatchBoundary` non servono per la validazione dei form, per quelle situazioni basta uno `useActionData`. Questi `CatchBoundary` servono invece a gestire tutte le situazione in cui l'utente fa qualcosa che non ci permette di renderizzare il nostro componente e quindi quello che vogliamo è visualizzare qualcosaltro per informare l'utente di un eventuale errore e di tutte le azioni per provvedere a sistemarlo, se possibile.
 
 > `ErrorBoundary` e `CatchBoundary` permettono di vedere i default export come delle situazioni ideali (dette "happy path") e non preoccuparci al loro interno degli errori. Se infatti il componente viene renderizzato significa che non ci sono stati problemi (se ci fossero vedremmo il contenuto di un Error o un Catch Boundary)
 
@@ -94,6 +96,8 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 <details>
 
+Per gestire un Twix non esistente, dobbiamo aggiornare leggermente la `loader` in modo tale da emettere un errore 404 quando non trovo il twix con l'Id che mi è stato dato.
+
 <summary>app/routes/twixes/$twixId.tsx</summary>
 
 ```tsx filename=app/routes/twixes/$twixId.tsx lines=[5,20-24,41-52]
@@ -117,7 +121,7 @@ export const loader: LoaderFunction = async ({
     where: { id: params.twixId },
   });
   if (!twix) {
-    throw new Response("What a twix! Not found.", {
+    throw new Response("Che twix! Non ho trovato nulla.", {
       status: 404,
     });
   }
@@ -130,7 +134,7 @@ export default function TwixRoute() {
 
   return (
     <div>
-      <p>Here's your hilarious twix:</p>
+      <p>Qui c'è il tuo twix divertente:</p>
       <p>{data.twix.content}</p>
       <Link to=".">{data.twix.title} Permalink</Link>
     </div>
@@ -153,7 +157,7 @@ export function CatchBoundary() {
 export function ErrorBoundary() {
   const { twixId } = useParams();
   return (
-    <div className="error-container">{`There was an error loading twix by the id ${twixId}. Sorry.`}</div>
+    <div className="error-container">{`C'è stato un problema nel caricare il twix con l'id ${twixId}. Ci scusiamo.`}</div>
   );
 }
 ```
@@ -413,19 +417,15 @@ export function ErrorBoundary() {
 
 </details>
 
-Here's what I've got with that:
+Per provare questa nuova gestione degli errori, prova a fare logout e poi andare alla pagina `twxies/new` - dovresti vedere l'errore che ti dice di fare login per creare nuovi Twixes, come qui sotto:
 
-![TODO App 400 Bad Request](/twixes-tutorial/img/app-400.png)
+![Gestione errori](../assets/08/twixes-error.png)
 
-![TODO A 404 on the twix page](/twixes-tutorial/img/twix-404.png)
+Fantastico! Ora siamo pronti a gestire gli errori e tutto ciò senza dover modificare il codice scritto in precedenza! 🎉 Come hai potuto vedere direttamente, l'errore era circoscritto e non andava a rendere tutto il resto dell'app inutilizzabile!
 
-![TODO A 404 on the random twix page](/twixes-tutorial/img/twixes-404.png)
+## Aggiungiamo la cancellazione dei Twixes
 
-![TODO A 401 on the new twix page](/twixes-tutorial/img/new-twix-401.png)
-
-Fantastico! Ora siamo pronti a gestire gli errori e tutto ciò senza dover modificare il codice scritto in precedenza! 🎉
-
-Ora perché non miglioriamo il file `app/routes/twixes/$twixId.tsx` in modo da permettere all'utente di eliminare un proprio twix? L'eliminazione sarà possibile solo da chi ha creato il twix, se non è loro, daremo in risposta un errore 401 nel catch boundary.
+Dato che adesso sappiamo come gestire gli errori, mettiamolo in pratica su una nuova funzionalità - la cancellazione di un Twix. Andiamo a migliorare il file `app/routes/twixes/$twixId.tsx` in modo da permettere all'utente di eliminare un proprio twix. L'eliminazione sarà possibile solo da chi ha creato il twix, se non è loro, daremo in risposta un errore `401` nel catch boundary.
 
 Un altra cosa da tenere a mente è che i form non supportano `method="delete"` ma solamente `method="get"` e `method="post"`. Quindi per assicurarci che il nostro form funzioni, è utile fare una cosa come la seguente: 
 
@@ -571,7 +571,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 </details>
 
-Ora gli utenti riceveranno un messaggio appropriato se vogliono eliminare un twix che non appartiene a loro. In aggiunta a questo, possiamo però nascondere il pulsante di eliminazione se non è un loro twix.
+Ora gli utenti riceveranno un messaggio appropriato se vogliono eliminare un twix che non appartiene a loro. In aggiunta a questo, possiamo però nascondere il pulsante di eliminazione se non è uno dei twix che hanno scritto:
 
 <details>
 
