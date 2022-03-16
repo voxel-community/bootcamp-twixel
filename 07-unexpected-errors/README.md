@@ -6,11 +6,13 @@
 
 Ci spiace dirlo, ma non sempre gli errori di un'applicazione sono evitabili (es. il server smette di rispondere). Quindi dobbiamo accettare la possibilità di avere degli errori inaspettati e dobbiamo cercare di gestirli.
 
-Fortunatamente la gestione degli errori in Remix è ottima. Se hai usato in passato React, dovrebbe esserti familiare la funzionalità degli [Error Boundary feature](https://reactjs.org/docs/error-boundaries.html#gatsby-focus-wrapper). Con Remix, puoi esportare nelle fare pagine un componente[`ErrorBoundary`](../api/conventions#errorboundary) che funziona anche lato server. Inoltre puoi gestire gli errori sia nei `loader` che nelle `action`!
+Fortunatamente la gestione degli errori in Remix è ottima! Se hai usato in passato React, dovrebbe esserti familiare la funzionalità degli [Error Boundary feature](https://reactjs.org/docs/error-boundaries.html#gatsby-focus-wrapper). Con Remix, puoi esportare nelle fare pagine un componente[`ErrorBoundary`](../api/conventions#errorboundary) che funziona anche lato server. Inoltre puoi gestire gli errori sia nei `loader` che nelle `action`!
 
-Quello che ora andremo a fare sarà aggiungere 4 Error Boundaries alla nostra applicazione. Ne inseriremo uno in ogni pagina "figlio" di `app/routes/twixes/*` per gestire errori legati ai twixes e uno nel file `app/root.tsx` per gestire tutti gli altri errori to handle errors for everything else.
+Un `Error Boundary` è una funzione che vive sullo stesso livello dei `loader` e delle `action` e intercetta tutti gli errori emessi dalla pagina, visualizza un messaggio di errore di conseguenza. Anche qui possiamo usare codice HTML per stilare il messaggio di errore e ci basterà gestire bene gli errori nei `loader` e nelle `action` per visualizzarlo.
 
-> L'ErrorBoundari del file `app/root.tsx` sarà quello un po' più complicato.
+Quello che ora andremo a fare sarà aggiungere `4` `Error Boundaries` alla nostra applicazione. Ne inseriremo uno in ogni pagina "figlia" di `app/routes/twixes/*` per gestire errori legati ai twixes e uno nel file `app/root.tsx` per gestire tutti gli altri errori inaspettati.
+
+> L'ErrorBoundary del file `app/root.tsx` sarà quello un po' più complicato.
 
 Ricorda che il file `app/root.tsx` è responsabile di renderizzare tutto l'`<html>` . Quando viene renderizzato un `ErrorBoundary`, questo viene renderizzato al posto di ciò che è esportato di default.
 
@@ -57,7 +59,7 @@ export default function App() {
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document title="Uh-oh!">
-      <div className="error-container">
+      <div>
         <h1>App Error</h1>
         <pre>{error.message}</pre>
       </div>
@@ -82,7 +84,7 @@ import { Link, useLoaderData, useParams } from "remix";
 export function ErrorBoundary() {
   const { twixId } = useParams();
   return (
-    <div className="error-container">{`C'è stato un problema nel caricare il twix con l'id${twixId}. Ci scusiamo.`}</div>
+    <div>{`C'è stato un problema nel caricare il twix con l'id ${twixId}. Ci scusiamo.`}</div>
   );
 }
 ```
@@ -98,7 +100,7 @@ export function ErrorBoundary() {
 
 export function ErrorBoundary() {
   return (
-    <div className="error-container">
+    <div>
       Qualcosa è andato storto, ci scusiamo.
     </div>
   );
@@ -116,7 +118,7 @@ export function ErrorBoundary() {
 
 export function ErrorBoundary() {
   return (
-    <div className="error-container">
+    <div>
       Ooops! C'è stato un problema
     </div>
   );
@@ -125,17 +127,11 @@ export function ErrorBoundary() {
 
 </details>
 
-Ottimo, ora che hai inserito tutti e 4 gli ErrorBoundary vediamo cosa succede quando c'è un errore. Dovresti vedere le seguenti schermate: 
+Ottimo, ora che hai inserito tutti e 4 gli `ErrorBoundary` vediamo cosa succede quando c'è un errore. Prova ad aprire un dettaglio di un Twix, poi nella barra di ricerca metti dei caratteri a caso al posto dell'id e premi invio. Dovresti vedere il messaggio di errore raccolto dall'`ErrorBoundary`:
 
-![TODO App error](/twixes-tutorial/img/app-level-error.png)
+![Twix Page Error](../assets/07/unexpected-error.png)
 
-![TODO Twix Page Error](/twixes-tutorial/img/twix-id-error.png)
-
-![TODO Twix Index Page Error](/twixes-tutorial/img/twixes-index-error.png)
-
-![TODO New Twix Page Error](/twixes-tutorial/img/new-twix-error.png)
-
-La cosa fantastica di aver gestito gli errori nelle singole parti, è che se ci sono degli errori sono inutilizzabili solo le parti che hanno un errore, il resto dell'applicazione rimane interattiva. Questo è un'ottima cosa, perché solitamente nelle applicazione se c'è un errore, tutta l'applicazione diventa inutilizzabile
+La cosa fantastica di aver gestito gli errori nelle singole parti, è che se ci sono degli errori solo le parti che hanno un errore sono inutilizzabili mentre il resto dell'applicazione rimane interattiva. Questo è un'ottima cosa, perché solitamente nelle applicazione se c'è un errore tutta l'applicazione si blocca.
 
 | Capitolo precedente  | Capitolo successivo     |
 | :--------------- | ---------------: |
