@@ -5,9 +5,9 @@
 | [◀︎ 09-seo](../09-seo)| [11-javascript ▶︎](../11-javascript) |
 
 
-A volte vogliamo che le nostre pagine visualizzino qualcosa di diverso da un documento HTML. Ad esempio, forse hai un URL che genera la tua immagine social per un post del blog, o l'immagine per un prodotto, o i dati CSV per un report, o un feed RSS, o una sitemap del sito, o forse vuoi implementare un'API per la tua app mobile o qualsiasi altra cosa.
+A volte vogliamo che le nostre pagine visualizzino qualcosa di diverso da un documento HTML. A esempio, forse hai un URL che genera la tua immagine social per un post del blog, o l'immagine per un prodotto, o i dati CSV per un report, o un feed RSS, o una sitemap del sito, o forse vuoi implementare un'API per la tua app mobile o qualsiasi altra cosa.
 
-Ecco a cosa servono le [Resource Routes](../guides/resource-routes). Penso che sarebbe bello avere un feed RSS di tutti i nostri twix. Penso che avrebbe senso essere all'URL `/twixes.rss`. Ma affinché funzioni, dovrai trattare il punto `.` in modo particolare perchè venga riconosciuto come tale perché quel carattere ha un significato speciale nei nomi dei file di percorso Remix. Scopri di più su [escaping caratteri speciali qui](../api/conventions#escaping-special-characters).
+Ecco a cosa servono le [Resource Routes](../guides/resource-routes). Sarebbe top avere un feed RSS di tutti i nostri twix, magari all'URL `/twixes.rss`. Ma affinché funzioni, dovrai trattare il punto `.` in modo particolare perchè venga riconosciuto come tale perché quel carattere ha un significato speciale nei nomi dei file di percorso Remix. Puoi leggere di più sull'[escaping dei caratteri speciali qui](../api/conventions#escaping-special-characters).
 
 <docs-info>Che tu ci creda o no, in realtà ne hai già fatta una. Controlla la pagina di logout! Nessuna interfaccia utente è necessaria perché è lì solo per gestire le mutazioni e reindirizzare le anime perse.</docs-info>
 
@@ -107,13 +107,15 @@ export const loader: LoaderFunction = async ({
 
 </details>
 
-![XML document for RSS feed](/twixes-tutorial/img/twixes-rss-feed.png)
-<!-- TODO -->
+![XML document for RSS feed](../assets/10/twixes-feed.png)
 
+Puoi seriamente fare qualsiasi cosa tu possa immaginare con questa API! Se lo desideri, potresti persino creare un'API JSON per una versione nativa della tua app - hai a disposizione tanta potenza qui.
 
-Wow! Puoi seriamente fare qualsiasi cosa tu possa immaginare con questa API. Se lo desideri, potresti persino creare un'API JSON per una versione nativa della tua app. Tanta potenza qui.
+💿 Sentiti libera di mettere un link a quel feed RSS sulle pagine `app/routes/index.tsx` e `app/routes/twixes.tsx`. Nota che se usi `<Link />` vorrai usare il prop `reloadDocument` perché non puoi eseguire una transizione lato client a un URL che non fa tecnicamente parte dell'app React:
 
-💿 Sentiti libera di mettere un link a quel feed RSS sulle pagine `app/routes/index.tsx` e `app/routes/twixes.tsx`. Nota che se usi `<Link />` vorrai usare il prop `reloadDocument` perché non puoi eseguire una transizione lato client a un URL che non fa tecnicamente parte dell'app React.
+```
+<Link to="twixes.rss" reloadDocument>Feed RSS</Link>
+```
 
 | Capitolo precedente  | Capitolo successivo     |
 | :--------------- | ---------------: |
