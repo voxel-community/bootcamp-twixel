@@ -1,18 +1,18 @@
-## JavaScript...
+# JavaScript
 
 | Capitolo precedente  | Capitolo successivo     |
 | :--------------- | ---------------: |
 | [◀︎ 10-resource-routes](../10-resource-routes)| [12-optimistic-ui ▶︎](../12-optimistic-ui) |
 
-Forse dovremmo effettivamente includere JavaScript nella nostra app JavaScript. 😂
+Forse adesso dovremmo effettivamente includere un po' di JavaScript nella nostra app JavaScript 😂
 
-Seriamente, vai alla tua app, tasto destro clicca `Ispeziona` e vai sulla tab `Network`.
+Seriamente, vai alla tua app, tasto destro, clicca `Ispeziona` e vai sulla tab `Network`.
 
 ![Network tab indicating no JavaScript is loaded](../assets/11/no-javascript.png)
 
 Hai notato che la nostra app non caricava JavaScript prima d'ora? 😆 Questo in realtà è piuttosto significativo. La nostra intera app può funzionare senza JavaScript sulla pagina. Questo perché Remix sfrutta la piattaforma così bene per noi.
 
-Perché è importante che la nostra app funzioni senza JavaScript? È perché siamo preoccupati per lo 0,002% di utenti che girano con JS disabilitato? Non proprio. È perché non tutti sono connessi alla tua app con una connessione velocissima e a volte JavaScript impiega del tempo per caricarsi o non riesce affatto a caricarsi. Rendere la tua app funzionante senza JavaScript significa che, quando ciò accade, la tua app _funziona ancora_ per i tuoi utenti anche prima che JavaScript termini il caricamento.
+Perché è importante che la nostra app funzioni senza JavaScript? Forse perché siamo preoccupati per lo 0,002% di utenti che girano con JS disabilitato? Non proprio. È perché non tutti sono connessi alla tua app con una connessione velocissima e a volte JavaScript impiega del tempo per caricarsi o non riesce affatto a caricarsi. Rendere la tua app funzionante senza JavaScript significa che, quando ciò accade, la tua app _funziona ancora_ per i tuoi utenti anche prima che JavaScript termini il caricamento.
 
 Un altro punto per l'esperienza dell'utente!
 
@@ -20,8 +20,7 @@ Ci sono ragioni per includere JavaScript nella pagina. Ad esempio, alcune esperi
 
 Ok, quindi carichiamo JavaScript su questa pagina ora 😆
 
-💿 Usa il componente di Remix [`<Scripts />` component](../api/remix#meta-links-scripts) 
-per caricare tutti i file JavaScript dentro `app/root.tsx`.
+💿 Usa il componente di Remix [`<Scripts />`](https://remix.run/docs/en/v1.3.0-pre.1/api/remix#meta-links-scripts) per caricare tutti i file JavaScript dentro `app/root.tsx`.
 
 <details>
 
@@ -38,27 +37,8 @@ import {
   Scripts,
 } from "remix";
 
-import globalStylesUrl from "./styles/global.css";
-import globalMediumStylesUrl from "./styles/global-medium.css";
-import globalLargeStylesUrl from "./styles/global-large.css";
-
 export const links: LinksFunction = () => {
-  return [
-    {
-      rel: "stylesheet",
-      href: globalStylesUrl,
-    },
-    {
-      rel: "stylesheet",
-      href: globalMediumStylesUrl,
-      media: "print, (min-width: 640px)",
-    },
-    {
-      rel: "stylesheet",
-      href: globalLargeStylesUrl,
-      media: "screen and (min-width: 1024px)",
-    },
-  ];
+  return [];
 };
 
 export const meta: MetaFunction = () => {
@@ -147,7 +127,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 ### Forms
 
-Remix ha il suo componente [`<Form />`](../api/remix#form). Quando JavaScript non è ancora caricato, funziona allo stesso modo di un modulo normale, ma quando JavaScript è abilitato, viene "progressivamente migliorato" per fare invece una richiesta di "fetch" in modo da non ricaricare l'intera pagina.
+Remix ha il suo componente [`<Form />`](https://remix.run/docs/en/v1.3.0-pre.1/api/remix#form). Quando JavaScript non è ancora caricato, funziona allo stesso modo di un modulo normale, ma quando JavaScript è abilitato, viene "progressivamente migliorato" per fare invece una richiesta di "fetch" in modo da non ricaricare l'intera pagina.
 
 💿 Trova tutti gli elementi `<form />` e cambiali nel componente Remix `<Form />`.
 

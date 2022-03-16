@@ -10,9 +10,9 @@ Ora che abbiamo JavaScript sulla pagina, possiamo beneficiare del _miglioramento
 Anche se la nostra app è abbastanza veloce (soprattutto in locale 😅), alcuni utenti potrebbero avere una connessione lenta. Ciò significa che pubblicheranno i loro twixes, ma poi dovranno aspettare un po' prima di vedere qualcosa. Potremmo aggiungere uno spinner di caricamento da qualche parte, ma sarebbe un'esperienza utente molto migliore se fossimo ottimisti sul successo della richiesta e mostrare ciò che l'utente vedrebbe.
 
 
-C'è questa [guida sull'optimistic UI](../guides/optimistic-ui) piuttosto approfondita, se vuoi darci una letta.
+C'è questa [guida sull'optimistic UI](https://remix.run/docs/en/v1.3.0-pre.1/guides/optimistic-ui) piuttosto approfondita, se vuoi darci una letta, nel frattempo procediamo a creare una versione base.
 
-💿 Aggiungi l'ptimistic UI alla route `app/routes/twixes/new.tsx`.
+💿 Aggiungiamo l'optimistic UI alla route `app/routes/twixes/new.tsx`.
 
 Nota, probabilmente vorrai creare un nuovo file in `app/components/` chiamato `twix.tsx` in modo da poter riutilizzare quella UI in entrambe le route.
 
@@ -305,18 +305,18 @@ export default function NewTwixRoute() {
   const transition = useTransition();
 
   if (transition.submission) {
-    const name = transition.submission.formData.get("name");
+    const title = transition.submission.formData.get("title");
     const content =
       transition.submission.formData.get("content");
     if (
-      typeof name === "string" &&
+      typeof title === "string" &&
       typeof content === "string" &&
       !validateTwixContent(content) &&
-      !validateTwixName(name)
+      !validateTwixTitle(title)
     ) {
       return (
         <TwixDisplay
-          twix={{ name, content }}
+          twix={{ title, content }}
           isOwner={true}
           canDelete={false}
         />
@@ -421,13 +421,11 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
 Vedi come puoi usare la _stessa_ validazione utlizzata lato server nel client, quindi, se ciò che gli utenti inviano fallisce la convalida lato server, non ci preoccupiamo nemmeno di eseguire il rendering dell'UI ottimistica perché sappiamo che fallirebbe. 
 
-Detto questo, questo approccio dichiarativo della UI ottimistica è fantastico perché non dobbiamo preoccuparci del ripristino degli errori. Se la richiesta non va a buon fine, il nostro componente verrà rirenderizzato. Carino!
+Detto questo, questo approccio dichiarativo della UI ottimistica è fantastico perché non dobbiamo preoccuparci del ripristino degli errori. Se la richiesta non va a buon fine, il nostro componente verrà rirenderizzato al posto giusto - fantastico, no?
 
 Ecco una dimostrazione di come sarebbe quell'esperienza:
 
 <video src="/twixes-tutorial/img/optimistic-ui.mp4" controls muted loop autoplay></video>
-
-<!-- TODO -->
 
 
 | Capitolo precedente  | Capitolo successivo     |
