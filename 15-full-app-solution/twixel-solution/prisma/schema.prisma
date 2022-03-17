@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime @db.Date @default(now())
+  updatedAt    DateTime @db.Date @default(now())
+  username     String   @unique
+  passwordHash String
+  twixes        Twix[]
+}
+
+model Twix {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  twixesterId String @db.ObjectId
+  twixester   User     @relation(fields: [twixesterId], references: [id])
+  createdAt  DateTime @db.Date @default(now())
+  updatedAt  DateTime @db.Date @default(now())
+  title       String
+  content    String
+}
