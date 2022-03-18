@@ -25,7 +25,7 @@ Per l'app di Twixel, useremo l'approccio a classi ma in una maniera molto ottimi
 
 ## Installare TailwindCSS
 
-Installa i paccheitti richiesti da Tailwind con il seguente comando: `npm install -d tailwindcss postcss autoprefixer nodemon`, poi installa il pacchetto `npm-run-all` con il comando `npm install npm-run-all`.
+Installa i pacchetti richiesti da Tailwind con il seguente comando: `npm install -d tailwindcss postcss autoprefixer nodemon`, poi installa il pacchetto `npm-run-all` con il comando `npm install npm-run-all`.
 
 Dopo aver installato tutti i pacchetti, inizializza TailwindCSS con il comando `npx tailwindcss init -p` e nel file `tailwind.config.js` che si è creato nella root del progetto inserisci questo codice `content: ["./app/**/*.{ts,tsx,jsx,js}"],` così:
 
@@ -235,7 +235,9 @@ Il risultato finale dovrebbe essere questo, su desktop e su mobile:
 <details>
 
 <summary>app/routes/index.tsx</summary>
+
 ```html
+
 <div className="w-screen h-screen bg-purple-100 flex flex-col items-center justify-center p-4">
   <div className="p-8 w-full max-w-sm">
     <h1 className="text-center text-5xl lg:text-7xl font-bold text-purple-700 mb-2">
@@ -253,6 +255,7 @@ Il risultato finale dovrebbe essere questo, su desktop e su mobile:
     </nav>
   </div>
 </div>
+
 ```
 </details>
 
@@ -276,7 +279,9 @@ TailwindCSS è mobile-first, quindi le proprietà senza prefisso sono quelle vis
 <details>
 
 <summary>app/routes/twixes.tsx</summary>
+
 ```html
+
 <div className="w-screen min-h-screen bg-purple-100">
       <header className="bg-white p-4">
         <div className="flex items-center justify-between mx-auto max-w-screen-2xl">
@@ -343,7 +348,9 @@ Grazie ai componenti, una volta aggiunto il suo stile questo viene visualizzato 
 <details>
 
 <summary>app/components/twix.tsx</summary>
+
 ```html
+
 <div>
   <p className="opacity-50 font-medium mb-2">Here's your hilarious twix:</p>
   <p className="text-xl lg:text-2xl">{twix.content}</p>
@@ -375,6 +382,7 @@ Ora che il componente ha già il suo stile, nelle pagine dove viene usato non do
 <details>
 
 <summary>app/routes/twixes/$twixId.tsx</summary>
+
 ```html
 <div className="bg-white shadow border rounded-md p-4">
   <TwixDisplay twix={data.twix} isOwner={data.isOwner} />
@@ -399,6 +407,7 @@ Qui abbiamo tre punti dove aggiungere lo stile alla nostra pagina:
 <details>
 
 <summary>app/routes/twixes/new.tsx | Componente principale</summary>
+
 ```html
 <div className="bg-white rounded-md shadow border p-4">
   <p className="opacity-50 font-medium mb-2">Crea il tuo twix</p>
@@ -473,6 +482,7 @@ Qui abbiamo tre punti dove aggiungere lo stile alla nostra pagina:
 <details>
 
   <summary>app/routes/twixes/new.tsx | UI ottimistica</summary>
+  
   ```html
   <div className="bg-white shadow border rounded-md p-4">
     <TwixDisplay
@@ -488,6 +498,7 @@ Qui abbiamo tre punti dove aggiungere lo stile alla nostra pagina:
 <details>
 
 <summary>app/routes/twixes/new.tsx | Errore autenticazione</summary>
+
 ```html
 <div className="bg-white p-4 border shadow rounded-md">
   <p>Devi prima fare login per creare nuovi Twixel</p>
@@ -506,6 +517,7 @@ Il risultato finale dovrebbe essere questo, su desktop e su mobile:
 <details>
 
 <summary>app/routes/twixes/new.tsx | Errore autenticazione</summary>
+
 ```html
 <div className="bg-white shadow border rounded-md p-4">
   <p className="opacity-50 font-medium mb-2">Here's a random twix:</p>

@@ -7,7 +7,7 @@
 
 A volte vogliamo che le nostre pagine visualizzino qualcosa di diverso da un documento HTML. A esempio, forse hai un URL che genera la tua immagine social per un post del blog, o l'immagine per un prodotto, o i dati CSV per un report, o un feed RSS, o una sitemap del sito, o forse vuoi implementare un'API per la tua app mobile o qualsiasi altra cosa.
 
-Ecco a cosa servono le [Resource Routes](../guides/resource-routes). Sarebbe top avere un feed RSS di tutti i nostri twix, magari all'URL `/twixes.rss`. Ma affinché funzioni, dovrai trattare il punto `.` in modo particolare perchè venga riconosciuto come tale perché quel carattere ha un significato speciale nei nomi dei file di percorso Remix. Puoi leggere di più sull'[escaping dei caratteri speciali qui](../api/conventions#escaping-special-characters).
+Ecco a cosa servono le [Resource Routes](https://remix.run/docs/en/v1.3.2-pre.0/guides/resource-routes). Sarebbe top avere un feed RSS di tutti i nostri twix, magari all'URL `/twixes.rss`. Ma affinché funzioni, dovrai trattare il punto `.` in modo particolare perchè venga riconosciuto come tale perché quel carattere ha un significato speciale nei nomi dei file di percorso Remix. Puoi leggere di più sull'[escaping dei caratteri speciali qui](https://remix.run/docs/en/v1.3.2-pre.0/api/conventions#escaping-special-characters).
 
 <docs-info>Che tu ci creda o no, in realtà ne hai già fatta una. Controlla la pagina di logout! Nessuna interfaccia utente è necessaria perché è lì solo per gestire le mutazioni e reindirizzare le anime perse.</docs-info>
 

@@ -31,10 +31,13 @@ Ci sono due pacchetti di cui abbiamo bisogno per iniziare con cui espandere le f
 npm install --save-dev prisma
 npm install @prisma/client
 ```
+<details>
 
-### Focus: salvataggio pacchetti
+<summary>Focus: salvataggio pacchetti</summary>
 
 Per salvare i pacchetti, il comando è `npm install nomepacchetto`. I pacchetti possono essere installati in modo che vengano usati sia nell'app in versione finale e costruita che in sviluppo oppure solo in sviluppo. Per dire che quel pacchetto lo vogliamo solo per lo sviluppo, al comando dobbiamo aggiungere `--save-dev` prima del nome del pacchetto, dunque `npm install --save-dev nomepacchetto`
+
+</details>
 
 💿 Invochiamo Prisma per verificare che si sia installato correttamente tramite il comando:
 
@@ -81,7 +84,7 @@ Utilizzeremo il Free Shared DB, è gratuito, non è richiesta la carta di credit
 
 Per l'elenco di accesso IP, inseriremo 0.0.0.0 come IP per garantire che il nostro database sia attivo e funzionante rapidamente per lo sviluppo. Ti consigliamo di limitare gli IP per le app di produzione.
 
-![MongoDB](../assets/04/mongodb-security-quickstart.png)
+![MongoDB](../assets/04/mongodb-ip.png)
 
 6. Sarai ridirezionata a `Database Deployments` che mostrerà `Cluster0`.
 7. Clicca il pulsante `Connect` vicino `Cluster 0`
@@ -96,16 +99,19 @@ DATABASE_URL="mongodb+srv://nomeutente:<password>@twixel.ycwht.mongodb.net/myFir
 
 Sostituisci il `nomeutente` con il nome utente che hai creato, la `<password>` con la password creata e `myFirstDatabase` con il nome del database che hai appena creato (`Cluster 0`)
 
-### Focus: i file .env
+<details>
 
-Un'applicazione, per funzionare, può avere bisogno di informazioni i cui valori cambiano da caso a caso ma che ne costiuiscono parti fondamentali per il suo funzionamento. Sono parte del suo ambiente, il suo `environment` - da qui il file `.env`. In questo file, con dei nommi univoci possiamo salvare queste variabili per utilizzarle attrvaerso tutta l'app, senza ogni volta riscriverle a mano.
+<summary>Focus: i file .env</summary>
 
+Un'applicazione, per funzionare, può avere bisogno di informazioni i cui valori cambiano da caso a caso ma che ne costituiscono parti fondamentali per il suo funzionamento. Sono parte del suo ambiente, il suo `environment` - da qui il file `.env`. In questo file, con dei nommi univoci possiamo salvare queste variabili per utilizzarle attrvaerso tutta l'app, senza ogni volta riscriverle a mano.
+
+</details>
 
 ## Fai il setup di Prisma
 
 Ora che hai inizializzato prisma, potrai iniziare a modellare i dati dell'app. Poiché questo non è un tutorial sui Prisma, te li daremo già pronti ora ma puoi leggere di più sullo schema dei prisma dai [loro documenti](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference) nel caso ti interessi approfondire.
 
-Copia e incolla i seguenti dati all'interno del file ``schema.prisma` che trovi dentro la cartella `prisma`:
+Copia e incolla i seguenti dati all'interno del file `schema.prisma` che trovi dentro la cartella `prisma`:
 
 ```prisma filename=prisma/schema.prisma lines=[13-19]
 // This is your Prisma schema file,
@@ -212,11 +218,15 @@ Sentiti libera di aggiungere tutti i twix che vuoi.
 
 Ora dobbiamo solo eseguire questo file. L'abbiamo scritto in TypeScript per assicurarci di usare i tipi corretti (questo è molto più utile quando l'app e i modelli di dati crescono in complessità). Quindi avremo bisogno di un modo per eseguirlo.
 
-### Focus: Typescript
+<details>
+
+<summary>Focus: Typescript</summary>
 
 Javascript è un linguaggio di progammazione che aggiunge ai siti web interattività e funzionalità, a esempio salvare un post quando clicchi un bottone oppure ricaricare una pagina quando fai pull-to-refresh.
 
 Typescript è simile a Javascript, ma aggiunge un livello di controllo ulteriore per facilitare la scrittura di app grandi e complesse. Quando scrivi una app web, può capitare di fare uso di tanti tipi di oggetti con caratteristiche differenti. A esempio. l'oggetto `libro` è fatto da un totale di pagine, che è un `numero` e da un testo, che è una `stringa`. Inserire una stringa nel numero totale di pagine potrebbe portare a bug imprevisti. Con Typpescript definisci a priori tutti i tipi e i modelli di dati che usi, in modo da avere controlli automatici che effettivamente i valori che stai usando siano sempre quelli corretti per l'oggetto in uso.
+
+</details>
 
 ## Gestione Typescript
 
@@ -305,7 +315,7 @@ Ok, pronta per tornare a scrivere il codice Remix e della nostra app?
 
 Il nostro obiettivo è mettere un elenco di twixes sul percorso `twixes.tsx` in modo da poter avere un elenco di link a twix tra cui le persone possono scegliere. In Remix, ogni route module (ovvero le pagine che abbiamo creato nella lezione 03, a esempio `twixes.tsx` stessa) è responsabile dell'acquisizione dei propri dati. Quindi, se vogliamo dati sul percorso `/twixes`, aggiorneremo il file `app/routes/twixes.tsx`.
 
-Per *_caricare_* i dati in un route module di Remix, si usa un [**`loader`**](../api/conventions#loader). Il **`loader`** è una funzione `async` che esportiamo e che restituisce una risposta a cui accediamo da dentor il nostro **`HTML`** tramite l'hook [`useLoaderData`](../api/remix#useloaderdata). Ecco un rapido esempio:
+Per *_caricare_* i dati in un route module di Remix, si usa un [**`loader`**](https://remix.run/docs/en/v1.3.2-pre.0/api/conventions#loader). Il **`loader`** è una funzione `async` che esportiamo e che restituisce una risposta a cui accediamo da dentor il nostro **`HTML`** tramite l'hook [`useLoaderData`](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#useloaderdata). Ecco un rapido esempio:
 
 ```tsx nocopy
 // questo è un esempio. Non serve copiarlo 😄
@@ -508,7 +518,7 @@ export default function TwixRoute() {
 
 Ora dovresti essere in grado di andare all'url [`/twixes`](http://localhost:3000/twixes) e cliccando su un link, puoi ottenere il link al twix:
 
-![](../assets/04/twix-id.tsx)
+![](../assets/04/twix-id.png)
 
 Gestiremo il caso in cui un utente prova ad accedere ad una pagina di un twix inestistente, nei prossimi capitoli.
 
