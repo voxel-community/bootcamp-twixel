@@ -14,9 +14,9 @@ Un sito web è formato da pagine. La prima cosa da fare, dunque, è preparare la
 * `/twixes/new` per creare un nuovo twix
 * `/login` per accedere al proprio account
 
-Si possono creare le pagine tramite [`remix.config.js`](../api/conventions#remixconfigjs), ma il modo più comune e semplice per creare la nostra struttura delle pagine è attraverso il file system, ovvero usando una struttura di cartelle e file. **Questo sistema è chiamato "`file-based routing`"**.
+Si possono creare le pagine tramite [`remix.config.js`](https://remix.run/docs/en/v1.3.2-pre.0/api/conventions#remixconfigjs), ma il modo più comune e semplice per creare la nostra struttura delle pagine è attraverso il file system, ovvero usando una struttura di cartelle e file. **Questo sistema è chiamato "`file-based routing`"**.
 
-Ogni file che creiamo nella cartella `app/routes` viene chiamato ["Route Module"](../api/conventions#route-module-api) e seguendo una [convenzione nel rinominare i file](../api/conventions#route-filenames), possiamo creare gli URL e i link che rispettano la struttura che vogliamo creare. 
+Ogni file che creiamo nella cartella `app/routes` viene chiamato ["Route Module"](https://remix.run/docs/en/v1.3.2-pre.0/api/conventions#route-module-api) e seguendo una [convenzione nel rinominare i file](https://remix.run/docs/en/v1.3.2-pre.0/api/conventions#route-filenames), possiamo creare gli URL e i link che rispettano la struttura che vogliamo creare. 
 
 Le pagine del sito web vanno collegate tra loro per funzionare - Remix si basa su [React Router](https://reactrouter.com/) per gestire il sistema di collegamento tra le varie pagine dell'applicazione, rendendo il processo rapido e automatico.
 
@@ -185,7 +185,7 @@ Per fare ciò useremo i parametri URL. Quindi aggiungiamo una nuova pagina per v
 
 Il parametro `$twixId` nel nome del file può essere qualsiasi cosa - dato che ha il `$` davanti, stiamo dicendo a Remix che il nome di quella pagina non sarà sempre fisso come quello di `twixes`, ma potrà essere qualunque cosa, a esempio `19874713` oppure `twixel-434324`.
 
-Grazie alla presenza di questo paramtetro, noi possiamo utilizzarlo nella nostra pagina per cercare all'interno del nostro database questa parte di URL e mostrare il twix corrispondente. Per creare una pagina con dei parametri dinamici, quando crei il file basta usare`$`. ([Scopri di più su questa convenzione qui](../api/conventions#route-filenames)).
+Grazie alla presenza di questo paramtetro, noi possiamo utilizzarlo nella nostra pagina per cercare all'interno del nostro database questa parte di URL e mostrare il twix corrispondente. Per creare una pagina con dei parametri dinamici, quando crei il file basta usare`$`. ([Scopri di più su questa convenzione qui](https://remix.run/docs/en/v1.3.2-pre.0/api/conventions#route-filenames)).
 
 💿 Crea una nuova pagina `app/routes/twixes/$twixId.tsx`. Intanto non preoccuparti di cosa verrà visualizzato navigando a questa pagina (non abbiamo ancora fatto il setup del nostro database):
 

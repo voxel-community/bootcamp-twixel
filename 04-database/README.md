@@ -305,7 +305,7 @@ Ok, pronta per tornare a scrivere il codice Remix e della nostra app?
 
 Il nostro obiettivo è mettere un elenco di twixes sul percorso `twixes.tsx` in modo da poter avere un elenco di link a twix tra cui le persone possono scegliere. In Remix, ogni route module (ovvero le pagine che abbiamo creato nella lezione 03, a esempio `twixes.tsx` stessa) è responsabile dell'acquisizione dei propri dati. Quindi, se vogliamo dati sul percorso `/twixes`, aggiorneremo il file `app/routes/twixes.tsx`.
 
-Per *_caricare_* i dati in un route module di Remix, si usa un [**`loader`**](../api/conventions#loader). Il **`loader`** è una funzione `async` che esportiamo e che restituisce una risposta a cui accediamo da dentor il nostro **`HTML`** tramite l'hook [`useLoaderData`](../api/remix#useloaderdata). Ecco un rapido esempio:
+Per *_caricare_* i dati in un route module di Remix, si usa un [**`loader`**](https://remix.run/docs/en/v1.3.2-pre.0/api/conventions#loader). Il **`loader`** è una funzione `async` che esportiamo e che restituisce una risposta a cui accediamo da dentor il nostro **`HTML`** tramite l'hook [`useLoaderData`](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#useloaderdata). Ecco un rapido esempio:
 
 ```tsx nocopy
 // questo è un esempio. Non serve copiarlo 😄

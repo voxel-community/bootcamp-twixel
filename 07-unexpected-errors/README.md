@@ -6,7 +6,7 @@
 
 Ci spiace dirlo, ma non sempre gli errori di un'applicazione sono evitabili (es. il server smette di rispondere). Quindi dobbiamo accettare la possibilità di avere degli errori inaspettati e dobbiamo cercare di gestirli.
 
-Fortunatamente la gestione degli errori in Remix è ottima! Se hai usato in passato React, dovrebbe esserti familiare la funzionalità degli [Error Boundary feature](https://reactjs.org/docs/error-boundaries.html#gatsby-focus-wrapper). Con Remix, puoi esportare nelle fare pagine un componente[`ErrorBoundary`](../api/conventions#errorboundary) che funziona anche lato server. Inoltre puoi gestire gli errori sia nei `loader` che nelle `action`!
+Fortunatamente la gestione degli errori in Remix è ottima! Se hai usato in passato React, dovrebbe esserti familiare la funzionalità degli [Error Boundary feature](https://reactjs.org/docs/error-boundaries.html#gatsby-focus-wrapper). Con Remix, puoi esportare nelle fare pagine un componente[`ErrorBoundary`](https://remix.run/docs/en/v1.3.2-pre.0/api/conventions#errorboundary) che funziona anche lato server. Inoltre puoi gestire gli errori sia nei `loader` che nelle `action`!
 
 Un `Error Boundary` è una funzione che vive sullo stesso livello dei `loader` e delle `action` e intercetta tutti gli errori emessi dalla pagina, visualizza un messaggio di errore di conseguenza. Anche qui possiamo usare codice HTML per stilare il messaggio di errore e ci basterà gestire bene gli errori nei `loader` e nelle `action` per visualizzarlo.
 

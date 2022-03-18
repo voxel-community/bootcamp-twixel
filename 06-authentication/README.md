@@ -641,7 +641,7 @@ Per controllare abbiamo aggiunto un `console.log` al file `app/routes/login.tsx`
 
 > Se stai avendo alcuni problemi, esegui il comdando `npx prisma studio` per vedere il database direttamente sul browser. È possibile che tu non abbia alcun dato perchè ti sia scordata di eseguire `npx prisma db seed` (come noi quando abbiamo scritto questo tutorial 😅).
 
-Ora abbiamo l'utente! Possiamo finalmente salvare l'id dell'utente nella sessione per accedere alle pagine che lo richiedono. Apri il file `app/utils/session.server.ts`. Remix è costruito in un modo astratto tale da permetterci di gestire diversi meccanismi di gestione delle sessioni. [here are the docs](../api/remix#sessions)). Noi useremo la funzione [`createCookieSessionStorage`](../api/remix#createcookiesessionstorage) dato che è la più semplice e la più scalabile.
+Ora abbiamo l'utente! Possiamo finalmente salvare l'id dell'utente nella sessione per accedere alle pagine che lo richiedono. Apri il file `app/utils/session.server.ts`. Remix è costruito in un modo astratto tale da permetterci di gestire diversi meccanismi di gestione delle sessioni. [here are the docs](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#sessions)). Noi useremo la funzione [`createCookieSessionStorage`](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#createcookiesessionstorage) dato che è la più semplice e la più scalabile.
 
 💿 Scrivi una funzione `createUserSession` nel file `app/utils/session.server.ts` che accetta un ID utente e una pagina a cui ridirezionare l'utente:
 
@@ -775,7 +775,7 @@ E ora ogni richiesta che verrà fatta dal browser al server, includerà il cooki
 
 Adesso che abbiamo impostato e salvato il cookie possiamo verificare se l'utente è autenticato leggendo l'header e ottenendo il valore dello `userId` che ci abbiamo inserito. Per testarne il funzionamento andiamo a modificare la pagina `/twixes/new` e aggiungiamo il campo `twixsterId` alla chiamata `db.twix.create`.
 
-> Puoi controllare la [documentazione per scoprire nuove modalità su come ottenere le sessioni dalla richiestas](../api/remix#sessions)
+> Puoi controllare la [documentazione per scoprire nuove modalità su come ottenere le sessioni dalla richiestas](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#sessions)
 
 💿 Aggiorniamo quindi il file `app/utils/session.server.ts` per ottenere lo `userId` dalla sessione. Nella soluzione che ti proponiamo abbiamo creato 3 funzioni: `getUserSession(request: Request)`, `getUserId(request: Request)` and `requireUserId(request: Request, redirectTo: string)`.
 
@@ -1031,7 +1031,7 @@ Fantastico! Adesso se un utente prova a creare un nuovo twix, verrà ridireziona
 
 Ora che abbiamo l'autenticazione dovremmo permettere alle persone di vedere se sono loggati oppure permettere di fare log out, no?
 
-💿 Aggiorna il file `app/utils/session.server.ts` e aggiungi la funzione `getUser` che ci permette di ottenere l'utente da Prisma e passarlo alla funzione di `logout` che userà la [`funzione destroySession`](../api/remix#using-sessions) per fare il logout dell'utente.
+💿 Aggiorna il file `app/utils/session.server.ts` e aggiungi la funzione `getUser` che ci permette di ottenere l'utente da Prisma e passarlo alla funzione di `logout` che userà la [`funzione destroySession`](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#using-sessions) per fare il logout dell'utente.
 
 <details>
 
