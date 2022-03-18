@@ -7,13 +7,13 @@
 
 I Meta tag sono utili per il SEO (_Search Engine Optimization_ - il processo di rendere i siti ottimizzati per i motori di ricerca) e i social media. La parte un po' tricky è che spesso i dati che servono sono contenuti nei componenti che richiedono o utilizzano il dato.
 
-Per questo motivo Remix ha sviluppato un export [`meta`](../api/conventions#meta) che andremo ad aggiungere ai seguenti file: 
+Per questo motivo Remix ha sviluppato un export [`meta`](https://remix.run/docs/en/v1.3.2-pre.0/api/conventions#meta) che andremo ad aggiungere ai seguenti file: 
 
 - `app/routes/index.tsx`
 - `app/routes/login.tsx`
 - `app/routes/twixes/$twixId.tsx`
 
-Ma prima di iniziare ricorda che i tag devono essere renderizzati nella parte `<head>` di un `<html>`. Per fare questo Remix ci fornisce un componente [`<Meta />`](../api/remix#meta-links-scripts).
+Ma prima di iniziare ricorda che i tag devono essere renderizzati nella parte `<head>` di un `<html>`. Per fare questo Remix ci fornisce un componente [`<Meta />`](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#meta-links-scripts).
 
 💿 Aggiungi il comeponente `<Meta />` al file `app/root.tsx` e aggiungi l'export `meta` nelle pagine che abbiamo elencato sopra. Il componente `<Meta />` ha bisogno di essere posizionato sopra al tag `<title>`.
 
