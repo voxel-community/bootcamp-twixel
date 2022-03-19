@@ -29,6 +29,9 @@ Eseguiremo anche comandi sul terminale. Puoi usare quello che **Visual Studio Co
 
 La tipologia di terminale la puoi selezionare dalla tendina ☺️
 
+## Attiva il salvataggio automatico su Visual Studio Code
+> Clicca su `File` e spunta l’opzione salvataggio automatico (*Autosave*)
+
 Una conoscenza pregressa di React e Typescript non è necessaria, ma è sicuramente di aiuto nel seguire il tutorial, se vuoi saperne di più ti lasciamo qui qualche link per approfondire:
 
 - [JavaScript to know for React](https://kentcdodds.com/blog/javascript-to-know-for-react)
