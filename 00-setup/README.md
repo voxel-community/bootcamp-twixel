@@ -14,9 +14,20 @@ Puoi decidere di seguire questo tutorial su [CodeSandbox](https://codesandbox.co
 - [npm](https://www.npmjs.com) 7 or maggiore
 - Un code editor ([VSCode](https://code.visualstudio.com/))
 
+> Puoi verificare di averli installati usando i comandi `node -v` e `npm -v` all'interno di un terminale. Se ti appare una versione, significa che lo hai installato
+
+```sh
+ % node -v
+v16.13.2
+ % npm -v
+8.1.2
+```
+
 Eseguiremo anche comandi sul terminale. Puoi usare quello che **Visual Studio Code** mette a disposizione.
 
-> Se hai Windows, ricordati di non usare Powershell ma un altro tipo di terminale. La tipologia di terminale la puoi selezionare dalla tendina
+> Se usi Window ricordati di utilizzare un terminate di tipo Command Prompt e non PowerShell
+
+La tipologia di terminale la puoi selezionare dalla tendina ☺️
 
 Una conoscenza pregressa di React e Typescript non è necessaria, ma è sicuramente di aiuto nel seguire il tutorial, se vuoi saperne di più ti lasciamo qui qualche link per approfondire:
 
