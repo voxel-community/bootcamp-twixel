@@ -38,7 +38,7 @@ export default function IndexRoute() {
 
 </details>
 
-React Router supporta il **`nested routing`**, che significa che possiamo avere pagine e sottopagine nei nostri link. Ad esempio `app/routes/index.tsx` è una sottopagina di `app/root.tsx`. Nel nested routing, le pagine "genitore" sono responsabili della gestione e visualizzazione delle proprie pagine "figli" o sottopagine.
+React Router supporta il **`nested routing`**, che significa che possiamo avere pagine e sottopagine nei nostri link. Ad esempio `app/routes/index.tsx` è una sottopagina di `app/root.tsx`. Nel nested routing, le pagine "genitore" sono responsabili della gestione e visualizzazione delle proprie pagine "figlie" o sottopagine.
 
 💿 Aggiorna `app/root.tsx` per posizionare la sottopagina. Puoi farlo utilizzando il componente `<Outlet />` che ti viene fornito da `remix`. Quando metti un `<Outlet />`, stai dicendo alla pagina di visualizzare in quello spazio tutte le sue sotto-pagine
 
@@ -133,6 +133,30 @@ Adesso se ricarichi la pagina [`/twixes`](http://localhost:3000/twixes), vedrai 
 ![Twix index](/assets/03/twixes.png)
 
 Come puoi notare, ogni pagina corrisponde al proprio pezzettino di URL. Avere questa gestione a file e cartelle per le pagine permette di avere un ottimo sistema per gestire pagine e sottopagine!
+
+Ecco la struttura delle routes con i corrispondenti URLs
+
+```
+twixel
+├── README.md
+├── app
+│   ├── entry.client.tsx
+│   ├── entry.server.tsx
+│   ├── root.tsx
+│   └── routes
+|       ├── index.tsx           ---> http://localhost:3000                    (pagina principale)
+|       ├── twixes.tsx          ---> http://localhost:3000/twixes             (pagina madre)
+|       └── twixes
+|             ├── index.tsx     ---> http://localhost:3000/twixes             (pagina figlia principale)
+|             └── $twixId.tsx   ---> http://localhost:3000/twixes/{id-twix}   (pagina figlia secondaria)
+├── package-lock.json
+├── package.json
+├── public
+│   └── favicon.ico
+├── remix.config.js
+├── remix.env.d.ts
+└── tsconfig.json
+```
 
 ## Pagina di creazione nuovo twix
 
