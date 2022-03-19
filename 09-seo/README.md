@@ -114,12 +114,6 @@ export function ErrorBoundary({ error }: { error: Error }) {
 import type { LinksFunction, MetaFunction } from "remix";
 import { Link } from "remix";
 
-import stylesUrl from "~/styles/index.css";
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
-};
-
 export const meta: MetaFunction = () => ({
   title: "Twixes",
   description:
