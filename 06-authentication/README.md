@@ -48,6 +48,8 @@ model Twix {
 }
 ```
 
+Prima di eseguire questo comando elimina la collezione che hai creato sul database di Mongo dato che abbiamo creato un nuovo tipo di dato.
+
 Adesso che abbiamo aggiornato lo schema puoi eseguire il seguente comando:
 
 ```sh
@@ -67,6 +69,8 @@ Datasource "db"
 ```
 
 Con questo cambio, inizieremo a visualizzare alcuni errori di TypeScript nel progetto perchè non potrai più creare `twix` senza un valore per il `twixsterId`.
+
+**Prima di generare l'utente chiudi e riapri l'editor Visual Studio Code in modo che l'editor si accorga del cambiamento di Prisma.**
 
 💿 Cominciamo sistemando il nostro file `prisma/seed.ts`.
 
@@ -133,18 +137,6 @@ function getTwixes() {
 
 ```sh
 npx prisma db seed
-```
-
-Questo comando ti darà questo output:
-
-```sh
-Environment variables loaded from .env
-Prisma schema loaded from prisma/schema.prisma
-Datasource "db"
-
-🚀  Your database is now in sync with your schema. Done in 194ms
-
-✔ Generated Prisma Client (3.10.0 | library) to ./node_modules/@prisma/client in 167ms
 ```
 
 Ottimo! Ora il database è pronto.
