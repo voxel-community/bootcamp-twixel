@@ -3,12 +3,23 @@
 ## Obiettivo del bootcamp
 
 Voxel Bootcamp per costruire un’app completa come Twitter - Twixel.
+Le tecnologie impiegate sarannno:
 
---
+- **Remix Run**, una libreria di strumenti per potenziare il funzionamento delle pagine HTML basato sul popolarissimo ReactJS,
+- **TailwindCSS**, per creare belle interfacce con tanti stili CSS facili da applicare.
+Per gestire i dati, i tweet e altre funzionalità, faremo uso di:
+- **NodeJS**, per creare il nostro server web,
+- **MongoDB**, per costruire e gestire il database.
+
+Alla fine del bootcamp, assieme alle altre Voxel Coders e con il supporto delle Voxel Mentors avrai costruito:
+
+- Il tuo profilo personale, dove pubblicare nuovi post,
+- Il feed dove leggerai i post pubblicati da tutte le tue amiche,
+- E potrai vedere il profilo delle tue amiche e seguirle!
 
 ### Struttura del bootcamp
 
-Il bootcamp è strutturato in * capitoli. 
+Il bootcamp è strutturato in 14 capitoli. 
 
 #### Indice dei capitoli
 
