@@ -13,9 +13,11 @@ npx create-remix@latest
 
 > Potrebbe venirti chiesto se vuoi installare `create-remix`. Premi `y` e invio. Si tratta di un'installazione temporanea necessaria per fare il setup del progetto.
 
-![Genera un nuovo progetto di Remix](../assets/01/remix-create.png)
+![Genera un nuovo progetto di Remix](../assets/01/remix-create-2.png)
 
-Quando le animazioni di Remix sono finite, ti verranno chieste un paio di domande per creare e fare il setup del progetto. Chiameremo l'app **"twixel"**, useremo "Vercel" come deploy target, e TypeScript. Al termine nel terminale dovresti avere il seguente setup:
+Quando le animazioni di Remix sono finite, ti verranno chieste un paio di domande per creare e fare il setup del progetto. Chiameremo l'app **"twixel"**, useremo il tipo di app base,  "Vercel" come deploy target, e TypeScript. Al termine nel terminale dovresti avere il seguente setup:
+
+- Seleziona `Just the basics`
 
 ```
 R E M I X - v#.#.#

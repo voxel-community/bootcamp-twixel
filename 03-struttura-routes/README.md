@@ -24,6 +24,8 @@ Le pagine del sito web vanno collegate tra loro per funzionare - Remix si basa s
 
 💿 Iniziamo creando la pagina iniziale, quella raggiungibile tramite (`/`). Per farlo, crea un file `app/routes/index.tsx` e con `export default` esporta un funzione contenente la nostra pagina in formato `HTML`. Per adesso puoi far visualizzare quello che desideri, noi nell'esempio abbiamo voluto visualizzare **"Hello Index Route"**.
 
+Clicca sulla freccia per vedere il codice
+
 <details>
 
 <summary>app/routes/index.tsx</summary>
