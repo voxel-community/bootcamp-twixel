@@ -360,11 +360,6 @@ import type { LinksFunction, LoaderFunction } from "remix";
 import { Link, Outlet, useLoaderData } from "remix";
 
 import { db } from "~/utils/db.server";
-import stylesUrl from "~/styles/twixes.css";
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
-};
 
 type LoaderData = {
   twixListItems: Array<{ id: string; title: string }>;
