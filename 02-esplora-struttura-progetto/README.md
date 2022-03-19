@@ -72,7 +72,7 @@ Oltre alle cartelle che abbiamo visto sopra, questo comando ha creato tre nuove 
 
 ![Ciao mondo](../assets/02/build.png)
 
-💿 Iniziamo fermando il server (premi CTRL+C nel terminale) e andiamo a cestinare queste cartelle:
+💿 Iniziamo fermando il server (premi CTRL+C nel terminale) e andiamo a cestinare questa cartella:
 
 - `app/routes`
 
