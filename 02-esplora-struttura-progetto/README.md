@@ -75,7 +75,6 @@ Oltre alle cartelle che abbiamo visto sopra, questo comando ha creato tre nuove 
 💿 Iniziamo fermando il server (premi CTRL+C nel terminale) e andiamo a cestinare queste cartelle:
 
 - `app/routes`
-- `app/styles`
 
 Stiamo cercando di ridurre il codice generato al minimo inizialmente per poi andare a scriverlo noi passo passo.
 
