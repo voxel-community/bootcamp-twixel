@@ -11,7 +11,7 @@
 Puoi decidere di seguire questo tutorial su [CodeSandbox](https://codesandbox.com/) (un editor online) oppure sul tuo computer (*scelta consigliata*). Se vuoi seguire il tutorial usando CodeSandbox quello che ti serve è una buona connessione internet e un browser moderno. Se invece vuoi sviluppare l'app in locale sul tuo computer ti serviranno un paio di programmi installati:
 
 - [Node.js](https://nodejs.org) versione 14 o maggiore
-- [npm](https://www.npmjs.com) 7 or maggiore
+- [npm](https://www.npmjs.com) 7 or maggiore (viene installato automaticamente con Node.js)
 - Un code editor ([VSCode](https://code.visualstudio.com/))
 
 > Puoi verificare di averli installati usando i comandi `node -v` e `npm -v` all'interno di un terminale. Se ti appare una versione, significa che lo hai installato
