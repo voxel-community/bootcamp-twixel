@@ -111,7 +111,7 @@ Un'applicazione, per funzionare, può avere bisogno di informazioni i cui valori
 
 Ora che hai inizializzato prisma, potrai iniziare a modellare i dati dell'app. Poiché questo non è un tutorial sui Prisma, te li daremo già pronti ora ma puoi leggere di più sullo schema dei prisma dai [loro documenti](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference) nel caso ti interessi approfondire.
 
-Copia e incolla i seguenti dati all'interno del file `schema.prisma` che trovi dentro la cartella `prisma`:
+Copia e incolla i seguenti dati all'interno del file `schema.prisma` che trovi dentro la cartella `prisma` al posto del contenuto attuale:
 
 ```prisma filename=prisma/schema.prisma lines=[13-19]
 // This is your Prisma schema file,
