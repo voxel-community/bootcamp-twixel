@@ -6,7 +6,7 @@
 
 Come hai potuto vedere, l'app che abbiamo messo online è piuttosto scarna visivamente - infatti, abbiamo usato solo il markup HTML puro. Ora, provvederemo ad aggiungere un po' di spice alle nostre interfacce con il CSS.
 
-Il CSS è un linguaggio di programmazione che ci permette di modificare l'aspetto degli elementi HTML che abbiamo usato - possiamo cambiare dimensioni, colori, oimbre, bordi, angoli, posizione e anche come si comportano quando il mouse ci passa sopra.
+Il CSS è un linguaggio di programmazione che ci permette di modificare l'aspetto degli elementi HTML che abbiamo usato - possiamo cambiare dimensioni, colori, ombre, bordi, angoli, posizione e anche come si comportano quando il mouse ci passa sopra.
 
 Alla base del CSS ci sono le classi: ogni classe è un contenitore di proprietà che andiamo a modificare. A esempio, guardiamo la classe scritta sotto:
 
@@ -21,7 +21,7 @@ Alla base del CSS ci sono le classi: ogni classe è un contenitore di proprietà
 
 Questa classe, quando viene applicata a un elemento HTML, lo rende alto e largo 200px (con le proprietà `height` e `width`), di colore rosso (il `background-color`) e con gli angoli smussati (`border-radius`).
 
-Per l'app di Twixel, useremo l'approccio a classi ma in una maniera molto ottimizzata grazie a [TailwindCSS](https://tailwindcss.com/) - con Tailwind  - 
+Per l'app di Twixel, useremo l'approccio a classi ma in una maniera molto ottimizzata grazie a [TailwindCSS](https://tailwindcss.com/) 
 
 ## Installare TailwindCSS
 
