@@ -142,7 +142,7 @@ model Twix {
 npx prisma db push
 ```
 
-> Se hai dei problemi controlla di aver inserito correttamente che la variabile `DATABASE_URL="mongodb+srv://nomeutente:<password>@twixel.ycwht.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"` sia scritta correttamente, quindi senza `<` e `>` nella password e senza spazi
+> Se hai dei problemi controlla di aver inserito correttamente la variabile `DATABASE_URL="mongodb+srv://nomeutente:<password>@twixel.ycwht.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"`, deve essere senza `<` e `>` nella password e senza spazi.
 
 Questo comando ti darà questo output:
 
