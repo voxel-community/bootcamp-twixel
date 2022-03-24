@@ -144,11 +144,11 @@ twixel
 │   ├── entry.server.tsx
 │   ├── root.tsx
 │   └── routes
-|       ├── index.tsx           ---> http://localhost:3000                    (pagina principale)
+|       ├── index.tsx           ---> http://localhost:3000                    (homepage)
 |       ├── twixes.tsx          ---> http://localhost:3000/twixes             (pagina madre)
 |       └── twixes
-|             ├── index.tsx     ---> http://localhost:3000/twixes             (pagina figlia principale)
-|             └── $twixId.tsx   ---> http://localhost:3000/twixes/{id-twix}   (pagina figlia secondaria)
+|             ├── index.tsx     ---> http://localhost:3000/twixes             (sottopagina figlia principale)
+|             └── $twixId.tsx   ---> http://localhost:3000/twixes/{id-twix}   (altra sottopagina figlia)
 ├── package-lock.json
 ├── package.json
 ├── public
