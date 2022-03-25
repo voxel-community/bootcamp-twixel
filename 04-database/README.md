@@ -103,7 +103,7 @@ Sostituisci il `nomeutente` con il nome utente che hai creato, la `<password>` c
 
 <summary>Focus: i file .env</summary>
 
-Un'applicazione, per funzionare, può avere bisogno di informazioni i cui valori cambiano da caso a caso ma che ne costituiscono parti fondamentali per il suo funzionamento. Sono parte del suo ambiente, il suo `environment` - da qui il file `.env`. In questo file, con dei nommi univoci possiamo salvare queste variabili per utilizzarle attrvaerso tutta l'app, senza ogni volta riscriverle a mano.
+Un'applicazione, per funzionare, può avere bisogno di informazioni i cui valori cambiano da caso a caso ma che ne costituiscono parti fondamentali per il suo funzionamento. Sono parte del suo ambiente, il suo `environment` - da qui il file `.env`. In questo file, con dei nomi univoci possiamo salvare queste variabili per utilizzarle attraverso tutta l'app, senza ogni volta riscriverle a mano.
 
 </details>
 
@@ -226,7 +226,7 @@ Ora dobbiamo solo eseguire questo file. L'abbiamo scritto in TypeScript per assi
 
 Javascript è un linguaggio di progammazione che aggiunge ai siti web interattività e funzionalità, a esempio salvare un post quando clicchi un bottone oppure ricaricare una pagina quando fai pull-to-refresh.
 
-Typescript è simile a Javascript, ma aggiunge un livello di controllo ulteriore per facilitare la scrittura di app grandi e complesse. Quando scrivi una app web, può capitare di fare uso di tanti tipi di oggetti con caratteristiche differenti. A esempio. l'oggetto `libro` è fatto da un totale di pagine, che è un `numero` e da un testo, che è una `stringa`. Inserire una stringa nel numero totale di pagine potrebbe portare a bug imprevisti. Con Typpescript definisci a priori tutti i tipi e i modelli di dati che usi, in modo da avere controlli automatici che effettivamente i valori che stai usando siano sempre quelli corretti per l'oggetto in uso.
+Typescript è simile a Javascript, ma aggiunge un livello di controllo ulteriore per facilitare la scrittura di app grandi e complesse. Quando scrivi una app web, può capitare di fare uso di tanti tipi di oggetti con caratteristiche differenti. A esempio. l'oggetto `libro` è fatto da un totale di pagine, che è un `numero` e da un testo, che è una `stringa`. Inserire una stringa nel numero totale di pagine potrebbe portare a bug imprevisti. Con Typescript definisci a priori tutti i tipi e i modelli di dati che usi, in modo da avere controlli automatici che effettivamente i valori che stai usando siano sempre quelli corretti per l'oggetto in uso.
 
 </details>
 
@@ -309,7 +309,7 @@ Ti lasciamo l'analisi di questo codice come esercizio perché, ancora una volta,
 
 L'unica cosa che ti facciamo notare è la convenzione del nome del file. La parte `.server` del nome del file informa Remix che questo codice non dovrebbe mai finire nel browser. 
 
-Questo passaggio facoltativo, perché Remix fa già un ottimo lavoro nel garantire che il codice del server non finisca nel client. Ma a volte alcune dipendenze del solo server sono difficili da eliminare, quindi l'aggiunta di `.server` al nome del file è un suggerimento per il compilatore di non preoccuparsi di questo modulo o delle sue importazioni durante l'impacchettamento (bundling) per il browser. Il `.server` agisce come una sorta di confine per il compilatore.
+Questo passaggio è facoltativo, perché Remix fa già un ottimo lavoro nel garantire che il codice del server non finisca nel client. Ma a volte alcune dipendenze del solo server sono difficili da eliminare, quindi l'aggiunta di `.server` al nome del file è un suggerimento per il compilatore di non preoccuparsi di questo modulo o delle sue importazioni durante l'impacchettamento (bundling) per il browser. Il `.server` agisce come una sorta di confine per il compilatore.
 
 ## Leggi dal database in un loader di Remix
 
@@ -448,7 +448,7 @@ export const loader: LoaderFunction = async () => {
 
 Puoi notare che tutto quello che ci serve per questa pagina sono solamente l'`id` e il `title` di un twix. Non c'è bisogno di scaricare dal database anche il contenuto di ogni twix. Inoltre per non scaricare ogni volta dal database tutti i twix, andiamo a chiedere gli ultimi 5 twix ordinati per data di creazione, in modo da avere gli ultimi twix scritti. 
 
-In tutto questo ci aiuta `prisma`, perché ci permette di richiedere al nostro database solamente quello che ci serve, evitando di mandare al client più dati del necessario. Tutte queste accortezze permettono di avere un'app più veloce e responsiva per chi la utilizza. E puoi farlo anche avendo altri tipi di database o client, non ti serve necessariamente Prisma o l'accesso diretto ad un database: puoi adottare queste tecniche e mandare al client solo i dati che servono anche usando ad esempio GraphQL CLient o delle REST APIs, ti basta filtrare i dati extra prima di mandarli al loader!
+In tutto questo ci aiuta `prisma`, perché ci permette di richiedere al nostro database solamente quello che ci serve, evitando di mandare al client più dati del necessario. Tutte queste accortezze permettono di avere un'app più veloce e responsiva per chi la utilizza. E puoi farlo anche avendo altri tipi di database o client, non ti serve necessariamente Prisma o l'accesso diretto ad un database: puoi adottare queste tecniche e mandare al client solo i dati che servono anche usando ad esempio GraphQL Client o delle REST APIs, ti basta filtrare i dati extra prima di mandarli al loader!
 
 ## Wrap up database queries
 
@@ -462,7 +462,7 @@ export const loader: LoaderFunction = async ({
 };
 ```
 
-E così è come puoi usare l'id del twix per chidere a Prisma e al database i dati del twix:
+E così è come puoi usare l'id del twix per chiedere a Prisma e al database i dati del twix:
 
 ```tsx nocopy
 const twix = await db.twix.findUnique({
@@ -517,7 +517,7 @@ Ora dovresti essere in grado di andare all'url [`/twixes`](http://localhost:3000
 
 ![](../assets/04/twix-id.png)
 
-Gestiremo il caso in cui un utente prova ad accedere ad una pagina di un twix inestistente, nei prossimi capitoli.
+Gestiremo il caso in cui un utente prova ad accedere ad una pagina di un twix inesistente, nei prossimi capitoli.
 
 Ora gestiamo la pagina `/twixes` nel file `app/routes/twixes/index.tsx` che mostra un twix randomico.
 
