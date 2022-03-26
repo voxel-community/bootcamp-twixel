@@ -151,7 +151,7 @@ La nostra autenticazione sarà tradizionale, con username e password. Useremo la
 npm install bcryptjs
 ```
 
-💿 La libreria `bcryptjs` has delle definizione TypeScript presenti in DefinitelyTyped, installiamo anche quelle così il nostro editor non si lamenterà:
+💿 La libreria `bcryptjs` ha delle definizioni TypeScript presenti in DefinitelyTyped, installiamo anche quelle così il nostro editor non si lamenterà:
 
 ```sh
 npm install --save-dev @types/bcryptjs
@@ -274,7 +274,7 @@ Dovresti avere il seguente output:
 
 ![A login form with a login/register radio button and username/password fields and a submit button](../assets/06/login.png)
 
-Puoi notare che abbiamo usato `useSearchParams` per prendere il valore del parametro `redirectTo` e l'abbiamo messo in un input nascosto. In questo modo la nostra `action` saprà a quale pagina redirezionare l'utente. Questo sarà per noi molto utile quando nelle prossime sezioni ridirezionare l'utente alla pagina di login.
+Puoi notare che abbiamo usato `useSearchParams` per prendere il valore del parametro `redirectTo` e l'abbiamo messo in un input nascosto. In questo modo la nostra `action` saprà a quale pagina redirezionare l'utente. Questo sarà per noi molto utile quando nelle prossime sezioni redirezioneremo l'utente alla pagina di login.
 
 Ottimo, adesso che abbiamo la struttura della schermata procediamo con l'aggiugere un po' di interazioni. Le seguenti operazioni saranno molto simili a quello che è stato fatto per la pagina `/twixes/new`.
 
@@ -568,7 +568,7 @@ export async function login({
 
 </details>
 
-Ottim! Con questo adesso possiamo ritornare al nostro file `app/routes/login.tsx` e aggiornarlo con la funzione che hai appena creato:
+Ottimo! Con questo adesso possiamo ritornare al nostro file `app/routes/login.tsx` e aggiornarlo con la funzione che hai appena creato:
 
 <details>
 
@@ -633,7 +633,7 @@ Per controllare abbiamo aggiunto un `console.log` al file `app/routes/login.tsx`
 
 > Se stai avendo alcuni problemi, esegui il comdando `npx prisma studio` per vedere il database direttamente sul browser. È possibile che tu non abbia alcun dato perchè ti sia scordata di eseguire `npx prisma db seed` (come noi quando abbiamo scritto questo tutorial 😅).
 
-Ora abbiamo l'utente! Possiamo finalmente salvare l'id dell'utente nella sessione per accedere alle pagine che lo richiedono. Apri il file `app/utils/session.server.ts`. Remix è costruito in un modo astratto tale da permetterci di gestire diversi meccanismi di gestione delle sessioni. [here are the docs](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#sessions)). Noi useremo la funzione [`createCookieSessionStorage`](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#createcookiesessionstorage) dato che è la più semplice e la più scalabile.
+Ora abbiamo l'utente! Possiamo finalmente salvare l'id dell'utente nella sessione per accedere alle pagine che lo richiedono. Apri il file `app/utils/session.server.ts`. Remix è costruito in un modo astratto tale da permetterci di gestire diversi meccanismi di gestione delle sessioni ([here are the docs](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#sessions)). Noi useremo la funzione [`createCookieSessionStorage`](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#createcookiesessionstorage) dato che è la più semplice e la più scalabile.
 
 💿 Scrivi una funzione `createUserSession` nel file `app/utils/session.server.ts` che accetta un ID utente e una pagina a cui ridirezionare l'utente:
 
@@ -767,7 +767,7 @@ E ora ogni richiesta che verrà fatta dal browser al server, includerà il cooki
 
 Adesso che abbiamo impostato e salvato il cookie possiamo verificare se l'utente è autenticato leggendo l'header e ottenendo il valore dello `userId` che ci abbiamo inserito. Per testarne il funzionamento andiamo a modificare la pagina `/twixes/new` e aggiungiamo il campo `twixsterId` alla chiamata `db.twix.create`.
 
-> Puoi controllare la [documentazione per scoprire nuove modalità su come ottenere le sessioni dalla richiestas](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#sessions)
+> Puoi controllare la [documentazione per scoprire nuove modalità su come ottenere le sessioni dalla richiesta](https://remix.run/docs/en/v1.3.2-pre.0/api/remix#sessions)
 
 💿 Aggiorniamo quindi il file `app/utils/session.server.ts` per ottenere lo `userId` dalla sessione. Nella soluzione che ti proponiamo abbiamo creato 3 funzioni: `getUserSession(request: Request)`, `getUserId(request: Request)` and `requireUserId(request: Request, redirectTo: string)`.
 
@@ -867,7 +867,8 @@ export async function createUserSession(
 
 </details>
 
-Nell'esempio abbiamo creato una funzione `requireUserId` che, se non c'è uno `userId`, ritornerà in risposta un `redirect`. Ricorda che `redirect` è una funzione di Remix che ritorna un oggetto [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response). Remix catturerà questa risposta e la manderà al client. Facendo fare all'utente un redirect ci assicuriamo e possiamo assumere che dalla funzione `requireUserId` verrà sempre dato in risposta uno `userId` e non dobbiamo preoccuparci di cosa succede se non c'è uno `userId` in risposta perché se non c'è uno `userId` l'esecuzione della funzione verrà fermata dal codice `throw redirect(`/login?${searchParams}`);`!
+Nell'esempio abbiamo creato una funzione `requireUserId` che, se non c'è uno `userId`, ritornerà in risposta un `redirect`. Ricorda che `redirect` è una funzione di Remix che ritorna un oggetto [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response). Remix catturerà questa risposta e la manderà al client. Facendo fare all'utente un redirect ci assicuriamo e possiamo assumere che dalla funzione `requireUserId` verrà sempre dato in risposta uno `userId` e non dobbiamo preoccuparci di cosa succede se non c'è uno `userId` in risposta perché se non c'è uno `userId` l'esecuzione della funzione verrà fermata dal codice `
+throw redirect(\`/login?${searchParams}`);`!`
 
 Della gestione degli errori parleremo meglio nelle prossime sezioni.
 

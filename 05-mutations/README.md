@@ -5,7 +5,7 @@
 | [◀︎ 04-database](../04-database)| [06-authentication ▶︎](../06-authentication) |
 
 
-Nei precedenti capitoli abbiamo creato una pagina al link `/twixes/new`, ma per ora il form che vediamo non fa ancora nulla. Questo dovrebbe essre il codice presente nel file `app/routes/twixes/new.tsx` (è importante che sia presente il `method="post"`, quindi controlla che ci sia):
+Nei precedenti capitoli abbiamo creato una pagina al link `/twixes/new`, ma per ora il form che vediamo non fa ancora nulla. Questo dovrebbe essere il codice presente nel file `app/routes/twixes/new.tsx` (è importante che sia presente il `method="post"`, quindi controlla che ci sia):
 
 ```tsx filename=app/routes/twixes/new.tsx
 export default function NewTwixRoute() {
@@ -105,7 +105,7 @@ export default function NewTwixRoute() {
 
 Con il codice appena scritto dovresti essere in grado di creare dei nuovi twix ed essere redirezionata alla pagina del twix una volta salvato.
 
-La funzione `redirect` che abbiamo usato è una semplice utility di Remix. Con questa utiliti possiamo impostare i corretti valori degli header HTML che ci permettono di redirezionare l'utente all'interno della nostra app dove vogliamo, informando correttamente il browser.
+La funzione `redirect` che abbiamo usato è una semplice utility di Remix. Con questa utility possiamo impostare i corretti valori degli header HTML che ci permettono di redirezionare l'utente all'interno della nostra app dove vogliamo, informando correttamente il browser.
 
 ![Create new twix form filled out](../assets/05/new-twix-filled.png)
 
