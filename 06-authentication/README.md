@@ -53,7 +53,7 @@ Prima di eseguire questo comando elimina la collezione che hai creato sul databa
 - Da MongoDB vai su `Browse Collections`
 ![TODO ricreare un diagramma di autenticazione](../assets/06/browse-collection.png)
 
-- Seleziona la collezione `Twix` ed eliminala
+- Seleziona la collezione `Twix` ed eliminala e fai lo stesso per la collezione `User`
 ![TODO ricreare un diagramma di autenticazione](../assets/06/drop-collection.png)
 
 
