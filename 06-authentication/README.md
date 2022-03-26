@@ -48,7 +48,14 @@ model Twix {
 }
 ```
 
-Prima di eseguire questo comando elimina la collezione che hai creato sul database di Mongo dato che abbiamo creato un nuovo tipo di dato.
+Prima di eseguire questo comando elimina la collezione che hai creato sul database di Mongo dato che abbiamo creato un nuovo tipo di dato. Ecco come fare:
+
+- Da MongoDB vai su `Browse Collections`
+![TODO ricreare un diagramma di autenticazione](../assets/06/browse-collection.png)
+
+- Seleziona la collezione `Twix` ed eliminala
+![TODO ricreare un diagramma di autenticazione](../assets/06/drop-collection.png)
+
 
 Adesso che abbiamo aggiornato lo schema puoi eseguire il seguente comando:
 
