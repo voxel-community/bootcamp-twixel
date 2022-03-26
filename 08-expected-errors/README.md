@@ -269,8 +269,8 @@ function validateTwixContent(content: string) {
   }
 }
 
-function validateTwixTitle(name: string) {
-  if (name.length < 3) {
+function validateTwixTitle(title: string) {
+  if (title.length < 3) {
     return `That twix's name is too short`;
   }
 }
@@ -278,11 +278,11 @@ function validateTwixTitle(name: string) {
 type ActionData = {
   formError?: string;
   fieldErrors?: {
-    name: string | undefined;
+    title: string | undefined;
     content: string | undefined;
   };
   fields?: {
-    name: string;
+    title: string;
     content: string;
   };
 };
