@@ -758,7 +758,7 @@ export const action: ActionFunction = async ({
 
 Vogliamo farti notare la variabile d'ambiente `SESSION_SECRET` che stiamo usando. Il valore dell'opzione `secrets` non lo vogliamo visibile all'interno del codice perché potrebbe venir utilizzato per scopi malevoli. Quindi andremo a leggere il valore dal nostro environment, questo significa che quello che devi fare è creare e dare un valore alla variabile `SESSION_SECRET` nel tuo file `.env`. Prisma carica i dati del file automaticamente.
 
-💿 Carichiamo nel file .env file la variabile `SESSION_SECRET` (con qualsiasi valore tu voglia).
+💿 Carichiamo nel file .env file la variabile `SESSION_SECRET` (con qualsiasi valore tu voglia). Dopo averla scritta chiudi e riapri il terminale per applicare le modifiche.
 
 Adesso apri la [Network tab](https://developer.chrome.com/docs/devtools/network/reference/) sul browser (clicca tasto destro e poi `Ispeziona` e `Newtork` nel pannello che si apre), naviga alla pagina [`/login`](http://localhost:3000/login) e inserisci `kody` and `twixrox` come password, poi clicca `Accedi`. Ora controlla gli header della risposta - dovrebbe essere simile a questo:
 
