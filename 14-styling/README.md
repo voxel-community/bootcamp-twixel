@@ -25,7 +25,7 @@ Per l'app di Twixel, useremo l'approccio a classi ma in una maniera molto ottimi
 
 ## Installare TailwindCSS
 
-Installa i pacchetti richiesti da Tailwind con il seguente comando: `npm install -d tailwindcss postcss autoprefixer nodemon`, poi installa il pacchetto `npm-run-all` con il comando `npm install npm-run-all`.
+Installa i pacchetti richiesti da Tailwind con il seguente comando: `npm install -d tailwindcss postcss autoprefixer nodemon`, poi installa i pacchetti `npm-run-all` e `cross-env` con il comando `npm install -d npm-run-all cross-env`.
 
 Dopo aver installato tutti i pacchetti, inizializza TailwindCSS con il comando `npx tailwindcss init -p` e nel file `tailwind.config.js` che si è creato nella root del progetto inserisci questo codice `content: ["./app/**/*.{ts,tsx,jsx,js}"],` così:
 
