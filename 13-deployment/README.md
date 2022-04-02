@@ -12,7 +12,7 @@ Per fare ciò ci sono diversi dettagli da seguire:
   
 - Prima di tutto dovrai crearti un account,
 - Dopodiché dal terminale del progetto, compila il codice eseguendo il comando `npm run build`,
-- Installa gli strumenti per il terminale di Vercel, con cui eseguire rapidamente alcune operazioni, con il comando `npm i -g vercel`
+- Installa gli strumenti per il terminale di Vercel, con cui eseguire rapidamente alcune operazioni, con il comando `npm i -g vercel` (nel caso in cui abbiate errori dovuti ai permessi (e.g. permission denied) utilizzate `sudo`: `sudo npm i -g vercel`)
 - Per pubblicare l'app esegui il comando `vercel --prod`
 - Ecco cosa ti apparirà
 ![Comandi vercel](../assets/13/vercel-prod.png)
