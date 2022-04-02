@@ -214,23 +214,14 @@ export function ErrorBoundary({ error }: { error: Error }) {
 <summary>app/routes/twixes/new.tsx</summary>
 
 ```tsx filename=app/routes/twixes/new.tsx lines=[9,12,89-109]
-import type { ActionFunction, LoaderFunction } from "remix";
-import {
-  useActionData,
-  redirect,
-  json,
-  useCatch,
-  Link,
-  Form,
-  useTransition,
-} from "remix";
+import { ActionFunction, Form, LoaderFunction, useTransition } from "remix";
+import { useActionData, redirect, json, useCatch, Link } from "remix";
+
+import { db } from "~/utils/db.server";
+import { requireUserId, getUserId } from "~/utils/session.server";
 
 import { TwixDisplay } from "~/components/twix";
-import { db } from "~/utils/db.server";
-import {
-  requireUserId,
-  getUserId,
-} from "~/utils/session.server";
+
 
 export const loader: LoaderFunction = async ({
   request,
@@ -244,24 +235,24 @@ export const loader: LoaderFunction = async ({
 
 function validateTwixContent(content: string) {
   if (content.length < 10) {
-    return `That twix is too short`;
+    return `Il twix è troppo corto`;
   }
 }
 
-function validateTwixName(name: string) {
-  if (name.length < 3) {
-    return `That twix's name is too short`;
+function validateTwixTitle(title: string) {
+  if (title.length < 3) {
+    return `Il titolo è troppo corto`;
   }
 }
 
 type ActionData = {
   formError?: string;
   fieldErrors?: {
-    name: string | undefined;
+    title: string | undefined;
     content: string | undefined;
   };
   fields?: {
-    name: string;
+    title: string;
     content: string;
   };
 };
@@ -274,22 +265,24 @@ export const action: ActionFunction = async ({
 }) => {
   const userId = await requireUserId(request);
   const form = await request.formData();
-  const name = form.get("name");
+  const title = form.get("title");
   const content = form.get("content");
+  // qui facciamo un piccolo type check per rendere TypeScript felice
+  // dopo ci occuperemo della validazione!
   if (
-    typeof name !== "string" ||
+    typeof title !== "string" ||
     typeof content !== "string"
   ) {
     return badRequest({
-      formError: `Form not submitted correctly.`,
+      formError: `Il form non è stato inviato correttamente`,
     });
   }
 
   const fieldErrors = {
-    name: validateTwixName(name),
+    title: validateTwixTitle(title),
     content: validateTwixContent(content),
   };
-  const fields = { name, content };
+  const fields = { title, content };
   if (Object.values(fieldErrors).some(Boolean)) {
     return badRequest({ fieldErrors, fields });
   }
@@ -315,26 +308,26 @@ export default function NewTwixRoute() {
       !validateTwixTitle(title)
     ) {
       return (
-        <TwixDisplay
-          twix={{ title, content }}
-          isOwner={true}
-          canDelete={false}
-        />
+          <TwixDisplay
+            twix={{ title, content }}
+            isOwner={true}
+            canDelete={false}
+          />
       );
     }
   }
-
+  
   return (
     <div>
-      <p>Add your own hilarious twix</p>
+      <p>Crea il tuo twix</p>
       <Form method="post">
         <div>
           <label>
-            Name:{" "}
+            Titolo:{" "}
             <input
               type="text"
               defaultValue={actionData?.fields?.title}
-              name="name"
+              name="title"
               aria-invalid={
                 Boolean(actionData?.fieldErrors?.title) ||
                 undefined
@@ -357,7 +350,7 @@ export default function NewTwixRoute() {
           ) : null}
         </div>
         <div>
-          <label>
+        <label>
             Content:{" "}
             <textarea
               defaultValue={actionData?.fields?.content}
@@ -385,7 +378,7 @@ export default function NewTwixRoute() {
         </div>
         <div>
           <button type="submit" className="button">
-            Add
+            Aggiungi
           </button>
         </div>
       </Form>
@@ -399,19 +392,17 @@ export function CatchBoundary() {
   if (caught.status === 401) {
     return (
       <div className="error-container">
-        <p>You must be logged in to create a twix.</p>
+        <p>Devi prima fare login per creare nuovi Twixel</p>
         <Link to="/login">Login</Link>
       </div>
     );
   }
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
-  console.error(error);
-
+export function ErrorBoundary() {
   return (
     <div className="error-container">
-      Something unexpected went wrong. Sorry about that.
+      Qualcosa è andato storto, ci scusiamo.
     </div>
   );
 }
