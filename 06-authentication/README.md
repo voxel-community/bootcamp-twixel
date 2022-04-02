@@ -963,7 +963,7 @@ export default function NewTwixRoute() {
             <input
               type="text"
               defaultValue={actionData?.fields?.title}
-              name="name"
+              name="title"
               aria-invalid={
                 Boolean(actionData?.fieldErrors?.title) ||
                 undefined
