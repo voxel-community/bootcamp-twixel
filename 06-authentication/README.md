@@ -140,7 +140,7 @@ function getTwixes() {
 }
 ```
 
-💿 Ottimo, ora avvia di nuovo il comando:
+💿 Ottimo, ora avvia di nuovo il comando per genearare dei twix di prova:
 
 ```sh
 npx prisma db seed
